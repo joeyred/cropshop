@@ -1,0 +1,38 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@import '../../styles/foundation/settings';
+@import '../../styles/theme';
+
+.container {
+  display: flex;
+  flex-flow: row nowrap;
+  box-shadow: $global_box-shadow;
+  background: $white;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.button {
+  border: none;
+  background: $primary-color;
+  padding: 0.3rem 0.4rem;
+  @include breakpoint(medium) {
+    padding: 0.625rem 1rem;
+  }
+}
+
+.count {
+  flex: 1 0 auto;
+  padding: 0.3rem 0.4rem;
+  @include breakpoint(medium) {
+    padding: 0.625rem;
+  }
+
+}

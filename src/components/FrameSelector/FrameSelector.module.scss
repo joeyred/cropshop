@@ -1,0 +1,42 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@import '../../styles/foundation/_settings';
+
+.container {
+  padding: 5px;
+}
+
+.active {
+  color: $white;
+  text-shadow: 0px 0px 4px $black;
+  svg {
+    fill: $primary-color;
+  }
+}
+
+.button {
+  background: none;
+  outline: none;
+  border: none;
+  padding: 0.625rem;
+}
+
+.price {
+  color: $primary-color;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  .currency-symbol {
+    font-size: 0.675em;
+    margin-left: 0.5em;
+    color: $secondary-color;
+  }
+}

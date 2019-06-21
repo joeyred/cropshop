@@ -1,0 +1,26 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@import '../../styles/foundation/settings';
+
+.button {
+  background: transparent;
+  border: 0;
+  padding: 0.625rem;
+
+  &::before {
+    content: "\2715";
+    display: block;
+    height: 16px;
+    width: 16px;
+    line-height: 1;
+    color: $dark-gray;
+    fonmt-size: 16px;
+  }
+}

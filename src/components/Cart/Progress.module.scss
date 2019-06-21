@@ -1,0 +1,136 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@import '../../styles/foundation/_settings';
+
+.progress-wrapper {
+  position: relative;
+  margin: 0 auto 2rem;
+  width: 100%;
+  max-width: 200px;
+  @include breakpoint(medium) {
+    max-width: 400px;
+  }
+}
+
+.progress-text {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: baseline;
+  justify-content: center;
+  font-size: 0.75rem;
+
+  span {
+    display: block;
+  }
+  @include breakpoint(medium) {
+    font-size: 1rem;
+  }
+  .of {
+    margin: 0 1px;
+    @include breakpoint(medium) {
+      margin: 0 5px;
+    }
+  }
+  .count {
+    font-size: 1.2rem;
+    width: 26px;
+    text-align: center;
+    @include breakpoint(medium) {
+      font-size: 3rem;
+      width: 60px;
+    }
+  }
+}
+
+.donut-wrapper {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  margin: 0 auto;
+}
+.content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  .inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.donut {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: auto;
+  .meter,
+  .value {
+    fill: none;
+  }
+  .meter {
+    stroke: $medium-gray;
+  }
+  .value {
+    stroke: $primary-color;
+    stroke-linecap: round;
+    transition: all 600ms ease;
+  }
+}
+
+.done {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+
+  .icon {
+    width: 80px;
+    height: 80px;
+    @include breakpoint(medium) {
+      width: 160px;
+      height: 160px;
+    }
+    svg {
+      width: 80px;
+      height: 80px;
+      fill: $primary-color;
+      transition: all 600ms ease;
+      @include breakpoint(medium) {
+        width: 160px;
+        height: 160px;
+      }
+    }
+  }
+}
+
+.finished {
+  .donut {
+    .value {
+      stroke: $success-color;
+    }
+  }
+  .done {
+    .icon {
+      svg {
+        fill: $success-color;
+      }
+    }
+  }
+}

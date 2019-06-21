@@ -1,0 +1,55 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// @mixin size($_name, $_value) {
+//   .size--#{$_name} {
+//     height: $_value;
+//     width: $_value;
+//   }
+// }
+// .container {
+//   position: relative;
+//   overflow: hidden;
+//   height: 10rem;
+//   width: 10rem;
+//   // &::after {
+//   //   content: ' ';
+//   //   display: block;
+//   //   padding-bottom: 100%;
+//   // }
+//   img {
+//     position: absolute;
+//     left: 50%;
+//     top: 50%;
+//     height: 100%;
+//     width: auto;
+//     transform: translate(-50%,-50%);
+//
+//     &.portrait {
+//       width: 100%;
+//       height: auto;
+//     }
+//   }
+// }
+
+.container {
+  position: absolute;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  img {
+    display: block;
+    // position: absolute;
+    width: 100%;
+    height: auto;
+  }
+}

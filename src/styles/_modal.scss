@@ -1,0 +1,102 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+$overlay: '#{$full-class}__overlay';
+$container: '#{$full-class}__container';
+$content: '#{$full-class}__content';
+$close: '#{$full-class}__close';
+$button: '#{$full-class}__button';
+$animation: '#{$full-class}__animate';
+
+.#{$overlay} {
+  position: fixed;
+  z-index: 99999999999999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include breakpoint('lg') {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.#{$container} {
+  width: 100vw;
+  height: auto;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  background: $white;
+
+  @include breakpoint(large) {
+    height: auto;
+    width: 100%;
+    max-width: 50rem;
+    max-height: 100vh;
+    // padding: 1.875rem;
+    margin: 1.875rem;
+  }
+}
+
+.#{$content} {
+  // width: 100vw;
+  // height: 100vh;
+}
+
+.#{$close} {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: 0;
+  padding: 1rem;
+
+  &::before {
+    content: '\2715';
+    display: block;
+    height: 16px;
+    width: 16px;
+    line-height: 1;
+    color: $dark-gray;
+    fonmt-size: 16px;
+  }
+}
+
+.#{$animation} {
+  display: none;
+  &.is-open {
+    display: block;
+  }
+
+  &[aria-hidden='false'] {
+    .#{$overlay} {
+      animation: $fade-in 300ms cubic-bezier(0, 0, 0.2, 1);
+    }
+    .#{$container} {
+      animation: $slide-in 300ms cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  &[aria-hidden='true'] {
+    .#{$overlay} {
+      animation: $fade-out 300ms cubic-bezier(0, 0, 0.2, 1);
+    }
+    .#{$container} {
+      animation: $slide-out 300ms cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  .#{$container},
+  .#{$overlay} {
+    will-change: transform;
+  }
+}

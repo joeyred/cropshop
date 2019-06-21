@@ -1,0 +1,52 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+$margin-right_base: 0.75rem;
+
+.container {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-flow: row nowrap;
+  :global(.button-group) {
+    // margin-top: 5px;
+    :global(.button) {
+      font-size: 0.75rem;
+    }
+  }
+  :global(.button) {
+    font-size: 0.75rem;
+
+
+    svg {
+      height: 1.25rem;
+      width: 1.25rem;
+    }
+  }
+  .icon {
+    margin-bottom: 0.25rem;
+  }
+
+  > :global(.button) {
+    margin-right: $margin-right_base;
+    margin-top: calc(1rem * 1.5);
+  }
+  > .group {
+    margin-right: $margin-right_base;
+  }
+}
+
+.group {
+  // margin-bottom: -16px;
+  span {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}

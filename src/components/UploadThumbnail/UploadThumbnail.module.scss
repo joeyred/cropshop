@@ -1,0 +1,55 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@import '../../styles/theme';
+
+.container {
+  position: relative;
+  // padding: 1rem;
+}
+
+.label {
+  position: absolute;
+  margin-right: -6px;
+  margin-top: 12px;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  box-shadow: $global_box-shadow;
+  font-family: $label_font-family;
+  letter-spacing: 1px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.thumbnail {
+  position: relative;
+  overflow: hidden;
+  height: 10rem;
+  width: 10rem;
+  box-shadow: $global_box-shadow;
+  &::after {
+    content: ' ';
+    display: block;
+    padding-bottom: 100%;
+  }
+  img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    transform: translate(-50%,-50%);
+
+    &.portrait {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
