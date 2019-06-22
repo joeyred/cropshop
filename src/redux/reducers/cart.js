@@ -31,9 +31,11 @@ const initialState = {
 export default function Cart(state = initialState, action) {
   switch (action.type) {
     case ADD_ITEMS_START: {
+      const { itemsToAdd } = action;
       return {
         ...state,
-        addingItems: true
+        addingItems: true,
+        itemsToAdd
       };
     }
     case ADD_ITEMS_FINISH: {
@@ -51,17 +53,17 @@ export default function Cart(state = initialState, action) {
       };
     }
     case ADD_ITEM_SUCCESS: {
-      const { itemsAdded } = action;
+      // const { itemsAdded } = action;
       return {
         ...state,
-        itemsAdded
+        itemsAdded: state.itemsAdded + 1
       };
     }
     case ADD_ITEM_FAILURE: {
-      const { error, itemsErrored } = action;
+      const { error } = action;
       return {
         ...state,
-        itemsErrored,
+        itemsErrored: state.itemsErrored + 1,
         errors: [...state.errors, error]
       };
     }

@@ -23,8 +23,9 @@ import {
 // Let's break some rules
 let index = 0;
 
-const startAddingItems = () => ({
-  type: ADD_ITEMS_START
+const startAddingItems = itemsToAdd => ({
+  type: ADD_ITEMS_START,
+  itemsToAdd
 });
 
 const finishAddingItems = () => ({
@@ -56,39 +57,36 @@ const next = (items, previousItemIndex, addItemToCart, dispatch) => {
 };
 
 export const addItemToCart = items => {
-  return (dispatch, getState) => {
-    // if all items have been added to cart, then stop the recursion.
-    const {
-      itemsAdded = 0,
-      itemsErrored = 0,
-      currentItemIndex = 0
-    } = getState();
+  return dispatch => {
     // console.log(itemsAdded, itemsErrored, currentItemIndex);
     // const itemsProcessed = itemsAdded + itemsErrored;
     if (index === 0) {
       // console.log('started adding items');
-      dispatch(startAddingItems());
+      dispatch(startAddingItems(items.length));
     }
     // console.log(items.length, itemsProcessed);
+
+    // if all items have been added to cart, then stop the recursion.
     if (items.length === index) {
       dispatch(finishAddingItems());
+      index = 0;
       return;
     }
 
-    dispatch(start(itemsAdded));
+    dispatch(start(items[index]));
 
     axios
       .post(AppAtts.CART_URL, items[index])
       .then(response => {
         // console.log(response.data);
-        dispatch(success(itemsAdded));
+        dispatch(success());
       })
       .catch(error => {
-        dispatch(failure(error, itemsErrored));
+        dispatch(failure(error));
       })
       .finally(() => {
         index += 1;
-        dispatch(next(items, currentItemIndex, addItemToCart, dispatch));
+        dispatch(next(items, addItemToCart, dispatch));
       });
   };
 };
