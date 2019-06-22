@@ -8,6 +8,8 @@
  */
 
 export const ADD_IMAGE = 'image/ADD_IMAGE';
+export const NEW_IMAGE = 'image/NEW_IMAGE';
+export const IMAGE_SIZE = 'image/IMAGE_SIZE';
 export const REMOVE_IMAGE = 'image/REMOVE_IMAGE';
 export const SAVE_EDIT = 'image/SAVE_EDIT';
 export const REMOVE_EDIT = 'image/REMOVE_EDIT';

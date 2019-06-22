@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import _ from 'lodash';
 import {
   ADD_IMAGE,
+  IMAGE_SIZE,
   REMOVE_IMAGE,
   SAVE_EDIT,
   REMOVE_EDIT,
@@ -24,7 +25,11 @@ const cookieName = 'cropshop_images';
 // import imgMock from '../../imgs/IMG_0408.jpg';
 const cookie = Cookies.getJSON(cookieName);
 // console.log(cookie);
-const images = cookie || {
+// const images = cookie || {
+//   byId: {},
+//   allIds: []
+// };
+const images = {
   byId: {},
   allIds: []
 };
@@ -39,7 +44,7 @@ export default function Image(state = initialState, action) {
     // previously uploaded images.
     case ADD_IMAGE: {
       const { id, filename, handle, url, mimetype } = action.payload;
-      const images = {
+      const newImagesState = {
         byId: {
           ...state.images.byId,
           [id]: {
@@ -57,10 +62,31 @@ export default function Image(state = initialState, action) {
         },
         allIds: [...state.images.allIds, id]
       };
-      Cookies.set(cookieName, images);
+      Cookies.set(cookieName, newImagesState);
       return {
         ...state,
-        images
+        images: newImagesState
+      };
+    }
+    case IMAGE_SIZE: {
+      const { imageId, size } = action;
+      const { width, height } = size;
+
+      const newImagesState = {
+        byId: {
+          ...state.images.byId,
+          [imageId]: {
+            ...state.images.byId[imageId],
+            width,
+            height
+          }
+        },
+        allIds: [...state.images.allIds]
+      };
+      Cookies.set(cookieName, newImagesState);
+      return {
+        ...state,
+        images: newImagesState
       };
     }
     case REMOVE_IMAGE: {

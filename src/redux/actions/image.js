@@ -7,9 +7,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import axios from 'axios';
 import uniqid from 'uniqid';
 import {
   ADD_IMAGE,
+  NEW_IMAGE,
+  IMAGE_SIZE,
   REMOVE_IMAGE,
   SAVE_EDIT,
   REMOVE_EDIT,
@@ -17,14 +20,8 @@ import {
   UPDATE_QUANTITY
 } from '../actiontypes/image';
 
-/**
- * Add Image object to images array
- * @method addImage
- * @param  {Object}  image - Array of metadata objects to be parsed.
- */
-export const addImage = image => {
-  const { filename, handle, url, mimetype } = image;
-  const id = uniqid();
+const addImage = image => {
+  const { id, filename, handle, url, mimetype } = image;
   return {
     type: ADD_IMAGE,
     payload: {
@@ -34,6 +31,35 @@ export const addImage = image => {
       url,
       mimetype
     }
+  };
+};
+
+const imageSize = (imageId, size) => ({
+  type: IMAGE_SIZE,
+  imageId,
+  size
+});
+
+/**
+ * Add Image object to images array
+ * @method addImage
+ * @param  {Object}  image - Array of metadata objects to be parsed.
+ */
+export const asyncLoadImage = image => {
+  return dispatch => {
+    const { handle } = image;
+    const id = uniqid();
+    const payload = { id, ...image };
+    dispatch(addImage(payload));
+    axios
+      .get(`https://cdn.filestackcontent.com/imagesize/${handle}`)
+      .then(response => {
+        // console.log(response);
+        const { height, width } = response.data;
+        console.log(response.data);
+        dispatch(imageSize(id, { height, width }));
+      })
+      .catch(error => console.log(error));
   };
 };
 
