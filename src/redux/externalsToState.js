@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 const EXTERNALS_TO_STATE = 'externals/EXTERNALS_TO_STATE';
 
 const initialState = {

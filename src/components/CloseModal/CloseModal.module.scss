@@ -7,20 +7,23 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-@import '../../styles/foundation/settings';
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
 
-.button {
-  background: transparent;
-  border: 0;
-  padding: 0.625rem;
+:global(#{$global_namespace}) {
+  .button {
+    background: transparent;
+    border: 0;
+    padding: 0.625rem;
 
-  &::before {
-    content: "\2715";
-    display: block;
-    height: 16px;
-    width: 16px;
-    line-height: 1;
-    color: $dark-gray;
-    fonmt-size: 16px;
+    &::before {
+      content: '\2715';
+      display: block;
+      height: 16px;
+      width: 16px;
+      line-height: 1;
+      color: $dark-gray;
+      fonmt-size: 16px;
+    }
   }
 }

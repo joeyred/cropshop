@@ -6,12 +6,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
+// import { Filelink } from 'filestack-js';
+// import { forIn } from 'lodash';
 import axios from 'axios';
 import uniqid from 'uniqid';
 import {
   ADD_IMAGE,
-  NEW_IMAGE,
+  // NEW_IMAGE,
   IMAGE_SIZE,
   REMOVE_IMAGE,
   SAVE_EDIT,
@@ -19,9 +20,11 @@ import {
   UPDATE_PREVIEW,
   UPDATE_QUANTITY
 } from '../actiontypes/image';
+// import { Breakpoints } from '../../globals';
 
 const addImage = image => {
   const { id, filename, handle, url, mimetype } = image;
+
   return {
     type: ADD_IMAGE,
     payload: {
@@ -51,14 +54,20 @@ export const asyncLoadImage = image => {
     const id = uniqid();
     const payload = { id, ...image };
     dispatch(addImage(payload));
+    // WARNING Filestack Bug - HEIC files and exif orientation.
+    // Filestack will fix this on upload, but if you try and query for image size
+    // the API will return rotated values. This prevents that.
     axios
-      .get(`https://cdn.filestackcontent.com/imagesize/${handle}`)
+      .get(
+        `https://cdn.filestackcontent.com/rotate=deg:exif/imagesize/${handle}`
+      )
       .then(response => {
         // console.log(response);
         const { height, width } = response.data;
-        console.log(response.data);
-        dispatch(imageSize(id, { height, width }));
+        // console.log(response.data);
+        dispatch(imageSize(id, { width, height }));
       })
+      // eslint-disable-next-line
       .catch(error => console.log(error));
   };
 };

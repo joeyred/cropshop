@@ -7,15 +7,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-.container {
-  overflow-y: scroll;
-  height: 60vh;
-}
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
 
-.counter {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: center;
-  // padding: 1rem;
+:global(#{$global_namespace}) {
+  .container {
+    // overflow-y: scroll;
+    height: auto;
+  }
+
+  .counter {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    // padding: 1rem;
+  }
 }

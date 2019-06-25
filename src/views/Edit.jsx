@@ -17,42 +17,41 @@ import {
   Cell,
   Button,
   // ButtonGroup,
-  TopBar,
+  // TopBar,
   TopBarLeft,
   Colors
 } from 'react-foundation';
-import sizeMe from 'react-sizeme';
+import { SizeMe } from 'react-sizeme';
+
+import ContainerHeightUnits from '../components/ContainerHeightUnits';
 
 import {
   // scaleCrop,
   generateTransform
 } from '../utils/transformations';
 import {
-  toggleOption,
+  // toggleOption,
   updateRotation,
   // updateZoom,
   updateCrop as updateCropActionCreator,
-  storeImageDimensions as storeImageDimensionsActionCreator
+  storeImageDimensions as storeImageDimensionsActionCreator,
+  updateArtboardDimensions as updateArtboardDimensionsActionCreator
 } from '../redux/actions/editor';
 
 import { updateView } from '../redux/actions/nav';
-// import ReactCrop from 'react-image-crop';
 import { Views } from '../globals';
 
 import Icon from '../components/Icon';
-
-// import Filestack from '../components/Filestack';
+import TopBar from '../components/TopBar';
 import FrameSelector from '../components/FrameSelector';
 import Toolbar from '../components/Toolbar';
 import ImageEditor from '../components/ImageEditor';
+import TopBarTitle from '../components/TopBarTitle';
+
+import { responsiveProp } from '../utils/breakpoints';
+import { aspectRatioFill, calcCropFullCentered } from '../utils/crop';
 
 import styles from './Edit.module.scss';
-import 'react-image-crop/lib/ReactCrop.scss';
-
-// Mock
-// import mockImg from "../imgs/mock-img-vertical.jpg";
-
-const SizeAwareCell = sizeMe({ monitorHeight: true })(Cell);
 
 const mapStateToProps = state => ({
   apiKey: state.filestack.key,
@@ -66,7 +65,14 @@ const mapStateToProps = state => ({
   zoom: state.editor.zoom,
   flip: state.editor.flip,
   flop: state.editor.flop,
-  crop: state.editor.crop
+  crop: state.editor.crop,
+  artboardSize: state.editor.artboardSize,
+  artboardPadding: state.editor.artboardPadding,
+  imageSize: state.editor.imageSize,
+  // ui
+  breakpoint: state.size.breakpoint,
+  isPortrait: state.size.app.isPortrait,
+  availableHeight: state.size.availableHeight
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -79,11 +85,89 @@ class Edit extends Component {
     // file: PropTypes.object.isRequired,
   };
 
+  state = {
+    loading: true
+  };
+
+  componentDidMount() {
+    const {
+      frames,
+      selectedFrameId,
+      // images,
+      // imageId,
+      imageSize,
+      dispatch
+    } = this.props;
+    // const image = images.byId[imageId];
+    let frame = frames.byId[selectedFrameId];
+    if (!frame) {
+      frame = {
+        dimensions: [8, 8]
+      };
+    }
+
+    const crop = calcCropFullCentered(
+      frame.dimensions[0],
+      frame.dimensions[1],
+      imageSize.width,
+      imageSize.height
+    );
+    // console.log(crop);
+
+    dispatch(
+      updateCropActionCreator({
+        ...crop,
+        aspect: frame.dimensions[0] / frame.dimensions[1]
+      })
+    );
+  }
+
+  getResponsiveProp = (component, prop) => {
+    const { breakpoint } = this.props;
+
+    // console.log(breakpoint);
+
+    const grid = {};
+    const frameSelector = {};
+    const toolbar = {};
+    const imageEditor = {};
+
+    // if (!isPortrait) {
+    grid.direction = responsiveProp([true, true, false]);
+
+    frameSelector.direction = responsiveProp([
+      'horizontal',
+      'horizontal',
+      'horizontal'
+    ]);
+    frameSelector.cellSize = responsiveProp([null, null, 3]);
+    frameSelector.ch = responsiveProp([22, 25, 22]);
+
+    toolbar.ch = responsiveProp([15, 15, 20]);
+
+    imageEditor.ch = responsiveProp([
+      100 - (toolbar.ch[breakpoint] + frameSelector.ch[breakpoint]),
+      100 - (toolbar.ch[breakpoint] + frameSelector.ch[breakpoint]),
+      100 - (toolbar.ch[breakpoint] + frameSelector.ch[breakpoint])
+    ]);
+
+    const components = { grid, frameSelector, toolbar, imageEditor };
+    return components[component][prop][breakpoint];
+    // }
+
+    // components.grid.direction = false;
+    // components.frameSelector.direction = 'vertical';
+    // components.frameSelector.cellSize = 3;
+    //
+    // return components[component][prop];
+  };
+
   handleRotate = direction => {
     const {
       rotate
       // dispatch
     } = this.props;
+    this.loadingStatus(true);
     if (direction === 'left') {
       // dispatch(updateRotation(rotate - 90));
       return rotate - 90;
@@ -95,25 +179,19 @@ class Edit extends Component {
     return rotate + 90;
   };
 
-  handleDimensions = () => {
-    const { rotate, imageProps } = this.props;
-
-    const container = {};
-    // const image = {};
+  handleDimensions = imageSize => {
+    const { rotate } = this.props;
 
     if (rotate === 90 || rotate === 270) {
-      container.width = imageProps.height ? imageProps.height : 'inherit';
-      container.height = imageProps.width ? imageProps.width : 'auto';
+      // console.log('rotation applied');
       return {
-        width: container.width,
-        height: container.height
+        width: imageSize.height,
+        height: imageSize.width
       };
     }
-    container.width = imageProps.width ? imageProps.width : 'auto';
-    container.height = imageProps.height ? imageProps.height : 'inherit';
     return {
-      width: container.width,
-      height: container.height
+      width: imageSize.width,
+      height: imageSize.height
     };
   };
 
@@ -126,11 +204,12 @@ class Edit extends Component {
     } = this.props;
     const rotateTransform = {};
     // Normal Rotation
-    rotateTransform.x = rotate > 0 && rotate < 360 ? rotate : 0;
+    // rotateTransform.x = rotate > 0 && rotate < 360 ? rotate : 0;
+    rotateTransform.z = rotate;
     // Flip Horizontally
     rotateTransform.y = flop ? 180 : 0;
     // Flip Vertically
-    rotateTransform.z = flip ? 180 : 0;
+    rotateTransform.x = flip ? 180 : 0;
 
     // const zoomTransform = zoom > 1 ? zoom : 1;
 
@@ -147,8 +226,17 @@ class Edit extends Component {
 
   // TODO Replace this with a more flexible and performant solution
   handleImageEditViaApi = linkedImage => {
-    const { rotate, flip, flop } = this.props;
-
+    const { breakpoint, rotate, flip, flop } = this.props;
+    // linkedImage.output({ format: 'jpg' });
+    const responsiveResize = {
+      sm: 640,
+      md: 1000,
+      lg: 1024,
+      xl: 1366,
+      xxl: 1920
+    };
+    linkedImage.resize({ width: responsiveResize[breakpoint] });
+    // return linkedImage.toString();
     const preview = generateTransform(linkedImage, { rotate, flip, flop });
     // console.log(preview.url);
     return preview.url;
@@ -162,6 +250,10 @@ class Edit extends Component {
   //   }
   // `;
 
+  loadingStatus = status => {
+    this.setState({ loading: status });
+  };
+
   render() {
     // console.log(this.props);
     const {
@@ -170,6 +262,7 @@ class Edit extends Component {
       selectedFrameId,
       images,
       imageId,
+      availableHeight,
       dispatch,
       crop
     } = this.props;
@@ -188,30 +281,19 @@ class Edit extends Component {
       };
     }
 
-    // const updateView = bindActionCreators(
-    //   NavActionCreators.updateView,
-    //   dispatch
-    // );
     const updateCrop = bindActionCreators(updateCropActionCreator, dispatch);
     const storeImageDimensions = bindActionCreators(
       storeImageDimensionsActionCreator,
       dispatch
     );
+    const updateArtboardDimensions = bindActionCreators(
+      updateArtboardDimensionsActionCreator,
+      dispatch
+    );
     // const dimensions = this.handleDimensions();
 
     return (
-      <Grid vertical className={`${styles.container}`}>
-        {/* <style>
-          {`
-
-            img.ReactCrop__image {
-              height: ${dimensions.height}px;
-              width: ${dimensions.width}px;
-              transform: ${this.generateTransformStyles()};
-            }
-
-          `}
-        </style> */}
+      <div>
         <TopBar>
           <TopBarLeft>
             <Button
@@ -221,80 +303,179 @@ class Edit extends Component {
             >
               <Icon name='Apps' /> Back To Gallery
             </Button>
+
+            <TopBarTitle />
           </TopBarLeft>
         </TopBar>
+        <Grid vertical className={`${styles.container}`}>
+          {/* Frame Select */}
+          <Cell>
+            <ContainerHeightUnits
+              ch={this.getResponsiveProp('frameSelector', 'ch')}
+              containerHeight={availableHeight}
+            >
+              <h1 className=''>Select A Size</h1>
+              <FrameSelector
+                direction={this.getResponsiveProp('frameSelector', 'direction')}
+              />
+            </ContainerHeightUnits>
+          </Cell>
+          {/* Image Editor */}
+          <Cell>
+            <SizeMe monitorHeight>
+              {({ size }) => {
+                const handledImageSize = this.handleDimensions(image);
+                // const imageSize = { width: image.width, height: image.height };
+                const artboardPadding = 16;
+                const sanitizedSize = {};
 
-        {/* Frame Select */}
-        <SizeAwareCell>
-          <h1 className=''>Select A Size</h1>
-          <FrameSelector direction='horizontal' />
-        </SizeAwareCell>
-        {/* Image Editor */}
-        <Cell>
-          <ImageEditor
-            // imageSrc={image.url}
-            imageSrc={this.handleImageEditViaApi(linkedImage)}
-            // artboardDimensions={this.handleDimensions()}
-            crop={crop}
-            updateCrop={updateCrop}
-            storeImageDimensions={storeImageDimensions}
-            aspectRatioArray={frame.dimensions}
-            // aspectRatioArray={[8, 8]}
-          />
-        </Cell>
+                // Fixes any isses on initial load returning `undefined`;
+                if (size.width) {
+                  sanitizedSize.width = size.width;
+                } else {
+                  sanitizedSize.width = 0;
+                }
+                if (size.height) {
+                  sanitizedSize.height = size.height;
+                } else {
+                  sanitizedSize.height = 0;
+                }
 
-        {/* Tool Bar */}
-        <SizeAwareCell>
-          <Toolbar style={{ padding: '0 0.625rem' }}>
-            {/* <Toolbar.Group label='Zoom'>
-              <Toolbar.Button icon='ZoomIn' label='In' />
-              <Toolbar.Button icon='ZoomOut' label='Out' />
-            </Toolbar.Group> */}
-            <Toolbar.Group label='Rotate'>
-              <Toolbar.Button
-                icon='RotateLeft'
-                label='Left'
-                // handleClick={() => this.handleRotate('left')}
-                handleClick={() =>
-                  dispatch(updateRotation(this.handleRotate('left')))
-                }
-              />
-              <Toolbar.Button
-                icon='RotateRight'
-                label='Right'
-                // handleClick={() => this.handleRotate('right')}
-                handleClick={() =>
-                  dispatch(updateRotation(this.handleRotate('right')))
-                }
-              />
-            </Toolbar.Group>
-            <Toolbar.Group label='Flip'>
-              <Toolbar.Button
-                icon='Flip'
-                label='Horizontal'
-                handleClick={() => dispatch(toggleOption('flop'))}
-              />
-              <Toolbar.Button
-                icon='Flip'
-                rotateIcon={270}
-                label='Vertical'
-                handleClick={() => dispatch(toggleOption('flip'))}
-              />
-            </Toolbar.Group>
-          </Toolbar>
-        </SizeAwareCell>
-        <SizeAwareCell className='align-center-middle text-center'>
-          <Button
-            color={Colors.SECONDARY}
-            onClick={() => dispatch(updateView(Views.PREVIEW))}
-          >
-            Apply
-          </Button>
-          {/* <Grid vertical={false} className='align-center-middle text-center'>
-            {}
-          </Grid> */}
-        </SizeAwareCell>
-      </Grid>
+                const artboardDimensions = aspectRatioFill(
+                  handledImageSize.width,
+                  handledImageSize.height,
+                  sanitizedSize.width,
+                  sanitizedSize.height
+                );
+                // const imageFill = aspectRatioFill(
+                //   imageSize.width,
+                //   imageSize.height,
+                //   sanitizedSize.width,
+                //   sanitizedSize.height
+                // );
+
+                const containerDimensions = {
+                  width: artboardDimensions.width - artboardPadding * 2,
+                  height: artboardDimensions.height - artboardPadding * 2
+                };
+                // const imageDimensions = this.handleDimensions({
+                //   width: artboardDimensions.width - artboardPadding * 2,
+                //   height: artboardDimensions.height - artboardPadding * 2
+                // });
+
+                const imageDimensions = {
+                  width: artboardDimensions.width - artboardPadding * 2,
+                  height: artboardDimensions.height - artboardPadding * 2
+                };
+                // console.log(
+                //   handledImageSize.width,
+                //   handledImageSize.height,
+                //   sanitizedSize.width,
+                //   sanitizedSize.height
+                // );
+                // console.log(artboardDimensions);
+                // console.log(imageFill);
+                return (
+                  <ContainerHeightUnits
+                    ch={this.getResponsiveProp('imageEditor', 'ch')}
+                    containerHeight={availableHeight}
+                  >
+                    <style>
+                      {/* {`
+                        .ReactCrop::before {
+                          content: '';
+                          padding: ${imageDimensions.height.toFixed(0) /
+                            2}px ${imageDimensions.width.toFixed(0) / 2}px;
+                          height: ${imageDimensions.height.toFixed(0)}px;
+                          width: ${imageDimensions.width.toFixed(0)}px;
+                        }
+                      `} */}
+                    </style>
+                    <ImageEditor
+                      // imageSrc={image.url}
+                      imageSrc={this.handleImageEditViaApi(linkedImage)}
+                      containerDimensions={containerDimensions}
+                      imageDimensions={imageDimensions}
+                      // imageTransforms={this.generateTransformStyles()}
+                      handleLoadingStatus={this.loadingStatus}
+                      // eslint-disable-next-line
+                      loadingStatus={this.state.loading}
+                      artboardDimensions={artboardDimensions}
+                      artboardPadding={artboardPadding}
+                      crop={crop}
+                      height={sanitizedSize.height}
+                      width={sanitizedSize.width}
+                      updateCrop={updateCrop}
+                      updateArtboardDimensions={updateArtboardDimensions}
+                      storeImageDimensions={storeImageDimensions}
+                      aspectRatioArray={frame.dimensions}
+                      // aspectRatioArray={[8, 8]}
+                    />
+                  </ContainerHeightUnits>
+                );
+              }}
+            </SizeMe>
+          </Cell>
+
+          {/* Tool Bar */}
+          <Cell>
+            <ContainerHeightUnits
+              ch={this.getResponsiveProp('toolbar', 'ch')}
+              containerHeight={availableHeight}
+            >
+              <Grid vertical={false} alignY='middle'>
+                <Cell auto='all'>
+                  <Toolbar style={{ padding: '0 0.625rem' }}>
+                    {/* <Toolbar.Group label='Zoom'>
+                          <Toolbar.Button icon='ZoomIn' label='In' />
+                          <Toolbar.Button icon='ZoomOut' label='Out' />
+                        </Toolbar.Group> */}
+                    <Toolbar.Group label='Rotate'>
+                      <Toolbar.Button
+                        icon='RotateLeft'
+                        label='Left'
+                        // handleClick={() => this.handleRotate('left')}
+                        handleClick={() =>
+                          dispatch(updateRotation(this.handleRotate('left')))
+                        }
+                      />
+                      <Toolbar.Button
+                        icon='RotateRight'
+                        label='Right'
+                        // handleClick={() => this.handleRotate('right')}
+                        handleClick={() =>
+                          dispatch(updateRotation(this.handleRotate('right')))
+                        }
+                      />
+                    </Toolbar.Group>
+                    {/* <Toolbar.Group label='Flip'>
+                          <Toolbar.Button
+                            icon='Flip'
+                            label='Horizontal'
+                            handleClick={() => dispatch(toggleOption('flop'))}
+                          />
+                          <Toolbar.Button
+                            icon='Flip'
+                            rotateIcon={270}
+                            label='Vertical'
+                            handleClick={() => dispatch(toggleOption('flip'))}
+                          />
+                        </Toolbar.Group> */}
+                  </Toolbar>
+                </Cell>
+                <Cell auto='all' className='align-center-middle text-center'>
+                  <Button
+                    color={Colors.SECONDARY}
+                    onClick={() => dispatch(updateView(Views.PREVIEW))}
+                  >
+                    Apply Edit
+                  </Button>
+                </Cell>
+              </Grid>
+            </ContainerHeightUnits>
+          </Cell>
+        </Grid>
+      </div>
     );
   }
 }

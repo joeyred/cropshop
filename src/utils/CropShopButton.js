@@ -35,13 +35,14 @@ export default class CropShopButton {
   openModal() {
     const { images } = store.getState().image;
     const imageHasBeenUploaded = images.allIds.length > 0;
-    const body = document.getElementById('cropshop_site_content');
-    const windowHeight = window.innerHeight ||
+    const body = document.querySelector('body');
+    const windowHeight =
+      window.innerHeight ||
       document.documentElement.clientHeight ||
       document.body.clientHeight;
-    console.log('window.innerHeight:', window.innerHeight);
-    console.log('document.documentElement.clientHeight:', document.documentElement.clientHeight);
-    console.log('document.body.clientHeight:', document.body.clientHeight);
+    // console.log('window.innerHeight:', window.innerHeight);
+    // console.log('document.documentElement.clientHeight:', document.documentElement.clientHeight);
+    // console.log('document.body.clientHeight:', document.body.clientHeight);
     // console.log(imageHasBeenUploaded);
     this.appContainer.setAttribute('data-cropshop-collection', this.collection);
     store.dispatch(updateSelectedCollection(this.collection));
@@ -53,7 +54,11 @@ export default class CropShopButton {
       debugMode: dev
     });
     scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-    Object.assign(body.style, {position: 'fixed', overflow: 'hidden', height: `${windowHeight}px`});
+    Object.assign(body.style, {
+      position: 'fixed',
+      overflow: 'hidden',
+      height: `${windowHeight}px`
+    });
   }
 
   events() {
@@ -71,10 +76,10 @@ export const closeModal = modalId => {
   const { images } = store.getState().image;
   const imageHasBeenUploaded = images.allIds.length > 0;
   // console.log(imageHasBeenUploaded);
-  const body = document.getElementById('cropshop_site_content');
+  const body = document.querySelector('body');
 
   MicroModal.close(modalId);
-  Object.assign(body.style, {overflow: '', height: '', position: ''});
+  Object.assign(body.style, { overflow: '', height: '', position: '' });
   window.scrollTo(0, scrollPosition);
   store.dispatch(updateAppVisibility(false, imageHasBeenUploaded));
 };

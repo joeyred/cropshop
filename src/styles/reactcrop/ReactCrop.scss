@@ -1,0 +1,184 @@
+@import 'ReactCrop-variables';
+
+.#{$rc_namespace} {
+  position: relative;
+  display: block;
+  cursor: crosshair;
+  overflow: visible;
+  max-width: 100%;
+  background-color: #000;
+
+  &:focus {
+    outline: none;
+  }
+}
+.#{$rc_namespace}--disabled,
+.#{$rc_namespace}--locked {
+  cursor: inherit;
+}
+
+.#{$rc_namespace}__image {
+  /* autoprefixer: off */
+  display: block;
+  max-width: 100%;
+  // max-height: -webkit-fill-available;
+  // max-height: -moz-available;
+  // max-height: fill-available;
+}
+
+.#{$rc_namespace}--crop-invisible .#{$rc_namespace}__image {
+  opacity: 0.5;
+}
+
+.#{$rc_namespace}__crop-selection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  // This is probably meant to kick in hardware rendering accelleration
+  transform: translate3d(0, 0, 0);
+  box-sizing: border-box;
+  cursor: move;
+  box-shadow: 0 0 0 9999em rgba(0, 0, 0, 0.5);
+
+  .#{$rc_namespace}--disabled {
+    cursor: inherit;
+  }
+
+  border: 1px solid;
+  border-image-source: $border-gif;
+  border-image-slice: 1;
+  border-image-repeat: repeat;
+}
+
+.#{$rc_namespace}__drag-handle {
+  position: absolute;
+  width: #{$dh_full-dim}px;
+  height: #{$dh_full-dim}px;
+  padding: #{$drag-handle_padding}px;
+  box-sizing: border-box;
+  // This stops the borders disappearing when keyboard
+  // nudging.
+  outline: 1px solid transparent;
+
+  &::before {
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+    content: ' ';
+    width: #{$dh_psuedo-dim}px;
+    height: #{$dh_psuedo-dim}px;
+    padding: #{$dh_psuedo-padding}px;
+    background-color: $drag-handle-background-colour;
+    border: $drag-handle-border;
+    // border-radius: 50%;
+    transform: rotate(45deg);
+  }
+}
+
+.#{$rc_namespace}__drag-handle.ord-nw {
+  top: 0;
+  left: 0;
+  margin-top: -#{$dh_margin}px;
+  margin-left: -#{$dh_margin}px;
+  cursor: nw-resize;
+}
+.#{$rc_namespace}__drag-handle.ord-n {
+  top: 0;
+  left: 50%;
+  margin-top: -#{$dh_margin}px;
+  margin-left: -#{$dh_margin}px;
+  cursor: n-resize;
+}
+.#{$rc_namespace}__drag-handle.ord-ne {
+  top: 0;
+  right: 0;
+  margin-top: -#{$dh_margin}px;
+  margin-right: -#{$dh_margin}px;
+  cursor: ne-resize;
+}
+.#{$rc_namespace}__drag-handle.ord-e {
+  top: 50%;
+  right: 0;
+  margin-top: -#{$dh_margin}px;
+  margin-right: -#{$dh_margin}px;
+  cursor: e-resize;
+}
+.#{$rc_namespace}__drag-handle.ord-se {
+  bottom: 0;
+  right: 0;
+  margin-bottom: -#{$dh_margin}px;
+  margin-right: -#{$dh_margin}px;
+  cursor: se-resize;
+}
+.#{$rc_namespace}__drag-handle.ord-s {
+  bottom: 0;
+  left: 50%;
+  margin-bottom: -#{$dh_margin}px;
+  margin-left: -#{$dh_margin}px;
+  cursor: s-resize;
+}
+.#{$rc_namespace}__drag-handle.ord-sw {
+  bottom: 0;
+  left: 0;
+  margin-bottom: -#{$dh_margin}px;
+  margin-left: -#{$dh_margin}px;
+  cursor: sw-resize;
+}
+.#{$rc_namespace}__drag-handle.ord-w {
+  top: 50%;
+  left: 0;
+  margin-top: -#{$dh_margin}px;
+  margin-left: -#{$dh_margin}px;
+  cursor: w-resize;
+}
+
+// Use the same specificity as the ords above but just
+// come after.
+.#{$rc_namespace}__disabled .#{$rc_namespace}__drag-handle {
+  cursor: inherit;
+}
+
+.#{$rc_namespace}__drag-bar {
+  position: absolute;
+}
+.#{$rc_namespace}__drag-bar.ord-n {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $drag-bar-size;
+  margin-top: -($drag-bar-size / 2);
+}
+.#{$rc_namespace}__drag-bar.ord-e {
+  right: 0;
+  top: 0;
+  width: $drag-bar-size;
+  height: 100%;
+  margin-right: -($drag-bar-size / 2);
+}
+.#{$rc_namespace}__drag-bar.ord-s {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: $drag-bar-size;
+  margin-bottom: -($drag-bar-size / 2);
+}
+.#{$rc_namespace}__drag-bar.ord-w {
+  top: 0;
+  left: 0;
+  width: $drag-bar-size;
+  height: 100%;
+  margin-left: -($drag-bar-size / 2);
+}
+
+.#{$rc_namespace}--new-crop .#{$rc_namespace}__drag-bar,
+.#{$rc_namespace}--new-crop .#{$rc_namespace}__drag-handle,
+.#{$rc_namespace}--fixed-aspect .#{$rc_namespace}__drag-bar {
+  display: none;
+}
+
+.#{$rc_namespace}--fixed-aspect .#{$rc_namespace}__drag-handle.ord-n,
+.#{$rc_namespace}--fixed-aspect .#{$rc_namespace}__drag-handle.ord-e,
+.#{$rc_namespace}--fixed-aspect .#{$rc_namespace}__drag-handle.ord-s,
+.#{$rc_namespace}--fixed-aspect .#{$rc_namespace}__drag-handle.ord-w {
+  display: none;
+}

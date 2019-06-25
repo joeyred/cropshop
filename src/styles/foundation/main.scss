@@ -7,10 +7,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+@import '../_namespace';
 @import './settings';
 @import '../theme';
-@import '../animations';
-@import '../modal';
+// @import '../animations';
 @import '../../../node_modules/foundation-sites/scss/foundation';
 
 // Use this as the main import into the App.module.scss with the :global flag
@@ -72,5 +72,25 @@
 
   .top-bar {
     box-shadow: $global_box-shadow;
+  }
+}
+
+:global(#{$global_namespace}) {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background: $body-background;
+  font-family: $body-font-family;
+  font-weight: $global-weight-normal;
+  line-height: $global-lineheight;
+  color: $body-font-color;
+
+  @if ($body-antialiased) {
+    -webkit-font-smoothing: antialiased; // sass-lint:disable-line no-vendor-prefixes
+    -moz-osx-font-smoothing: grayscale; // sass-lint:disable-line no-vendor-prefixes
+  }
+
+  :global {
+    @include foundation;
   }
 }

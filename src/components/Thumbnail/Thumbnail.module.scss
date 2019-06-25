@@ -38,18 +38,23 @@
 //   }
 // }
 
-.container {
-  position: absolute;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: auto;
-  img {
-    display: block;
-    // position: absolute;
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
+
+:global(#{$global_namespace}) {
+  .container {
+    position: absolute;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: auto;
+    img {
+      display: block;
+      // position: absolute;
+      width: 100%;
+      height: auto;
+    }
   }
 }

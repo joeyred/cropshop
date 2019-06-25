@@ -7,6 +7,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { Breakpoints } from '../globals';
+
 export function breakpointArray(breakpoints) {
   const output = [];
   // eslint-disable-next-line
@@ -53,4 +55,17 @@ export const activeBreakpoint = breakpoints => {
     }
   }
   return previousKey;
+};
+
+export const responsiveProp = values => {
+  const breakpoints = breakpointArray(Breakpoints);
+  const output = {};
+  let value;
+  for (let i = 0; breakpoints.length > i; i += 1) {
+    if (values.length > i) {
+      value = values[i];
+    }
+    output[breakpoints[i]] = value;
+  }
+  return output;
 };

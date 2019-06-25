@@ -9,47 +9,52 @@
 
 @import '../../styles/theme';
 
-.container {
-  position: relative;
-  // padding: 1rem;
-}
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
 
-.label {
-  position: absolute;
-  margin-right: -6px;
-  margin-top: 12px;
-  top: 0;
-  right: 0;
-  z-index: 10;
-  box-shadow: $global_box-shadow;
-  font-family: $label_font-family;
-  letter-spacing: 1px;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-.thumbnail {
-  position: relative;
-  overflow: hidden;
-  height: 10rem;
-  width: 10rem;
-  box-shadow: $global_box-shadow;
-  &::after {
-    content: ' ';
-    display: block;
-    padding-bottom: 100%;
+:global(#{$global_namespace}) {
+  .container {
+    position: relative;
+    // padding: 1rem;
   }
-  img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    height: 100%;
-    width: auto;
-    transform: translate(-50%,-50%);
 
-    &.portrait {
-      width: 100%;
-      height: auto;
+  .label {
+    position: absolute;
+    margin-right: -6px;
+    margin-top: 12px;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    box-shadow: $global_box-shadow;
+    font-family: $label_font-family;
+    letter-spacing: 1px;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .thumbnail {
+    position: relative;
+    overflow: hidden;
+    height: 10rem;
+    width: 10rem;
+    box-shadow: $global_box-shadow;
+    &::after {
+      content: ' ';
+      display: block;
+      padding-bottom: 100%;
+    }
+    img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 100%;
+      width: auto;
+      transform: translate(-50%, -50%);
+
+      &.portrait {
+        width: 100%;
+        height: auto;
+      }
     }
   }
 }

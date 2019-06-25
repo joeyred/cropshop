@@ -12,6 +12,7 @@ import {
   UPDATE_ROTATION,
   UPDATE_CROP,
   UPDATE_ZOOM,
+  UPDATE_ARTBOARD_DIMENSIONS,
   STORE_IMAGE_DIMENSIONS,
   UPDATE_CROP_FULL_CENTERED
 } from '../actiontypes/editor';
@@ -29,7 +30,7 @@ export const updateRotation = degree => {
     output = 360 + degree;
     // console.log(output);
   }
-  if (degree > 259) {
+  if (degree > 359) {
     output = 0;
     // console.log(output);
   }
@@ -62,6 +63,19 @@ export const updateCropFullCenter = (newRatio, image) => {
       ...crop,
       aspect: newRatio[0] / newRatio[1]
     }
+  };
+};
+
+export const updateArtboardDimensions = (
+  artboardSize,
+  artboardPadding,
+  imageSize
+) => {
+  return {
+    type: UPDATE_ARTBOARD_DIMENSIONS,
+    artboardSize,
+    imageSize,
+    artboardPadding
   };
 };
 

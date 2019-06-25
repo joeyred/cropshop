@@ -7,45 +7,52 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+@import '../styles/_namespace';
 @import '../styles/foundation/_settings';
 
-.height-fill {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 158px);
-}
+:global(#{$global_namespace}) {
+  @import '../styles/foundation/_settings';
 
-.fill-remaining-height {
-  flex: 1;
-}
-
-.container {
-  height: calc(85vh - 36px);
-  max-height: 100vh;
-  background: $light-gray;
-
-  h1 {
-    margin-bottom: 0;
+  .height-fill {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 158px);
   }
-}
 
-.toolbar {
-  margin-top: 5px;
-  :global(.button-group) {
+  .fill-remaining-height {
+    flex: 1;
+  }
+
+  .container {
+    // height: calc(85vh - 36px);
+    // max-height: 100vh;
+    background: $light-gray;
+
+    h1 {
+      margin-bottom: 0;
+    }
+  }
+
+  .toolbar {
     margin-top: 5px;
+    :global(.button-group) {
+      margin-top: 5px;
+      :global(.button) {
+        font-size: 0.75rem;
+      }
+    }
     :global(.button) {
       font-size: 0.75rem;
-    }
-  }
-  :global(.button) {
-    font-size: 0.75rem;
 
-    svg {
-      height: 1.25rem;
-      width: 1.25rem;
+      svg {
+        height: 1.25rem;
+        width: 1.25rem;
+      }
+    }
+    .icon {
+      margin-bottom: 0.25rem;
     }
   }
-  .icon {
-    margin-bottom: 0.25rem;
+  .landscape {
   }
 }

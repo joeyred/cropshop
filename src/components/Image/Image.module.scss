@@ -8,26 +8,44 @@
  */
 
 @keyframes placeholderAnimate {
-    0%{ background-position: -650px 0; }
-    100%{ background-position: 650px 0; }
+  0% {
+    background-position: -650px 0;
+  }
+  100% {
+    background-position: 650px 0;
+  }
 }
 
-.container {
-  position: relative;
-  width: 100%;
-  height: auto;
-}
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
 
-.overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  animation-duration: 1.7s;
-  animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-name: placeholderAnimate;
-  background: #f6f7f8; // Fallback
-  background: linear-gradient(to right, #eee 2%, #ddd 18%, #eee 33%);
-  background-size: 1300px; // Animation Area
+:global(#{$global_namespace}) {
+  .container {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  .overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    animation-duration: 1.3s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-name: placeholderAnimate;
+    background: $light-gray; // Fallback
+    background: linear-gradient(
+      to right,
+      $light-gray 2%,
+      $medium-gray 22%,
+      $white 33%
+    );
+    background-size: 1300px; // Animation Area
+  }
 }

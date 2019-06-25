@@ -9,15 +9,10 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
-// import _ from 'lodash';
 import ReactCrop from 'react-image-crop';
+import Spinner from 'react-spinkit';
 
 import { calcCropFullCentered } from '../../utils/crop';
-// import { storeImageDimensions } from '../../redux/actions/editor';
-
-// import Cropper from 'react-cropper';
-
-// import 'cropperjs/dist/cropper.css';
 import styles from './ImageEditor.module.scss';
 
 class ImageEditor extends Component {
@@ -31,54 +26,103 @@ class ImageEditor extends Component {
   }
 
   onImageLoaded = image => {
-    const { aspectRatioArray, storeImageDimensions, updateCrop } = this.props;
+    const {
+      aspectRatioArray,
+      storeImageDimensions,
+      updateArtboardDimensions,
+      artboardDimensions,
+      artboardPadding,
+      imageDimensions,
+      updateCrop,
+      handleLoadingStatus
+    } = this.props;
     const propsToStore = {
       ref: image,
-      height: image.offsetHeight,
       width: image.offsetWidth,
-      naturalHeight: image.naturalHeight,
-      naturalWidth: image.naturalWidth
+      height: image.offsetHeight,
+      naturalWidth: image.naturalWidth,
+      naturalHeight: image.naturalHeight
     };
     // console.log(propsToStore);
+    // console.log(imageDimensions);
     const crop = calcCropFullCentered(
       aspectRatioArray[0],
       aspectRatioArray[1],
-      image.offsetWidth,
-      image.offsetHeight
+      imageDimensions.width,
+      imageDimensions.height
     );
     // console.log(crop);
+
     storeImageDimensions(propsToStore);
     updateCrop({
       ...crop,
       aspect: aspectRatioArray[0] / aspectRatioArray[1]
     });
+    updateArtboardDimensions(
+      artboardDimensions,
+      artboardPadding,
+      imageDimensions
+    );
+    handleLoadingStatus(false);
     // console.log('loaded image');
     // this.forceUpdate();
   };
 
   render() {
-    const { imageSrc, crop, updateCrop } = this.props;
-
+    const {
+      imageSrc,
+      imageDimensions,
+      height,
+      crop,
+      artboardDimensions,
+      artboardPadding,
+      updateCrop,
+      loadingStatus
+    } = this.props;
+    // const loadingStatus = true;
     return (
-      <div className={styles.container}>
-        <div className={styles.deadspace}>
+      <div className={styles.container} style={{ height: `${height}px` }}>
+        <div className={styles.deadspace} style={{ height: `${height}px` }}>
           <div
             className={styles.artboard}
-            // style={{
-            //   width: artboardDimensions.width,
-            //   height: artboardDimensions.height
-            // }}
+            style={{
+              width: artboardDimensions.width,
+              height: artboardDimensions.height,
+              padding: `${artboardPadding}px`
+            }}
             ref={this.artboardRef}
           >
+            {/* TODO Insert loading overlay */}
             <ReactCrop
               src={imageSrc}
-              // imageStyle={imageStyle}
+              style={{
+                height: `${imageDimensions.height}px`,
+                width: `${imageDimensions.width}px`
+              }}
+              imageStyle={{
+                height: `${imageDimensions.height}px`,
+                width: `${imageDimensions.width}px`
+              }}
               // crop={crop.width ? crop : tempCrop}
               crop={crop}
-              keepSelection
+              minHeight={30}
+              minWidth={30}
               onChange={updateCrop}
               onImageLoaded={this.onImageLoaded}
-            />
+              keepSelection
+            >
+              {loadingStatus && (
+                <div
+                  className={styles.overlay}
+                  style={{
+                    height: `${imageDimensions.height}px`,
+                    width: `${imageDimensions.width}px`
+                  }}
+                >
+                  <Spinner fadeIn='none' name='three-bounce' color='#f76e87' />
+                </div>
+              )}
+            </ReactCrop>
           </div>
         </div>
       </div>

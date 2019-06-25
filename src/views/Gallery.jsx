@@ -14,7 +14,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import {
-  TopBar,
   TopBarLeft,
   TopBarRight,
   Button,
@@ -27,6 +26,11 @@ import {
 
 import Icon from '../components/Icon';
 import CloseModal from '../components/CloseModal';
+import TopBar from '../components/TopBar';
+import ImageList from '../components/ImageList';
+import ContainerHeightUnits from '../components/ContainerHeightUnits';
+import TopBarTitle from '../components/TopBarTitle';
+
 import { Views } from '../globals';
 
 import * as ImageActionCreators from '../redux/actions/image';
@@ -36,8 +40,6 @@ import { doneEditing, addItemToCart } from '../redux/actions/cart';
 
 import imageHasBeenEdited from '../utils/imageHasBeenEdited';
 
-import ImageList from '../components/ImageList';
-
 import styles from './Gallery.module.scss';
 
 const mapStateToProps = state => ({
@@ -45,11 +47,21 @@ const mapStateToProps = state => ({
   frames: state.frame.frames,
   selectedCollectionId: state.frame.selectedCollectionId,
   isEditing: state.gallery.isEditing,
-  imageHasBeenEdited: state.gallery.imageHasBeenEdited
+  imageHasBeenEdited: state.gallery.imageHasBeenEdited,
+  availableHeight: state.size.availableHeight,
+  breakpoint: state.size.breakpoint
 });
 
 const Gallery = props => {
-  const { images, frames, selectedCollectionId, isEditing, dispatch } = props;
+  const {
+    images,
+    frames,
+    selectedCollectionId,
+    isEditing,
+    availableHeight,
+    breakpoint,
+    dispatch
+  } = props;
   // console.log(images);
   // Check if an image has been edited
   const imageHasBeenUploaded = images.allIds.length > 0;
@@ -90,10 +102,12 @@ const Gallery = props => {
           id: frames.byId[image.edit[selectedCollectionId].frameId].variantId,
           properties: {
             _filestack_handle: image.handle,
+            _filestack_img_url: image.edit[selectedCollectionId].previewSrc,
+            _collection_name: selectedCollectionId,
             _edit: JSON.stringify(
               image.edit[selectedCollectionId].transformations
             ),
-            image_src: image.edit[selectedCollectionId].previewSrc
+            filename: image.filename
           }
         };
       }
@@ -111,9 +125,40 @@ const Gallery = props => {
     xxlarge: 6
   };
 
+  const buttonBarHeight = {
+    sm: 4,
+    md: 4,
+    lg: 5,
+    xl: 5,
+    xxl: 5
+  };
+
+  const buttonSize = {
+    sm: 'small',
+    md: 'small',
+    lg: 'medium',
+    xl: 'large',
+    xxl: 'large'
+  };
+
+  const titleHeight = {
+    sm: 4,
+    md: 4,
+    lg: 8,
+    xl: 8,
+    xxl: 8
+  };
+
+  const imageListHeight =
+    100 - (titleHeight[breakpoint] + buttonBarHeight[breakpoint]);
+
   const AddToCart = (
     <Cell className='auto'>
-      <Button color={Colors.PRIMARY} size='small' onClick={() => addToCart()}>
+      <Button
+        color={Colors.PRIMARY}
+        size={buttonSize[breakpoint]}
+        onClick={() => addToCart()}
+      >
         <Icon name='AddShoppingCart' /> Add to Cart
       </Button>
     </Cell>
@@ -123,7 +168,7 @@ const Gallery = props => {
     <Cell className='auto'>
       <Button
         color={Colors.PRIMARY}
-        size='small'
+        size={buttonSize[breakpoint]}
         onClick={() => doneEditingClick()}
         isDisabled={!imageHasBeenEdited(images, selectedCollectionId)}
       >
@@ -136,7 +181,7 @@ const Gallery = props => {
     <Cell className='auto'>
       <Button
         color={Colors.SECONDARY}
-        size='small'
+        size={buttonSize[breakpoint]}
         onClick={() => updateEditMode(true)}
       >
         <Icon name='ModeEdit' /> Back to Editing
@@ -177,6 +222,8 @@ const Gallery = props => {
           >
             <Icon name='FileUpload' /> Upload More Images
           </Button>
+
+          <TopBarTitle />
         </TopBarLeft>
 
         <TopBarRight>
@@ -185,28 +232,53 @@ const Gallery = props => {
       </TopBar>
       {/* Main Gallery */}
       <GridContainer className={styles['content-container']}>
-        <Grid vertical className='grid-margin-y'>
-          <Cell small={12}>
-            <Grid vertical={false} className='align-center-middle text-center'>
-              {isEditing ? null : AddToCart}
-              {isEditing ? DoneEditing : null}
-              {isEditing ? null : BackToEditing}
-            </Grid>
+        <Grid
+          vertical
+          gutters='padding'
+          // className='grid-margin-y'
+          // style={{ height: `${availableHeight}px` }}
+        >
+          <Cell>
+            <ContainerHeightUnits
+              ch={buttonBarHeight[breakpoint]}
+              containerHeight={availableHeight}
+            >
+              <Grid
+                vertical={false}
+                className='align-center-middle text-center'
+              >
+                {isEditing ? null : AddToCart}
+                {isEditing ? DoneEditing : null}
+                {isEditing ? null : BackToEditing}
+              </Grid>
+            </ContainerHeightUnits>
           </Cell>
-          <Cell small={12}>
-            <h2>{headingText}</h2>
+
+          <Cell>
+            <ContainerHeightUnits
+              ch={titleHeight[breakpoint]}
+              containerHeight={availableHeight}
+            >
+              <h2>{headingText}</h2>
+            </ContainerHeightUnits>
           </Cell>
           <Cell>
-            <ImageList
-              images={images}
-              frames={frames}
-              selectedCollectionId={selectedCollectionId}
-              temsPerRow={responsiveItemsPerRow}
-              isEditing={isEditing}
-              handleClick={imageToEditor}
-              handleCountUpdate={updateQuantity}
-            />
-            {NoImagesCallout}
+            <ContainerHeightUnits
+              ch={imageListHeight}
+              containerHeight={availableHeight}
+              overflowY
+            >
+              <ImageList
+                images={images}
+                frames={frames}
+                selectedCollectionId={selectedCollectionId}
+                temsPerRow={responsiveItemsPerRow}
+                isEditing={isEditing}
+                handleClick={imageToEditor}
+                handleCountUpdate={updateQuantity}
+              />
+              {NoImagesCallout}
+            </ContainerHeightUnits>
           </Cell>
         </Grid>
       </GridContainer>

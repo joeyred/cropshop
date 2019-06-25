@@ -1,0 +1,43 @@
+$rc_namespace: 'ReactCrop';
+
+// SASS variables for normal drag handle and bar size.
+// Override in your scss file by setting these variables FIRST,
+// then including this file.
+$drag-handle-width: 19px !default;
+$drag-handle-height: 19px !default;
+$drag-bar-size: 6px !default;
+
+// Query to kick us into "mobile" mode with larger drag handles/bars.
+//  If you're supporting modern browsers, you can use "pointer: coarse",
+//  see: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer
+$mobile-media-query: '(max-width: 768px), (pointer: coarse)' !default;
+
+// Mobile handle/bar sizes.  Override as above.
+// $drag-handle-mobile-width: $drag-handle-width + 8 !default;
+// $drag-handle-mobile-height: $drag-handle-height + 8 !default;
+// $drag-bar-mobile-size: $drag-bar-size + 8 !default;
+
+$drag-handle_psuedo-dim: 20;
+$drag-handle_border-dim: 1;
+$drag-handle_padding: 10;
+
+// NOTE - width & height fallback
+// This dimension is used more as a fallback for
+// defining height and width of the handle
+$dh_full-dim: $drag-handle_psuedo-dim + ($drag-handle_padding * 2) +
+  ($drag-handle_border-dim * 2);
+
+// The actually visible part, rendered via psuedo element
+$dh_psuedo-dim: $drag-handle_psuedo-dim;
+
+// Padding is half the dim to force rendering
+$dh_psuedo-padding: $drag-handle_psuedo-dim / 2;
+
+// Margin is half the full dim, which includes border (border-box)
+$dh_margin: $dh_full-dim / 2;
+
+// Handle color/border.
+$drag-handle-background-colour: rgba(247, 110, 135, 0.2);
+$drag-handle-border: #{$drag-handle_border-dim}px solid rgba(255, 255, 255, 0.7);
+
+@import 'border-gif';

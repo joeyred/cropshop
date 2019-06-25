@@ -23,8 +23,6 @@ import AppHeight from './utils/onResize';
 import { fetchApiKey } from './redux/actions/filestack';
 import { externalsToState } from './redux/externalsToState';
 import { addFrame } from './redux/actions/frame';
-// import { fetchStorefrontToken, setStorefrontDomain } from './redux/storefront';
-// import { updateAppVisibility } from './redux/actions/nav';
 import { AppAtts } from './globals';
 
 // Components

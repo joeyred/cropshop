@@ -1,0 +1,13 @@
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
+
+:global(#{$global_namespace}) {
+  .container {
+    display: inline-block;
+    margin-left: 2rem;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+}

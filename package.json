@@ -6,7 +6,7 @@
   "liscense": "MIT",
   "repository": "https://github.com/joeyred/cropshop",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "classnames": "^2.2.6",
     "filestack-js": "^2.0.7",
     "foundation-sites": "^6.5.3",
@@ -20,17 +20,21 @@
     "react-icons": "^3.6.1",
     "react-image-crop": "^7.0.1",
     "react-redux": "^7.0.2",
+    "react-responsive": "^7.0.0",
     "react-scripts": "2.1.8",
     "react-sizeme": "^2.6.7",
     "react-spinkit": "^3.0.0",
     "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "uniqid": "^5.0.3"
   },
   "scripts": {
     "start": "PORT=8000 react-scripts start",
-    "no-data": "PORT=8000 NODE_ENV=nodata react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build && npm run build-rename",
+    "build-rename": "npm run build-rename-js && npm run build-rename-css",
+    "build-rename-js": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"cropshop_main.\" build\\static\\js\\*",
+    "build-rename-css": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"cropshop_main.\" build\\static\\css\\*",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
@@ -59,6 +63,8 @@
     "node-sass": "^4.12.0",
     "prettier": "^1.17.1",
     "prettier-eslint": "^8.8.2",
+    "renamer": "^1.1.2",
+    "replace-in-file": "^4.1.0",
     "require-dot-file": "^0.4.0"
   }
 }

@@ -7,33 +7,38 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-.block {
-  display: block;
-}
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
 
-.inline-block {
-  display: inline-block;
-  line-height: 1;
-  vertical-align: middle;
-  svg {
+:global(#{$global_namespace}) {
+  .block {
     display: block;
   }
-}
 
-.rotate-90 {
-  svg {
-    transform: rotate(90deg);
+  .inline-block {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+    svg {
+      display: block;
+    }
   }
-}
 
-.rotate-180 {
-  svg {
-    transform: rotate(180deg);
+  .rotate-90 {
+    svg {
+      transform: rotate(90deg);
+    }
   }
-}
 
-.rotate-270 {
-  svg {
-    transform: rotate(270deg);
+  .rotate-180 {
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  .rotate-270 {
+    svg {
+      transform: rotate(270deg);
+    }
   }
 }

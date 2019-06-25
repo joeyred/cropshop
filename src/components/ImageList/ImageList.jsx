@@ -13,7 +13,6 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import { Grid, Cell } from 'react-foundation';
 
-// import UploadThumbnail from '../UploadThumbnail';
 import Product from '../Product';
 import Counter from '../Counter';
 

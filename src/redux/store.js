@@ -1,5 +1,15 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import NavReducer from './reducers/nav';
 import GalleryReducer from './reducers/gallery';
 import EditorReducer from './reducers/editor';
@@ -8,35 +18,23 @@ import FrameReducer from './reducers/frame';
 import FilestackReducer from './reducers/filestack';
 import CartReducer from './reducers/cart';
 import { ExternalsReducer } from './externalsToState';
-// import { StorefrontReducer } from './storefront';
 import { SizeReducer } from './size';
-
-// function filestack(state = { apiKey: 'AkrGfLiFXRI6s2gfwYnvBz' }, action) {
-//   switch (action.type) {
-//     case 'UPDATE_API_KEY': {
-//       const { apiKey } = action;
-//       return { apiKey };
-//     }
-//     default: {
-//       return state;
-//     }
-//   }
-// }
 
 const rootReducer = combineReducers({
   nav: NavReducer,
-  // edit:    EditReducer,
   editor: EditorReducer,
   gallery: GalleryReducer,
   image: ImageReducer,
   frame: FrameReducer,
   filestack: FilestackReducer,
   external: ExternalsReducer,
-  // storefront: StorefrontReducer,
   cart: CartReducer,
   size: SizeReducer
 });
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 export default store;

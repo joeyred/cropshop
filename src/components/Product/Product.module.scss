@@ -7,37 +7,41 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
 @import '../../styles/theme';
 
-.container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  box-shadow: $global_box-shadow;
-  // padding: 1rem;
-}
-
-.label {
-  position: absolute;
-  margin-right: -6px;
-  margin-top: 12px;
-  top: 0;
-  right: 0;
-  z-index: 10;
-  box-shadow: $global_box-shadow;
-  font-family: $label_font-family;
-  letter-spacing: 1px;
-  font-weight: 400;
-  text-transform: uppercase;
-  span:global(.label) {
-    // Fix the weird inline-block margin issue.
-    display: block;
+:global(#{$global_namespace}) {
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-shadow: $global_box-shadow;
+    // padding: 1rem;
   }
-}
 
-.image {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0;
+  .label {
+    position: absolute;
+    margin-right: -6px;
+    margin-top: 12px;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    box-shadow: $global_box-shadow;
+    font-family: $label_font-family;
+    letter-spacing: 1px;
+    font-weight: 400;
+    text-transform: uppercase;
+    span:global(.label) {
+      // Fix the weird inline-block margin issue.
+      display: block;
+    }
+  }
+
+  .image {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
 }

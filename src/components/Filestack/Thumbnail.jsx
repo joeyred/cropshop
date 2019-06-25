@@ -33,7 +33,7 @@ const Thumbnail = props => {
 
   const squareThumbnail = new Filelink(handle, apiKey);
   const pureSrc = squareThumbnail.toString();
-  console.log(pureSrc);
+  // console.log(pureSrc);
   const src = square
     ? squareThumbnail
         .resize({

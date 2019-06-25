@@ -30,8 +30,8 @@ export const addFrame = frame => {
   const { id, price, collections, variants, customFields } = frame;
   const formatedPrice = price / 100;
   const fields = JSON.parse(customFields);
-  const width = parseInt(fields.tile.width, 10);
-  const height = parseInt(fields.tile.height, 10);
+  const width = parseInt(fields.display.width, 10);
+  const height = parseInt(fields.display.height, 10);
   return {
     type: ADD_FRAME,
     payload: {

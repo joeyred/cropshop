@@ -77,7 +77,7 @@ export const addItemToCart = items => {
 
     axios
       .post(AppAtts.CART_URL, items[index])
-      .then(response => {
+      .then(() => {
         // console.log(response.data);
         dispatch(success());
       })

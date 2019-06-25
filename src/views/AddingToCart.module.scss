@@ -7,17 +7,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-.wrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-}
+@import '../styles/_namespace';
+@import '../styles/foundation/_settings';
 
-.container {
-  flex: 0 1 auto;
-  width: 100%;
-  height: auto;
+:global(#{$global_namespace}) {
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container {
+    flex: 0 1 auto;
+    width: 100%;
+    height: auto;
+  }
 }

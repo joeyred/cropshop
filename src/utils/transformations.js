@@ -28,6 +28,8 @@ export function getScale(natural, rendered, zoom) {
 
 export const scaleCrop = ({ imageProps, zoom = false, crop }) => {
   const { naturalWidth, naturalHeight, width, height } = imageProps;
+  // console.log(imageProps);
+
   const scaleX = getScale(naturalWidth, width, zoom);
   const scaleY = getScale(naturalHeight, height, zoom);
   const newCrop = {};
@@ -38,11 +40,13 @@ export const scaleCrop = ({ imageProps, zoom = false, crop }) => {
     newCrop.width = crop.width * scaleX;
     newCrop.height = crop.height * scaleY;
   }
+  // console.log(newCrop);
   return newCrop;
 };
 
 export const generateTransform = (linkedImage, edit) => {
   const { flip, flop, rotate = 0, crop = false } = edit;
+  linkedImage.rotate({ deg: 'exif' });
 
   // Handle flip
   if (flip) {
@@ -65,6 +69,7 @@ export const generateTransform = (linkedImage, edit) => {
       ]
     });
   }
+
   return {
     transformArray: linkedImage,
     url: linkedImage.toString()

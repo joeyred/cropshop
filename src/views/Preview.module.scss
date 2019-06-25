@@ -7,29 +7,36 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-@import '../styles/theme';
+@import '../styles/_namespace';
+@import '../styles/foundation/_settings';
 
-.container {
-  padding: 2rem 1rem;
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  h1 {
-    margin-bottom: 3rem;
+:global(#{$global_namespace}) {
+  @import '../styles/theme';
+
+  .container {
+    padding: 2rem 1rem;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    h1 {
+      margin-bottom: 2rem;
+    }
   }
-}
 
-.preview {
-  margin-bottom: 3rem;
-  text-align: center;
-  padding: 0 3rem;
-  img {
-    box-shadow: $global_box-shadow;
-    display: block;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 300px;
-    height: auto;
+  .preview {
+    margin-bottom: 2rem;
+    text-align: center;
+    height: 55vh;
+    padding: 0;
+    img {
+      box-shadow: $global_box-shadow;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      width: 100%;
+      // max-width: 300px;
+      height: auto;
+    }
   }
 }

@@ -20,7 +20,14 @@
  */
 export function aspectRatioFill(srcWidth, srcHeight, maxWidth, maxHeight) {
   const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-
+  // const output = {
+  //   width: srcWidth * ratio,
+  //   height: srcHeight * ratio
+  // };
+  // return {
+  //   width: parseFloat(output.width.toFixed(0)),
+  //   height: parseFloat(output.height.toFixed(0))
+  // };
   return {
     width: srcWidth * ratio,
     height: srcHeight * ratio
@@ -69,6 +76,6 @@ export function calcCropFullCentered(
     width: dimensions.width,
     height: dimensions.height,
     x: getPosition(artboardWidth, dimensions.width),
-    y: getPosition(artboardHeight, dimensions.height),
+    y: getPosition(artboardHeight, dimensions.height)
   };
 }

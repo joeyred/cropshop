@@ -25,14 +25,14 @@ const cookieName = 'cropshop_images';
 // import imgMock from '../../imgs/IMG_0408.jpg';
 const cookie = Cookies.getJSON(cookieName);
 // console.log(cookie);
-// const images = cookie || {
-//   byId: {},
-//   allIds: []
-// };
-const images = {
+const images = cookie || {
   byId: {},
   allIds: []
 };
+// const images = {
+//   byId: {},
+//   allIds: []
+// };
 const initialState = {
   images
 };
@@ -63,6 +63,7 @@ export default function Image(state = initialState, action) {
         allIds: [...state.images.allIds, id]
       };
       Cookies.set(cookieName, newImagesState);
+      // console.log(newImagesState);
       return {
         ...state,
         images: newImagesState
@@ -84,6 +85,7 @@ export default function Image(state = initialState, action) {
         allIds: [...state.images.allIds]
       };
       Cookies.set(cookieName, newImagesState);
+      // console.log(newImagesState);
       return {
         ...state,
         images: newImagesState

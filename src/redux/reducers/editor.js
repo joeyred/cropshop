@@ -13,6 +13,7 @@ import {
   UPDATE_CROP,
   UPDATE_ZOOM,
   STORE_IMAGE_DIMENSIONS,
+  UPDATE_ARTBOARD_DIMENSIONS,
   UPDATE_CROP_FULL_CENTERED
 } from '../actiontypes/editor';
 
@@ -28,6 +29,15 @@ const initialState = {
     width: 0,
     x: 0,
     y: 0
+  },
+  artboardPadding: 0,
+  artboardSize: {
+    width: 0,
+    height: 0
+  },
+  imageSize: {
+    width: 0,
+    height: 0
   },
   imageProps: {
     ref: null,
@@ -78,6 +88,15 @@ export default function Editor(state = initialState, action) {
         crop: {
           ...action.crop
         }
+      };
+    }
+    case UPDATE_ARTBOARD_DIMENSIONS: {
+      const { artboardSize, artboardPadding, imageSize } = action;
+      return {
+        ...state,
+        artboardPadding,
+        artboardSize,
+        imageSize
       };
     }
     case STORE_IMAGE_DIMENSIONS: {

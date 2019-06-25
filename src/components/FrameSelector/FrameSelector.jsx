@@ -44,8 +44,6 @@ const FrameSelector = props => {
     imageProps,
     dispatch
   } = props;
-  // console.log(frames);
-  // console.log(selectedCollectionId);
 
   const handleClick = id => {
     const aspect = frames.byId[id].dimensions;
@@ -66,9 +64,7 @@ const FrameSelector = props => {
         if (collection.handle === selectedCollectionId) {
           isInCollection = true;
         }
-        // console.log(isInCollection);
       });
-      // console.log(isInCollection);
 
       if (isInCollection) {
         return frame;
@@ -79,24 +75,14 @@ const FrameSelector = props => {
   // TODO This needs to be able to handle mobile better
   const cellsPerRow = filteredFrames.length < 6 ? filteredFrames.length : 5;
   const sortedFrames = _.sortBy(filteredFrames, [
-    // 'width',
-    // 'height'
     object => {
-      // const ar =
-      //   object.width < object.height
-      //     ? object.height / object.width
-      //     : object.width / object.height;
-      // console.log(ar);
       return object.width < object.height
         ? object.height / object.width
         : object.width / object.height;
     },
     'height'
-    // object => {
-    //   return object.dimensions[0];
-    // }
   ]);
-  // console.log(sortedFrames);
+
   return (
     <div className={styles.container}>
       <Grid
@@ -106,12 +92,12 @@ const FrameSelector = props => {
         {_.map(sortedFrames, frame => {
           if (tempFrame === null) {
             tempFrame = frame.id;
-            console.log(frame.id);
+            // console.log(frame.id);
             dispatch(updateSelectedFrame(frame.id));
           }
           const active = frame.id === tempFrame;
           return (
-            <Cell key={frame.id}>
+            <Cell key={frame.id} className='align-center-middle text-center'>
               <button
                 type='button'
                 className={`${active ? styles.active : null} ${styles.button}`}

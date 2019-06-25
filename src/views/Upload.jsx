@@ -12,11 +12,11 @@ import PropTypes from 'prop-types'; // eslint-disable-line
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // import { filter } from 'lodash';
-import sizeMe from 'react-sizeme';
+// import sizeMe from 'react-sizeme';
 import {
   // Grid,
   // Cell,
-  TopBar,
+  // TopBar,
   TopBarLeft,
   TopBarRight,
   Button,
@@ -28,16 +28,16 @@ import { Views } from '../globals';
 import Icon from '../components/Icon';
 import CloseModal from '../components/CloseModal';
 import Filestack from '../components/Filestack';
+import TopBar from '../components/TopBar';
 
 import * as ImageActionCreators from '../redux/actions/image';
 import * as NavActionCreators from '../redux/actions/nav';
 
-const SizeAwareTopBar = sizeMe({ monitorHeight: true })(TopBar);
-
 const mapStateToProps = state => ({
   apiKey: state.filestack.key,
   images: state.image.images,
-  appSize: state.size.app
+  appSize: state.size.app,
+  availableHeight: state.size.availableHeight
 });
 
 class Upload extends Component {
@@ -45,35 +45,36 @@ class Upload extends Component {
     apiKey: PropTypes.string.isRequired
   };
 
-  state = {
-    containerHeight: 100
-  };
-
-  onSuccess = res => {
+  onSuccess = () => {
     const { dispatch } = this.props;
-    const updateView = bindActionCreators(
-      NavActionCreators.updateView,
-      dispatch
-    );
     // console.log(res);
-    updateView(Views.GALLERY);
+    dispatch(NavActionCreators.updateView(Views.GALLERY));
   };
 
-  setUploadContainerHeight = size => {
-    const { appSize } = this.props;
-    // console.log(size.height, appSize.height);
-
-    const containerHeight = appSize.height - size.height;
-
-    this.setState({ containerHeight });
-  };
+  // addImage = image => {
+  //   const { handle } = image;
+  //   const { dispatch } = this.props;
+  //
+  //   axios
+  //     .get(`https://cdn.filestackcontent.com/imagesize/${handle}`)
+  //     .then(response => {
+  //       // console.log(response);
+  //       const { height, width } = response.data;
+  //       const payload = { ...image, height, width };
+  //       console.log(payload);
+  //       dispatch(ImageActionCreators.addImage(payload));
+  //     })
+  //     .catch(error => console.log(error));
+  // };
 
   render() {
-    const { apiKey, images, dispatch } = this.props;
-    const { containerHeight } = this.state;
+    const { apiKey, images, availableHeight, dispatch } = this.props;
     // console.log(apiKey);
     const imageHasBeenUploaded = images.allIds.length > 0;
-    const addImage = bindActionCreators(ImageActionCreators.addImage, dispatch);
+    const asyncLoadImage = bindActionCreators(
+      ImageActionCreators.asyncLoadImage,
+      dispatch
+    );
     const updateView = bindActionCreators(
       NavActionCreators.updateView,
       dispatch
@@ -111,9 +112,9 @@ class Upload extends Component {
     return (
       <React.Fragment>
         {/* Top Bar */}
-        <SizeAwareTopBar
+        <TopBar
           style={{ zIndex: '99999999999999' }}
-          onSize={this.setUploadContainerHeight}
+          // onSize={this.setUploadContainerHeight}
         >
           <TopBarLeft>
             {/* <div className='text-center'>
@@ -124,14 +125,14 @@ class Upload extends Component {
           <TopBarRight>
             <CloseModal />
           </TopBarRight>
-        </SizeAwareTopBar>
+        </TopBar>
 
         <Filestack.Upload
           apiKey={apiKey}
           options={options}
-          onFileUploadSuccess={addImage}
+          onFileUploadSuccess={asyncLoadImage}
           onSuccess={this.onSuccess}
-          height={containerHeight}
+          height={availableHeight}
         />
       </React.Fragment>
     );
