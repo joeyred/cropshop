@@ -15,11 +15,6 @@ import * as filestack from 'filestack-js';
 
 import styles from './FilestackUpload.module.scss';
 
-// NOTE
-// Might need to lift state up to a Redux store.
-//
-// This will occure if the client instance must be used by multiple filestack components
-
 class Upload extends Component {
   static defaultProps = {
     onFileUploadSuccess: result => console.log(result),

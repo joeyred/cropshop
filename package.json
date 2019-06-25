@@ -27,10 +27,12 @@
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
+    "source-map-explorer": "^2.0.1",
     "uniqid": "^5.0.3"
   },
   "scripts": {
     "start": "PORT=8000 react-scripts start",
+    "analyze": "react-scripts build && source-map-explorer 'build/static/js/*.js'",
     "build": "GENERATE_SOURCEMAP=false react-scripts build && npm run build-rename",
     "build-rename": "npm run build-rename-main-js && npm run build-rename-vendor-js && npm run build-rename-main-css && npm run build-rename-vendor-css",
     "build-rename-main-js": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"cropshop_main_scripts.\" build/static/js/*",

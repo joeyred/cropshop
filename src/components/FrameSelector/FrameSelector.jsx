@@ -12,7 +12,10 @@ import React from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+// import { compact, map, sortBy } from 'lodash';
+import compact from 'lodash/compact';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 // 3rd Party Components
 import {
   Grid,
@@ -55,11 +58,11 @@ const FrameSelector = props => {
   let tempFrame = selectedFrameId;
 
   // Get the IDs for the frames to display
-  const filteredFrames = _.compact(
-    _.map(frames.allIds, id => {
+  const filteredFrames = compact(
+    map(frames.allIds, id => {
       let isInCollection = false;
       const frame = frames.byId[id];
-      _.map(frame.collections, collection => {
+      map(frame.collections, collection => {
         // console.log(collection.handle);
         if (collection.handle === selectedCollectionId) {
           isInCollection = true;
@@ -74,7 +77,7 @@ const FrameSelector = props => {
   );
   // TODO This needs to be able to handle mobile better
   const cellsPerRow = filteredFrames.length < 6 ? filteredFrames.length : 5;
-  const sortedFrames = _.sortBy(filteredFrames, [
+  const sortedFrames = sortBy(filteredFrames, [
     object => {
       return object.width < object.height
         ? object.height / object.width
@@ -89,7 +92,7 @@ const FrameSelector = props => {
         vertical={direction === 'vertical'}
         className={`small-up-${cellsPerRow}`}
       >
-        {_.map(sortedFrames, frame => {
+        {map(sortedFrames, frame => {
           if (tempFrame === null) {
             tempFrame = frame.id;
             // console.log(frame.id);

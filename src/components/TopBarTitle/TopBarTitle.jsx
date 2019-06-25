@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { replace } from 'lodash';
+import replace from 'lodash/replace';
 
 import styles from './TopBarTitle.module.scss';
 

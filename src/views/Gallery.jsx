@@ -11,7 +11,10 @@ import React from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+// import { compact, map, indexOf } from 'lodash';
+import compact from 'lodash/compact';
+import map from 'lodash/map';
+import indexOf from 'lodash/indexOf';
 
 import {
   TopBarLeft,
@@ -82,7 +85,7 @@ const Gallery = props => {
   const updateView = bindActionCreators(NavActionCreators.updateView, dispatch);
 
   const imageToEditor = id => {
-    if (_.indexOf(images.allIds, id) !== -1) {
+    if (indexOf(images.allIds, id) !== -1) {
       setImageInEditor(id);
       updateView(Views.EDIT);
     }
@@ -94,7 +97,7 @@ const Gallery = props => {
   };
 
   const addToCart = () => {
-    const items = _.map(images.allIds, id => {
+    const items = map(images.allIds, id => {
       const image = images.byId[id];
       if (image.edited && image.quantity > 0) {
         return {
@@ -113,7 +116,7 @@ const Gallery = props => {
       }
       return null;
     });
-    dispatch(addItemToCart(_.compact(items)));
+    dispatch(addItemToCart(compact(items)));
     dispatch(updateView(Views.ADDING_TO_CART));
   };
 

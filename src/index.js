@@ -13,7 +13,7 @@ import ReactDOM from 'react-dom';
 // Redux
 import { Provider } from 'react-redux';
 import uniqid from 'uniqid';
-import _ from 'lodash';
+import map from 'lodash/map';
 
 import store from './redux/store';
 
@@ -67,7 +67,7 @@ store.dispatch(
 store.dispatch(fetchApiKey(siteData.shop.domain));
 // store.dispatch(fetchStorefrontToken(storeDomain));
 
-_.map(siteData.products, product => {
+map(siteData.products, product => {
   store.dispatch(addFrame(product));
 });
 
