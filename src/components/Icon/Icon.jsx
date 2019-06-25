@@ -8,25 +8,62 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; //eslint-disable-line
 
 import classnames from 'classnames';
-import * as MdIcons from 'react-icons/md';
+import {
+  MdFlip,
+  MdRotateRight,
+  MdRotateLeft,
+  MdZoomIn,
+  MdZoomOut,
+  MdApps,
+  MdPhonelinkLock,
+  MdDone,
+  MdRemove,
+  MdAdd,
+  MdAddShoppingCart,
+  MdArrowForward,
+  MdModeEdit,
+  MdFileUpload
+} from 'react-icons/md';
 
 import styles from './Icon.module.scss';
+
+const MdIcons = {
+  MdFlip,
+  MdRotateRight,
+  MdRotateLeft,
+  MdZoomIn,
+  MdZoomOut,
+  MdApps,
+  MdPhonelinkLock,
+  MdDone,
+  MdRemove,
+  MdAdd,
+  MdAddShoppingCart,
+  MdArrowForward,
+  MdModeEdit,
+  MdFileUpload
+};
 
 const Icon = props => {
   const { name, inline, rotate, className } = props;
   const Element = MdIcons[`Md${name}`];
-  // const icon = `Md${name}`;
-  //
-  // const { icon: Element} = require(`react-icons/md`);
 
   const css = classnames(
     rotate !== 0 ? styles[`rotate-${rotate}`] : null,
     inline ? styles['inline-block'] : styles.block,
     className
   );
+
+  if (!Element) {
+    return (
+      <div style={{ background: 'red', color: 'white' }}>
+        Error: Icon Not Found
+      </div>
+    );
+  }
 
   return (
     <span className={css}>
@@ -43,7 +80,22 @@ Icon.defaultProps = {
 Icon.propTypes = {
   rotate: PropTypes.number,
   inline: PropTypes.bool,
-  name: PropTypes.string.isRequired
+  name: PropTypes.oneOf([
+    'Flip',
+    'RotateRight',
+    'RotateLeft',
+    'ZoomIn',
+    'ZoomOut',
+    'Apps',
+    'PhonelinkLock',
+    'Done',
+    'Remove',
+    'Add',
+    'AddShoppingCart',
+    'ArrowForward',
+    'ModeEdit',
+    'FileUpload'
+  ]).isRequired
 };
 
 export default Icon;
