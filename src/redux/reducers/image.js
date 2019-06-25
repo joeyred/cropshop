@@ -8,7 +8,9 @@
  */
 
 import Cookies from 'js-cookie';
-import _ from 'lodash';
+// import { indexOf, omit } from 'lodash';
+import indexOf from 'lodash/indexOf';
+import omit from 'lodash/omit';
 import {
   ADD_IMAGE,
   IMAGE_SIZE,
@@ -92,12 +94,12 @@ export default function Image(state = initialState, action) {
       };
     }
     case REMOVE_IMAGE: {
-      const RemoveImageIndex = _.indexOf(state.images.allIds, action.id);
+      const RemoveImageIndex = indexOf(state.images.allIds, action.id);
       const newList = [
         ...state.images.slice(0, RemoveImageIndex),
         ...state.images.slice(RemoveImageIndex + 1)
       ];
-      const newImagesById = _.omit(state.images.byId, action.id);
+      const newImagesById = omit(state.images.byId, action.id);
       return {
         ...state,
         images: {

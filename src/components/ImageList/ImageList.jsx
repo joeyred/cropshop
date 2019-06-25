@@ -10,7 +10,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
 import classnames from 'classnames';
-import _ from 'lodash';
+import map from 'lodash/map';
 import { Grid, Cell } from 'react-foundation';
 
 import Product from '../Product';
@@ -46,7 +46,7 @@ const ImageList = props => {
     className
   );
 
-  const thumbnails = _.map(images.allIds, id => {
+  const thumbnails = map(images.allIds, id => {
     const image = images.byId[id];
     // console.log(image.edited[selectedCollectionId]);
     if (isEditing) {
