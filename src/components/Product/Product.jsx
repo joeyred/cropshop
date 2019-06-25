@@ -15,11 +15,12 @@ import { Label, Colors } from 'react-foundation';
 // import Thumbnail from '../Thumbnail';
 import Filestack from '../Filestack';
 import Icon from '../Icon';
+import Image from '../Image';
 
 import styles from './Product.module.scss';
 
 const Product = props => {
-  const { handle, handleClick, isEdited, mode, frame } = props;
+  const { handle, handleClick, isEdited, mode, frame, previewSrc } = props;
   // console.log('Frame for this Product:\n', frame);
   const style = props.style ? props.style : null;
   const containerClasses = classnames(
@@ -47,7 +48,8 @@ const Product = props => {
   );
   const cartModeOutput = (
     <div className={containerClasses} style={style}>
-      <Filestack.Thumbnail handle={handle} square={false} />
+      {/* <Filestack.Thumbnail handle={handle} square={false} /> */}
+      <Image src={previewSrc} alt='Preview' className={styles.image} />
       <div className={styles.label}>
         <Label color={Colors.SECONDARY}>
           {`${frame.width} x ${frame.height}`}
@@ -62,16 +64,16 @@ const Product = props => {
 Product.defaultProps = {
   mode: 'edit',
   isEdited: false,
-  frame: { width: 0, height: 0 }
+  frame: { width: 0, height: 0 },
+  previewSrc: ''
 };
 
 Product.propTypes = {
   /**
    * Filestack Handle
    * @type {String}
-   * @required
    */
-  handle: PropTypes.string.isRequired,
+  handle: PropTypes.string,
   /**
    * The current view mode
    * @type {String} - accepts `edit` or `cart`.

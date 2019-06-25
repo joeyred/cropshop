@@ -75,7 +75,7 @@ const ImageList = props => {
           style={{ textAlign: 'center', marginBottom: '1rem' }}
         >
           <Product
-            handle={image.handle}
+            previewSrc={image.edit[selectedCollectionId].previewSrc}
             isEdited={!!image.edited[selectedCollectionId]}
             mode='cart'
             frame={{ width, height }}

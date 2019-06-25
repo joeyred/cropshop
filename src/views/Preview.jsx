@@ -140,13 +140,15 @@ const Preview = props => {
           //   size.height
           // );
           const imgStyle = {};
-          if (height > width) {
-            imgStyle.height = `${size.height}px`;
-            imgStyle.width = 'auto';
-          } else {
-            imgStyle.width = `${size.width}px`;
-            imgStyle.height = 'auto';
-          }
+
+          imgStyle.maxHeight = `${size.height}px`;
+          // if (height > width) {
+          //   imgStyle.height = `${size.height}px`;
+          //   imgStyle.width = 'auto';
+          // } else {
+          //   imgStyle.width = `${size.width}px`;
+          //   imgStyle.height = 'auto';
+          // }
           // console.log('RENDER THAT SIZE');
           // console.log(renderedSize);
           return (

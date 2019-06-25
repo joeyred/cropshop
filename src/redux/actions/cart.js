@@ -48,11 +48,11 @@ const failure = (error, previousItemsErrored) => ({
   itemsErrored: previousItemsErrored + 1
 });
 
-const next = (items, previousItemIndex, addItemToCart, dispatch) => {
+const next = (items, addItemToCart, dispatch) => {
   dispatch(addItemToCart(items));
   return {
     type: ADD_ITEM_FINALLY,
-    currentItemIndex: previousItemIndex + 1
+    currentItemIndex: index
   };
 };
 

@@ -29,18 +29,26 @@ class Image extends Component {
 
   render() {
     const { loading } = this.state;
-    const { src, alt, style } = this.props;
+    const { src, alt, style, className } = this.props;
+    const atts = {};
     // const loading = true;
 
     const loadingOverlay = loading ? <div className={styles.overlay} /> : null;
+
+    if (style) {
+      atts.style = style;
+    }
+    if (className) {
+      atts.className = className;
+    }
 
     return (
       <div className={styles.container}>
         <img
           src={src}
           alt={alt}
-          style={style}
           onLoad={() => this.setState({ loading: false })}
+          {...atts}
         />
         {loadingOverlay}
       </div>

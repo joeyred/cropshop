@@ -7,6 +7,7 @@ import { activeBreakpoint } from './utils/breakpoints';
 import { Breakpoints } from './globals';
 
 import Icon from './components/Icon';
+import ErrorBoundary from './components/ErrorBoundary';
 
 import './styles/_modal.scss';
 import './styles/foundation/main.scss';
@@ -85,8 +86,10 @@ class App extends Component {
 
     return (
       <div className={styles.App} style={style}>
-        {showWarning && warning}
-        <View currentView={currentView} onSize={this.onSize} />;
+        <ErrorBoundary>
+          {showWarning && warning}
+          <View currentView={currentView} onSize={this.onSize} />;
+        </ErrorBoundary>
       </div>
     );
   }

@@ -136,7 +136,7 @@ const Gallery = props => {
   const buttonSize = {
     sm: 'small',
     md: 'small',
-    lg: 'medium',
+    lg: 'large',
     xl: 'large',
     xxl: 'large'
   };

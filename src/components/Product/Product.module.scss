@@ -40,8 +40,14 @@
 
   .image {
     display: block;
+    object-fit: contain;
+
     width: 100%;
     height: auto;
+    max-height: 115px;
+    @include breakpoint(large) {
+      max-height: 226px;
+    }
     margin: 0;
   }
 }
