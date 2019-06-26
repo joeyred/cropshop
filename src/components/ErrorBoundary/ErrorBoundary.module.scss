@@ -14,9 +14,45 @@
   @import '../../styles/theme';
 
   .container {
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
     background: $white;
+    height: 100vh;
+    padding: 1rem;
+
     h1 {
       color: $alert-color;
+      margin-bottom: 2rem;
+      font-size: 1.25rem;
+    }
+    p {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .closeModal {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .button {
+    background: transparent;
+    border: 0;
+    padding: 0.625rem;
+
+    &::before {
+      content: '\2715';
+      display: block;
+      height: 16px;
+      width: 16px;
+      line-height: 1;
+      color: $dark-gray;
+      fonmt-size: 16px;
     }
   }
 }

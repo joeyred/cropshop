@@ -13,15 +13,18 @@ import './styles/_modal.scss';
 import './styles/foundation/main.scss';
 import styles from './App.module.scss';
 
-const mapStateToProps = state => ({
-  currentView: state.nav.currentView,
-  images: state.image.images,
-  selectedCollectionId: state.frame.selectedCollectionId,
-  currentBreakpoint: state.size.breakpoint,
-  appHeight: state.size.app.height,
-  appWidth: state.size.app.width,
-  isPortrait: state.size.app.isPortrait
-});
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    currentView: state.nav.currentView,
+    images: state.image.images,
+    selectedCollectionId: state.frame.selectedCollectionId,
+    currentBreakpoint: state.size.breakpoint,
+    appHeight: state.size.app.height,
+    appWidth: state.size.app.width,
+    isPortrait: state.size.app.isPortrait
+  };
+};
 
 class App extends Component {
   state = {
@@ -57,6 +60,7 @@ class App extends Component {
 
   render() {
     const { currentView, appHeight, appWidth } = this.props;
+    console.log(currentView);
     const { showWarning } = this.state;
     const style = {};
     const warningStyle = {
