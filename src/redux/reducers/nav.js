@@ -29,7 +29,6 @@ const initialState = {
 export default function Nav(state = initialState, action) {
   switch (action.type) {
     case UPDATE_VIEW: {
-      console.log(state);
       return {
         ...state,
         previousView: state.currentView,

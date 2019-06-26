@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Colors } from 'react-foundation';
 import { updateView } from '../../redux/actions/nav';
-import { Views, AppAtts } from '../../globals';
+import { AppAtts } from '../../globals';
 import { closeModal } from '../../utils/CropShopButton';
 
 import styles from './ErrorBoundary.module.scss';
@@ -14,9 +14,9 @@ const mapStateToProps = state => ({
 
 class ErrorBoundary extends Component {
   state = {
-    hasError: false,
-    error: null,
-    info: null
+    hasError: false
+    // error: null,
+    // info: null
   };
 
   static getDerivedStateFromError(error, info) {
@@ -26,7 +26,7 @@ class ErrorBoundary extends Component {
 
   handleGoBack = () => {
     const { currentView, previousView, dispatch } = this.props;
-    console.log('From Boundary\n', currentView, previousView);
+    // console.log('From Boundary\n', currentView, previousView);
     this.setState({ hasError: false });
 
     if (previousView) {
