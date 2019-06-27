@@ -36,16 +36,21 @@ class App extends Component {
       appWidth,
       isPortrait
     } = this.props;
+
+    // Handle setting current breakpoint
     const breakpoint = activeBreakpoint(Breakpoints);
     if (breakpoint !== currentBreakpoint) {
       dispatch(setBreakpoint(breakpoint));
     }
+
+    // Set orientation
     if (appHeight > appWidth && !isPortrait) {
       dispatch(setOrientation(true));
     }
     if (appHeight < appWidth && isPortrait) {
       dispatch(setOrientation(false));
     }
+
     // eslint-disable-next-line
     if (this.state.showWarning && appHeight > appWidth) {
       this.setState({ showWarning: false });

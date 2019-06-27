@@ -12,14 +12,15 @@ import { updateAppSize } from '../redux/size';
 
 class ViewportHeight {
   constructor() {
-    this.windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    this.windowHeight =
+      window.innerHeight || document.documentElement.clientHeight;
     this.rvh = 1;
   }
 
   init() {
     this.addResizeListener();
     const height = this.windowHeight * this.rvh;
-    store.dispatch(updateAppSize({height}));
+    store.dispatch(updateAppSize({ height }));
   }
 
   updateAppVh(vh) {
@@ -29,25 +30,26 @@ class ViewportHeight {
   }
 
   updateAppHeight = () => {
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const windowHeight =
+      window.innerHeight || document.documentElement.clientHeight;
     if (this.windowHeight !== windowHeight) {
       // console.log(windowHeight);
       // console.log(this.rvh);
       const height = windowHeight * this.rvh;
       // console.log(height);
-      store.dispatch(updateAppSize({height}));
+      store.dispatch(updateAppSize({ height }));
       // update recorded height
       this.windowHeight = windowHeight;
     }
-  }
+  };
 
   addResizeListener = () => {
     window.addEventListener('resize', this.updateAppHeight);
-  }
+  };
 
   removeResizeListener = () => {
     window.removeEventListener('resize', this.updateAppHeight);
-  }
+  };
 }
 
 const AppHeight = new ViewportHeight();

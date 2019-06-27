@@ -5,16 +5,29 @@ import { TopBar as FoundationTopBar } from 'react-foundation';
 
 import { updateTopBarHeight } from '../../redux/size';
 
-const SizeAwareTopBar = sizeMe({ monitorHeight: true })(FoundationTopBar);
+const SizeAwareTopBar = sizeMe({ monitorHeight: true, monitorWidth: false })(
+  FoundationTopBar
+);
+
+const mapStateToProps = state => ({
+  storedHeight: state.size.topbarHeight
+});
+
+const updateHeight = (storedHeight, currentHeight, dispatch) => {
+  if (storedHeight !== currentHeight) {
+    dispatch(updateTopBarHeight(currentHeight));
+  }
+};
 
 const TopBar = props => {
-  const { dispatch, ...rest } = props;
+  const { storedHeight, dispatch, ...rest } = props;
+
   return (
     <SizeAwareTopBar
-      onSize={({ height }) => dispatch(updateTopBarHeight(height))}
+      onSize={({ height }) => updateHeight(storedHeight, height, dispatch)}
       {...rest}
     />
   );
 };
 
-export default connect()(TopBar);
+export default connect(mapStateToProps)(TopBar);

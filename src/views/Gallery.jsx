@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import compact from 'lodash/compact';
 import map from 'lodash/map';
 import indexOf from 'lodash/indexOf';
+import sizeMe from 'react-sizeme';
 
 import {
   TopBarLeft,
@@ -31,8 +32,9 @@ import Icon from '../components/Icon';
 import CloseModal from '../components/CloseModal';
 import TopBar from '../components/TopBar';
 import ImageList from '../components/ImageList';
-import ContainerHeightUnits from '../components/ContainerHeightUnits';
+// import ContainerHeightUnits from '../components/ContainerHeightUnits';
 import TopBarTitle from '../components/TopBarTitle';
+import AppHU from '../components/AppHU';
 
 import { Views } from '../globals';
 
@@ -40,10 +42,15 @@ import * as ImageActionCreators from '../redux/actions/image';
 import * as GalleryActionCreators from '../redux/actions/gallery';
 import * as NavActionCreators from '../redux/actions/nav';
 import { doneEditing, addItemToCart } from '../redux/actions/cart';
+import { updateComponentHeight } from '../redux/size';
 
 import imageHasBeenEdited from '../utils/imageHasBeenEdited';
 
 import styles from './Gallery.module.scss';
+
+const SizeAwareCell = sizeMe({ monitorHeight: true, monitorWidth: false })(
+  Cell
+);
 
 const mapStateToProps = state => ({
   images: state.image.images,
@@ -51,7 +58,8 @@ const mapStateToProps = state => ({
   selectedCollectionId: state.frame.selectedCollectionId,
   isEditing: state.gallery.isEditing,
   imageHasBeenEdited: state.gallery.imageHasBeenEdited,
-  availableHeight: state.size.availableHeight,
+  // availableHeight: state.size.availableHeight,
+  rowHeights: state.size.registeredHeights,
   breakpoint: state.size.breakpoint
 });
 
@@ -61,14 +69,22 @@ const Gallery = props => {
     frames,
     selectedCollectionId,
     isEditing,
-    availableHeight,
+    rowHeights,
+    // availableHeight,
     breakpoint,
     dispatch
   } = props;
   // console.log(images);
   // Check if an image has been edited
   const imageHasBeenUploaded = images.allIds.length > 0;
+  let buttonRowHeight = 0;
+  let headingRowHeight = 0;
 
+  if (rowHeights) {
+    buttonRowHeight = rowHeights.buttonRow ? rowHeights.buttonRow : 0;
+    headingRowHeight = rowHeights.headingRow ? rowHeights.headingRow : 0;
+  }
+  console.log(buttonRowHeight + headingRowHeight);
   const updateEditMode = bindActionCreators(
     GalleryActionCreators.updateEditMode,
     dispatch
@@ -128,14 +144,6 @@ const Gallery = props => {
     xxlarge: 6
   };
 
-  const buttonBarHeight = {
-    sm: 4,
-    md: 4,
-    lg: 5,
-    xl: 5,
-    xxl: 5
-  };
-
   const buttonSize = {
     sm: 'small',
     md: 'small',
@@ -143,17 +151,6 @@ const Gallery = props => {
     xl: 'large',
     xxl: 'large'
   };
-
-  const titleHeight = {
-    sm: 4,
-    md: 4,
-    lg: 8,
-    xl: 8,
-    xxl: 8
-  };
-
-  const imageListHeight =
-    100 - (titleHeight[breakpoint] + buttonBarHeight[breakpoint]);
 
   const AddToCart = (
     <Cell className='auto'>
@@ -211,7 +208,7 @@ const Gallery = props => {
 
   const headingText = isEditing
     ? 'Select an Image to Edit'
-    : 'Update Product Quanties';
+    : 'Update Product Quantities';
 
   return (
     <div>
@@ -233,6 +230,7 @@ const Gallery = props => {
           <CloseModal />
         </TopBarRight>
       </TopBar>
+
       {/* Main Gallery */}
       <GridContainer className={styles['content-container']}>
         <Grid
@@ -241,48 +239,40 @@ const Gallery = props => {
           // className='grid-margin-y'
           // style={{ height: `${availableHeight}px` }}
         >
-          <Cell>
-            <ContainerHeightUnits
-              ch={buttonBarHeight[breakpoint]}
-              containerHeight={availableHeight}
-            >
-              <Grid
-                vertical={false}
-                className='align-center-middle text-center'
-              >
-                {isEditing ? null : AddToCart}
-                {isEditing ? DoneEditing : null}
-                {isEditing ? null : BackToEditing}
-              </Grid>
-            </ContainerHeightUnits>
-          </Cell>
+          <SizeAwareCell
+            onSize={({ height }) =>
+              dispatch(updateComponentHeight('buttonRow', height))
+            }
+          >
+            <Grid vertical={false} className='align-center-middle text-center'>
+              {isEditing ? null : AddToCart}
+              {isEditing ? DoneEditing : null}
+              {isEditing ? null : BackToEditing}
+            </Grid>
+          </SizeAwareCell>
 
-          <Cell>
-            <ContainerHeightUnits
-              ch={titleHeight[breakpoint]}
-              containerHeight={availableHeight}
-            >
-              <h2>{headingText}</h2>
-            </ContainerHeightUnits>
-          </Cell>
-          <Cell>
-            <ContainerHeightUnits
-              ch={imageListHeight}
-              containerHeight={availableHeight}
-              overflowY
-            >
-              <ImageList
-                images={images}
-                frames={frames}
-                selectedCollectionId={selectedCollectionId}
-                temsPerRow={responsiveItemsPerRow}
-                isEditing={isEditing}
-                handleClick={imageToEditor}
-                handleCountUpdate={updateQuantity}
-              />
-              {NoImagesCallout}
-            </ContainerHeightUnits>
-          </Cell>
+          <SizeAwareCell
+            onSize={({ height }) =>
+              dispatch(updateComponentHeight('headingRow', height))
+            }
+          >
+            <h2>{headingText}</h2>
+          </SizeAwareCell>
+          <AppHU
+            heightToSubtract={buttonRowHeight + headingRowHeight}
+            asContainer={Cell}
+          >
+            <ImageList
+              images={images}
+              frames={frames}
+              selectedCollectionId={selectedCollectionId}
+              temsPerRow={responsiveItemsPerRow}
+              isEditing={isEditing}
+              handleClick={imageToEditor}
+              handleCountUpdate={updateQuantity}
+            />
+            {NoImagesCallout}
+          </AppHU>
         </Grid>
       </GridContainer>
     </div>
