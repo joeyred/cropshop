@@ -96,6 +96,11 @@ class Edit extends Component {
     loaded: false
   };
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(updateRotation(0));
+  }
+
   getResponsiveProp = (component, prop) => {
     const { breakpoint } = this.props;
 
@@ -366,6 +371,7 @@ class Edit extends Component {
                       aspect: frame.dimensions[0] / frame.dimensions[1]
                     })
                   );
+
                   this.setState({ loaded: true });
                 }
                 if (
