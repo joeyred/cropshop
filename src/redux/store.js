@@ -32,9 +32,11 @@ const rootReducer = combineReducers({
   size: SizeReducer
 });
 
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
-);
+let store = createStore(rootReducer, applyMiddleware(thunk));
+if (process.env.NODE_ENV !== 'production') {
+  store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+}
 
-export default store;
+const output = store;
+
+export default output;

@@ -8,6 +8,7 @@
  */
 
 import uniqid from 'uniqid';
+
 import {
   UPDATE_SELECTED_FRAME,
   UPDATE_SELECTED_COLLECTION,
@@ -17,14 +18,47 @@ import {
   // FETCH_FRAMES_FAILURE
 } from '../actiontypes/frame';
 
+// const filteredFrames = (collectionName, frames) => {
+//   return compact(
+//     map(frames.allIds, id => {
+//       let isInCollection = false;
+//       const frame = frames.byId[id];
+//       map(frame.collections, collection => {
+//         // console.log(collection.handle);
+//         if (collection.handle === collectionName) {
+//           isInCollection = true;
+//         }
+//       });
+//
+//       if (isInCollection) {
+//         return frame;
+//       }
+//       return null;
+//     })
+//   );
+// };
+//
+// const sortedFrames = frames => {
+//   return sortBy(frames, [
+//     object => {
+//       return object.width < object.height
+//         ? object.height / object.width
+//         : object.width / object.height;
+//     },
+//     'height'
+//   ]);
+// };
+
 export const updateSelectedFrame = id => ({
   type: UPDATE_SELECTED_FRAME,
   id
 });
-export const updateSelectedCollection = collectionName => ({
-  type: UPDATE_SELECTED_COLLECTION,
-  collectionName
-});
+export const updateSelectedCollection = collectionName => {
+  return {
+    type: UPDATE_SELECTED_COLLECTION,
+    collectionName
+  };
+};
 
 export const addFrame = frame => {
   const { id, price, collections, variants, customFields } = frame;

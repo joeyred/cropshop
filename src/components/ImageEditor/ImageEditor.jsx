@@ -53,7 +53,7 @@ class ImageEditor extends Component {
     );
     // console.log(crop);
 
-    storeImageDimensions(propsToStore);
+    // storeImageDimensions(propsToStore);
     updateCrop({
       ...crop,
       aspect: aspectRatioArray[0] / aspectRatioArray[1]

@@ -84,7 +84,7 @@ const Gallery = props => {
     buttonRowHeight = rowHeights.buttonRow ? rowHeights.buttonRow : 0;
     headingRowHeight = rowHeights.headingRow ? rowHeights.headingRow : 0;
   }
-  console.log(buttonRowHeight + headingRowHeight);
+  // console.log(buttonRowHeight + headingRowHeight);
   const updateEditMode = bindActionCreators(
     GalleryActionCreators.updateEditMode,
     dispatch
@@ -261,6 +261,7 @@ const Gallery = props => {
           <AppHU
             heightToSubtract={buttonRowHeight + headingRowHeight}
             asContainer={Cell}
+            scrollable
           >
             <ImageList
               images={images}

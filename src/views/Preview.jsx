@@ -131,7 +131,7 @@ const Preview = props => {
       {/* Preview */}
       <SizeMe monitorHeight>
         {({ size }) => {
-          const { width, height } = handleDimensions(newCrop);
+          // const { width, height } = handleDimensions(newCrop);
           // const { width, height } = newCrop;
           // const renderedSize = aspectRatioFill(
           //   width,

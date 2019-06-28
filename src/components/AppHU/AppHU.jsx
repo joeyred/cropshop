@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import Scrollable from '../Scrollable';
+
 const mapStateToProps = state => ({
   topbarHeight: state.size.topbarHeight,
   appHeight: state.size.app.height
@@ -11,6 +13,7 @@ const mapStateToProps = state => ({
 const AppHU = props => {
   const {
     topbarHeight,
+    scrollable,
     appHeight,
     heightToSubtract,
     keepTopBarHeight,
@@ -35,15 +38,20 @@ const AppHU = props => {
 
   // convert App Height Units
   const percentage = heightUnit / 100;
-
+  const heightKeepTopBar = (appHeight - heightToSubtract) * percentage;
+  const heightSubtractTopBar =
+    (appHeight - heightToSubtract - topbarHeight) * percentage;
   // Get the height to assign the container/element/component
-  const height = keepTopBarHeight
-    ? (appHeight - heightToSubtract) * percentage
-    : (appHeight - heightToSubtract - topbarHeight) * percentage;
-
+  const height = keepTopBarHeight ? heightKeepTopBar : heightSubtractTopBar;
   styleAtt.height = `${height}px`;
 
-  // atts.style = styleAtt;
+  if (scrollable) {
+    return (
+      <Scrollable style={styleAtt} asContainer={asContainer} {...rest}>
+        {children}
+      </Scrollable>
+    );
+  }
 
   if (ElementToRender) {
     return (
@@ -52,6 +60,7 @@ const AppHU = props => {
       </ElementToRender>
     );
   }
+
   return (
     <div style={styleAtt} {...rest}>
       {children}
@@ -65,6 +74,7 @@ AppHU.defaultProps = {
    * @type {Boolean|Element}
    */
   asContainer: false,
+  scrollable: false,
   heightUnit: 100,
   topbarHeight: 0,
   appHeight: 0,
@@ -74,6 +84,7 @@ AppHU.defaultProps = {
 
 AppHU.propTypes = {
   asContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+  scrollable: PropTypes.bool,
   heightUnit: PropTypes.number,
   topbarHeight: PropTypes.number,
   appHeight: PropTypes.number,
