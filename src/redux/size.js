@@ -11,6 +11,7 @@ const UPDATE_APP_SIZE = 'size/UPDATE_APP_SIZE';
 const UPDATE_TOPBAR_HEIGHT = 'size/UPDATE_TOPBAR_HEIGHT';
 const SET_BREAKPOINT = 'size/SET_BREAKPOINT';
 const SET_ORIENTATION = 'size/SET_ORIENTATION';
+const UPDATE_COMPONENT_HEIGHT = 'size/UPDATE_COMPONENT_HEIGHT';
 
 const initialState = {
   breakpoint: null,
@@ -20,7 +21,8 @@ const initialState = {
     isPortrait: null
   },
   topbarHeight: null,
-  availableHeight: null
+  availableHeight: null,
+  registeredHeights: {}
 };
 
 export const updateAppSize = ({ width, height }) => {
@@ -33,6 +35,12 @@ export const updateAppSize = ({ width, height }) => {
     size
   };
 };
+
+export const updateComponentHeight = (componentName, height) => ({
+  type: UPDATE_COMPONENT_HEIGHT,
+  componentName,
+  height
+});
 
 export const updateTopBarHeight = height => ({
   type: UPDATE_TOPBAR_HEIGHT,
@@ -58,6 +66,16 @@ export function SizeReducer(state = initialState, action) {
         app: {
           ...state.app,
           ...size
+        }
+      };
+    }
+    case UPDATE_COMPONENT_HEIGHT: {
+      const { componentName, height } = action;
+      return {
+        ...state,
+        registeredHeights: {
+          ...state.registeredHeights,
+          [componentName]: height
         }
       };
     }

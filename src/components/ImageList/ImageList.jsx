@@ -103,9 +103,11 @@ ImageList.defaultProps = {
   images: [],
   itemsPerRow: 3,
   handleClick: id => {
+    // eslint-disable-next-line no-console
     console.log(`Thumbnail Clicked: ${id}`);
   },
   handleCountUpdate: (id, count) =>
+    // eslint-disable-next-line no-console
     console.log(`Count Updated Clicked: ${id} - ${count}`)
 };
 

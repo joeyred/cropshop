@@ -1,0 +1,172 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
+
+$shadow-color: $body-background;
+$shadow-size: 1rem;
+
+// @function scroll-shadow-values($_direction) {
+//   $_size: $box-shadow-size;
+//   $values: 0 0 0 0;
+//   @if $_direction == 'y-beginning' {
+//     $values: 0 #{$_size} #{$_size} -#{$_size};
+//   }
+//   @if $_direction == 'y-end' {
+//     $values: 0 -#{$_size} #{$_size} -#{$_size};
+//   }
+//   @if $_direction == 'x-beginning' {
+//     $values: #{$_size} 0 #{$_size} -#{$_size};
+//   }
+//   @if $_direction == 'x-end' {
+//     $values: -#{$_size} 0 #{$_size} -#{$_size};
+//   }
+//   @return $values rgba($box-shadow-color, 1);
+// }
+
+$scrollable-shadow: #ffffff;
+
+:global(#{$global_namespace}) {
+  .content {
+    padding: 1rem 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: scroll;
+  }
+
+  .overlayAtBeginning,
+  .overlayAtEnd {
+    position: absolute;
+    z-index: 10000;
+    background: rgba(125, 185, 232, 0);
+    transition: all 200ms ease;
+  }
+
+  .scrollX {
+    position: relative;
+    .content {
+      overflow-x: scroll;
+    }
+
+    .overlayAtBeginning,
+    .overlayAtEnd {
+      padding-top: $shadow-size;
+      width: $shadow-size;
+      height: 100%;
+    }
+    .overlayAtBeginning {
+      left: 0;
+      // left: 0.625rem;
+      // @include breakpoint(medium) {
+      //   left: 0.9375rem;
+      // }
+    }
+    .overlayAtEnd {
+      right: 0;
+      // right: #{0.625 * 2}rem;
+      // @include breakpoint(medium) {
+      //   right: #{0.9375 * 2}rem;
+      // }
+    }
+
+    &.atBeginning .overlayAtBeginning {
+      background: linear-gradient(
+        to right,
+        $shadow-color 0%,
+        rgba($shadow-color, 0) 100%
+      );
+    }
+
+    &.inBetween {
+      .overlayAtBeginning {
+        background: linear-gradient(
+          to right,
+          $shadow-color 0%,
+          rgba($shadow-color, 0) 100%
+        );
+      }
+
+      .overlayAtEnd {
+        background: linear-gradient(
+          to left,
+          $shadow-color 0%,
+          rgba($shadow-color, 0) 100%
+        );
+      }
+    }
+
+    &.atEnd .overlayAtEnd {
+      background: linear-gradient(
+        to left,
+        $shadow-color 0%,
+        rgba($shadow-color, 0) 100%
+      );
+    }
+  }
+
+  .scrollY {
+    position: relative;
+    .content {
+      overflow-y: scroll;
+    }
+
+    .overlayAtBeginning,
+    .overlayAtEnd {
+      padding-top: $shadow-size;
+      height: $shadow-size;
+      width: 100%;
+    }
+    .overlayAtBeginning {
+      top: 0.625rem;
+      @include breakpoint(medium) {
+        top: 0.9375rem;
+      }
+    }
+    .overlayAtEnd {
+      bottom: #{0.625 * 2}rem;
+      @include breakpoint(medium) {
+        bottom: #{0.9375 * 2}rem;
+      }
+    }
+
+    &.atBeginning .overlayAtBeginning {
+      background: linear-gradient(
+        to bottom,
+        $shadow-color 0%,
+        rgba($shadow-color, 0) 100%
+      );
+    }
+
+    &.inBetween {
+      .overlayAtBeginning {
+        background: linear-gradient(
+          to bottom,
+          $shadow-color 0%,
+          rgba($shadow-color, 0) 100%
+        );
+      }
+
+      .overlayAtEnd {
+        background: linear-gradient(
+          to top,
+          $shadow-color 0%,
+          rgba($shadow-color, 0) 100%
+        );
+      }
+    }
+
+    &.atEnd .overlayAtEnd {
+      background: linear-gradient(
+        to top,
+        $shadow-color 0%,
+        rgba($shadow-color, 0) 100%
+      );
+    }
+  }
+}

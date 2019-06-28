@@ -28,7 +28,7 @@ $animation: '#{$full-class}__animate';
   display: flex;
   justify-content: center;
   align-items: center;
-  @include breakpoint('lg') {
+  @include breakpoint(large) {
     background: rgba(0, 0, 0, 0.6);
   }
 }

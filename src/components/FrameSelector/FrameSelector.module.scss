@@ -30,6 +30,23 @@
     }
   }
 
+  .row {
+    display: flex;
+    flex-flow: row nowrap;
+    margin: -1rem 0;
+    // justify-content: space-around;
+  }
+
+  .frame {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 20%;
+    max-width: 20%;
+    min-width: 3.9rem;
+  }
+
   .button {
     background: none;
     outline: none;

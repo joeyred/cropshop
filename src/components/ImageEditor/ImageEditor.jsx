@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'; // eslint-disable-line
 import ReactCrop from 'react-image-crop';
 import Spinner from 'react-spinkit';
 
-import { calcCropFullCentered } from '../../utils/crop';
+// import { calcCropFullCentered } from '../../utils/crop';
 import styles from './ImageEditor.module.scss';
 
 class ImageEditor extends Component {
@@ -25,44 +25,44 @@ class ImageEditor extends Component {
     this.artboardRef = React.createRef();
   }
 
-  onImageLoaded = image => {
+  onImageLoaded = () => {
     const {
-      aspectRatioArray,
-      storeImageDimensions,
-      updateArtboardDimensions,
-      artboardDimensions,
-      artboardPadding,
-      imageDimensions,
-      updateCrop,
+      // aspectRatioArray,
+      // storeImageDimensions,
+      // updateArtboardDimensions,
+      // artboardDimensions,
+      // artboardPadding,
+      // imageDimensions,
+      // updateCrop,
       handleLoadingStatus
     } = this.props;
-    const propsToStore = {
-      ref: image,
-      width: image.offsetWidth,
-      height: image.offsetHeight,
-      naturalWidth: image.naturalWidth,
-      naturalHeight: image.naturalHeight
-    };
+    // const propsToStore = {
+    //   ref: image,
+    //   width: image.offsetWidth,
+    //   height: image.offsetHeight,
+    //   naturalWidth: image.naturalWidth,
+    //   naturalHeight: image.naturalHeight
+    // };
     // console.log(propsToStore);
     // console.log(imageDimensions);
-    const crop = calcCropFullCentered(
-      aspectRatioArray[0],
-      aspectRatioArray[1],
-      imageDimensions.width,
-      imageDimensions.height
-    );
-    // console.log(crop);
-
-    storeImageDimensions(propsToStore);
-    updateCrop({
-      ...crop,
-      aspect: aspectRatioArray[0] / aspectRatioArray[1]
-    });
-    updateArtboardDimensions(
-      artboardDimensions,
-      artboardPadding,
-      imageDimensions
-    );
+    // const crop = calcCropFullCentered(
+    //   aspectRatioArray[0],
+    //   aspectRatioArray[1],
+    //   imageDimensions.width,
+    //   imageDimensions.height
+    // );
+    // // console.log(crop);
+    //
+    // // storeImageDimensions(propsToStore);
+    // updateCrop({
+    //   ...crop,
+    //   aspect: aspectRatioArray[0] / aspectRatioArray[1]
+    // });
+    // updateArtboardDimensions(
+    //   artboardDimensions,
+    //   artboardPadding,
+    //   imageDimensions
+    // );
     handleLoadingStatus(false);
     // console.log('loaded image');
     // this.forceUpdate();

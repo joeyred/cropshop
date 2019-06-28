@@ -7,6 +7,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import compact from 'lodash/compact';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 import {
   UPDATE_SELECTED_FRAME,
   UPDATE_SELECTED_COLLECTION,
@@ -18,11 +21,43 @@ const initialState = {
     byId: {},
     allIds: []
   },
+  frameList: [],
   loaded: false,
   loading: false,
   selectedFrameId: null,
   selectedCollectionId: null,
   error: null
+};
+
+const filteredFrames = (collectionName, frames) => {
+  return compact(
+    map(frames.allIds, id => {
+      let isInCollection = false;
+      const frame = frames.byId[id];
+      map(frame.collections, collection => {
+        // console.log(collection.handle);
+        if (collection.handle === collectionName) {
+          isInCollection = true;
+        }
+      });
+
+      if (isInCollection) {
+        return frame;
+      }
+      return null;
+    })
+  );
+};
+
+const sortedFrames = frames => {
+  return sortBy(frames, [
+    object => {
+      return object.width < object.height
+        ? object.height / object.width
+        : object.width / object.height;
+    },
+    'height'
+  ]);
 };
 
 export default function Frame(state = initialState, action) {
@@ -34,9 +69,15 @@ export default function Frame(state = initialState, action) {
       };
     }
     case UPDATE_SELECTED_COLLECTION: {
+      const { collectionName } = action;
+      const frameList = sortedFrames(
+        filteredFrames(collectionName, state.frames)
+      );
       return {
         ...state,
-        selectedCollectionId: action.collectionName
+        selectedCollectionId: collectionName,
+        frameList,
+        selectedFrameId: frameList[0].id
       };
     }
     case ADD_FRAME: {

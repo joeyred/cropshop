@@ -50,7 +50,7 @@ const initExternalStuff = () => {
   }
 };
 
-// NOTE This is gotten from a globally define variable.
+// NOTE This is gotten from a globally defined variable.
 //      Yes I know this sucks...
 //      It's Shopify...
 // eslint-disable-next-line no-undef

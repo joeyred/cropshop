@@ -13,20 +13,21 @@ import PropTypes from 'prop-types'; // eslint-disable-line
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // import { compact, map, sortBy } from 'lodash';
-import compact from 'lodash/compact';
+// import compact from 'lodash/compact';
 import map from 'lodash/map';
-import sortBy from 'lodash/sortBy';
+// import sortBy from 'lodash/sortBy';
 // 3rd Party Components
-import {
-  Grid,
-  // GridContainer,
-  Cell
-} from 'react-foundation';
+// import {
+//   Grid,
+//   // GridContainer,
+//   Cell
+// } from 'react-foundation';
 
 import { updateSelectedFrame } from '../../redux/actions/frame';
 import { updateCropFullCenter } from '../../redux/actions/editor';
 
 // Project Components
+import Scrollable from '../Scrollable';
 import PictureFrame from './PictureFrame';
 // Styles
 import styles from './FrameSelector.module.scss';
@@ -34,97 +35,100 @@ import styles from './FrameSelector.module.scss';
 const mapStateToProps = state => ({
   frames: state.frame.frames,
   selectedFrameId: state.frame.selectedFrameId,
-  selectedCollectionId: state.frame.selectedCollectionId,
-  imageProps: state.editor.imageProps
+  frameList: state.frame.frameList,
+  // selectedCollectionId: state.frame.selectedCollectionId,
+  imageSize: state.editor.imageSize
 });
 
 const FrameSelector = props => {
   const {
     frames,
     selectedFrameId,
-    selectedCollectionId,
-    direction,
-    imageProps,
+    // selectedCollectionId,
+    frameList,
+    // direction,
+    imageSize,
+
     dispatch
   } = props;
 
   const handleClick = id => {
     const aspect = frames.byId[id].dimensions;
     dispatch(updateSelectedFrame(id));
-    dispatch(updateCropFullCenter(aspect, imageProps));
+    // console.log(aspect, imageSize);
+    dispatch(updateCropFullCenter(aspect, imageSize));
   };
 
-  // This fixes loading issues on first render
-  let tempFrame = selectedFrameId;
-
-  // Get the IDs for the frames to display
-  const filteredFrames = compact(
-    map(frames.allIds, id => {
-      let isInCollection = false;
-      const frame = frames.byId[id];
-      map(frame.collections, collection => {
-        // console.log(collection.handle);
-        if (collection.handle === selectedCollectionId) {
-          isInCollection = true;
-        }
-      });
-
-      if (isInCollection) {
-        return frame;
-      }
-      return null;
-    })
-  );
-  // TODO This needs to be able to handle mobile better
-  const cellsPerRow = filteredFrames.length < 6 ? filteredFrames.length : 5;
-  const sortedFrames = sortBy(filteredFrames, [
-    object => {
-      return object.width < object.height
-        ? object.height / object.width
-        : object.width / object.height;
-    },
-    'height'
-  ]);
+  // // This fixes loading issues on first render
+  // let tempFrame = selectedFrameId;
+  // console.log('I just sorted stuff again');
+  // // Get the IDs for the frames to display
+  // const filteredFrames = compact(
+  //   map(frames.allIds, id => {
+  //     let isInCollection = false;
+  //     const frame = frames.byId[id];
+  //     map(frame.collections, collection => {
+  //       // console.log(collection.handle);
+  //       if (collection.handle === selectedCollectionId) {
+  //         isInCollection = true;
+  //       }
+  //     });
+  //
+  //     if (isInCollection) {
+  //       return frame;
+  //     }
+  //     return null;
+  //   })
+  // );
+  // const sortedFrames = sortBy(filteredFrames, [
+  //   object => {
+  //     return object.width < object.height
+  //       ? object.height / object.width
+  //       : object.width / object.height;
+  //   },
+  //   'height'
+  // ]);
 
   return (
     <div className={styles.container}>
-      <Grid
-        vertical={direction === 'vertical'}
-        className={`small-up-${cellsPerRow}`}
-      >
-        {map(sortedFrames, frame => {
-          if (tempFrame === null) {
-            tempFrame = frame.id;
-            // console.log(frame.id);
-            dispatch(updateSelectedFrame(frame.id));
-          }
-          const active = frame.id === tempFrame;
-          return (
-            <Cell key={frame.id} className='align-center-middle text-center'>
-              <button
-                type='button'
-                className={`${active ? styles.active : null} ${styles.button}`}
-                onClick={() => handleClick(frame.id)}
-              >
-                <PictureFrame
-                  dimensions={{ width: frame.width, height: frame.height }}
-                />
-              </button>
-              <div className={styles.price}>
-                <span className={styles['currency-symbol']}>$</span>
-                <span>{frame.price}</span>
+      <Scrollable vertical={false}>
+        <div className={styles.row}>
+          {map(frameList, frame => {
+            // if (tempFrame === null) {
+            //   tempFrame = frame.id;
+            //   // console.log(frame.id);
+            //   dispatch(updateSelectedFrame(frame.id));
+            // }
+            const active = frame.id === selectedFrameId;
+            return (
+              <div key={frame.id} className={styles.frame}>
+                <button
+                  type='button'
+                  className={`${active ? styles.active : null} ${
+                    styles.button
+                  }`}
+                  onClick={() => handleClick(frame.id)}
+                >
+                  <PictureFrame
+                    dimensions={{ width: frame.width, height: frame.height }}
+                  />
+                </button>
+                <div className={styles.price}>
+                  <span className={styles['currency-symbol']}>$</span>
+                  <span>{frame.price}</span>
+                </div>
               </div>
-            </Cell>
-          );
-        })}
-      </Grid>
+            );
+          })}
+        </div>
+      </Scrollable>
     </div>
   );
 };
 
 FrameSelector.defaultProps = {
-  frames: {},
-  direction: 'horizontal'
+  frames: {}
+  // direction: 'horizontal'
   // clickHandler: (index) => console.log(`FrameSelector - Index Selected: ${index}`)
 };
 
@@ -132,9 +136,9 @@ FrameSelector.propTypes = {
   frames: PropTypes.shape({
     byId: PropTypes.object,
     allIds: PropTypes.array
-  }),
+  })
   // selectedFrameId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
-  direction: PropTypes.oneOf(['vertical', 'horizontal'])
+  // direction: PropTypes.oneOf(['vertical', 'horizontal'])
   // clickHandler:     PropTypes.func,
 };
 

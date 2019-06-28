@@ -45,10 +45,12 @@ export const updateZoom = scale => ({
   scale: scale < 1 ? 1 : scale
 });
 
-export const updateCrop = crop => ({
-  type: UPDATE_CROP,
-  crop
-});
+export const updateCrop = crop => {
+  return {
+    type: UPDATE_CROP,
+    crop
+  };
+};
 
 export const updateCropFullCenter = (newRatio, image) => {
   const crop = calcCropFullCentered(
