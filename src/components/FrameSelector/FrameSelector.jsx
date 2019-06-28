@@ -55,6 +55,7 @@ const FrameSelector = props => {
   const handleClick = id => {
     const aspect = frames.byId[id].dimensions;
     dispatch(updateSelectedFrame(id));
+    console.log(aspect, imageSize);
     dispatch(updateCropFullCenter(aspect, imageSize));
   };
 

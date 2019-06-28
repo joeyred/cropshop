@@ -25,10 +25,10 @@ class ImageEditor extends Component {
     this.artboardRef = React.createRef();
   }
 
-  onImageLoaded = image => {
+  onImageLoaded = () => {
     const {
       aspectRatioArray,
-      storeImageDimensions,
+      // storeImageDimensions,
       updateArtboardDimensions,
       artboardDimensions,
       artboardPadding,
@@ -36,33 +36,33 @@ class ImageEditor extends Component {
       updateCrop,
       handleLoadingStatus
     } = this.props;
-    const propsToStore = {
-      ref: image,
-      width: image.offsetWidth,
-      height: image.offsetHeight,
-      naturalWidth: image.naturalWidth,
-      naturalHeight: image.naturalHeight
-    };
+    // const propsToStore = {
+    //   ref: image,
+    //   width: image.offsetWidth,
+    //   height: image.offsetHeight,
+    //   naturalWidth: image.naturalWidth,
+    //   naturalHeight: image.naturalHeight
+    // };
     // console.log(propsToStore);
     // console.log(imageDimensions);
-    const crop = calcCropFullCentered(
-      aspectRatioArray[0],
-      aspectRatioArray[1],
-      imageDimensions.width,
-      imageDimensions.height
-    );
-    // console.log(crop);
-
-    // storeImageDimensions(propsToStore);
-    updateCrop({
-      ...crop,
-      aspect: aspectRatioArray[0] / aspectRatioArray[1]
-    });
-    updateArtboardDimensions(
-      artboardDimensions,
-      artboardPadding,
-      imageDimensions
-    );
+    // const crop = calcCropFullCentered(
+    //   aspectRatioArray[0],
+    //   aspectRatioArray[1],
+    //   imageDimensions.width,
+    //   imageDimensions.height
+    // );
+    // // console.log(crop);
+    //
+    // // storeImageDimensions(propsToStore);
+    // updateCrop({
+    //   ...crop,
+    //   aspect: aspectRatioArray[0] / aspectRatioArray[1]
+    // });
+    // updateArtboardDimensions(
+    //   artboardDimensions,
+    //   artboardPadding,
+    //   imageDimensions
+    // );
     handleLoadingStatus(false);
     // console.log('loaded image');
     // this.forceUpdate();

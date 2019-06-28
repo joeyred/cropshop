@@ -92,40 +92,41 @@ class Edit extends Component {
   };
 
   state = {
-    loading: true
+    loading: true,
+    loaded: false
   };
 
   componentDidMount() {
-    const {
-      frames,
-      selectedFrameId,
-      // images,
-      // imageId,
-      imageSize,
-      dispatch
-    } = this.props;
-    // const image = images.byId[imageId];
-    let frame = frames.byId[selectedFrameId];
-    if (!frame) {
-      frame = {
-        dimensions: [8, 8]
-      };
-    }
-
-    const crop = calcCropFullCentered(
-      frame.dimensions[0],
-      frame.dimensions[1],
-      imageSize.width,
-      imageSize.height
-    );
-    // console.log(crop);
-
-    dispatch(
-      updateCropActionCreator({
-        ...crop,
-        aspect: frame.dimensions[0] / frame.dimensions[1]
-      })
-    );
+    // const {
+    //   frames,
+    //   selectedFrameId,
+    //   // images,
+    //   // imageId,
+    //   imageSize,
+    //   dispatch
+    // } = this.props;
+    // // const image = images.byId[imageId];
+    // let frame = frames.byId[selectedFrameId];
+    // if (!frame) {
+    //   frame = {
+    //     dimensions: [8, 8]
+    //   };
+    // }
+    //
+    // const crop = calcCropFullCentered(
+    //   frame.dimensions[0],
+    //   frame.dimensions[1],
+    //   imageSize.width,
+    //   imageSize.height
+    // );
+    // // console.log(crop);
+    //
+    // dispatch(
+    //   updateCropActionCreator({
+    //     ...crop,
+    //     aspect: frame.dimensions[0] / frame.dimensions[1]
+    //   })
+    // );
   }
 
   getResponsiveProp = (component, prop) => {
@@ -269,10 +270,15 @@ class Edit extends Component {
       images,
       imageId,
       rowHeights,
+      imageSize,
       // availableHeight,
       dispatch,
       crop
     } = this.props;
+    const { loading, loaded } = this.state;
+
+    const frame = frames.byId[selectedFrameId];
+
     let frameSelectorHeight = 0;
     let toolbarHeight = 0;
 
@@ -289,16 +295,17 @@ class Edit extends Component {
     // Construct a new instance to link to Filestack image.
     const linkedImage = new Filelink(image.handle, apiKey);
 
-    // Handle any undefined type weirdness on first render
-    let frame = frames.byId[selectedFrameId];
-    // console.log(frame);
-    if (!frame) {
-      frame = {
-        dimensions: [8, 8]
-      };
-    }
+    // // Handle any undefined type weirdness on first render
+    // let frame = frames.byId[selectedFrameId];
+    // // console.log(frame);
+    // if (!frame) {
+    //   frame = {
+    //     dimensions: [8, 8]
+    //   };
+    // }
 
     const updateCrop = bindActionCreators(updateCropActionCreator, dispatch);
+
     const storeImageDimensions = bindActionCreators(
       storeImageDimensionsActionCreator,
       dispatch
@@ -332,9 +339,7 @@ class Edit extends Component {
             }
           >
             <h1 className=''>Select A Size</h1>
-            <FrameSelector
-              direction={this.getResponsiveProp('frameSelector', 'direction')}
-            />
+            <FrameSelector />
           </SizeAwareCell>
           {/* Image Editor */}
 
@@ -372,6 +377,43 @@ class Edit extends Component {
                 width: artboardDimensions.width - artboardPadding * 2,
                 height: artboardDimensions.height - artboardPadding * 2
               };
+              if (size.height && size.width) {
+                if (!loading && !loaded) {
+                  updateArtboardDimensions(
+                    artboardDimensions,
+                    artboardPadding,
+                    imageDimensions
+                  );
+                  const initCrop = calcCropFullCentered(
+                    frame.dimensions[0],
+                    frame.dimensions[1],
+                    imageDimensions.width,
+                    imageDimensions.height
+                  );
+                  // console.log(crop);
+
+                  dispatch(
+                    updateCropActionCreator({
+                      ...initCrop,
+                      aspect: frame.dimensions[0] / frame.dimensions[1]
+                    })
+                  );
+                  this.setState({ loaded: true });
+                }
+                if (
+                  imageDimensions.width !== imageSize.width ||
+                  imageDimensions.height !== imageSize.height
+                ) {
+                  console.log(size.width, imageSize.width);
+                  console.log(size.height, imageSize.height);
+                  updateArtboardDimensions(
+                    artboardDimensions,
+                    artboardPadding,
+                    imageDimensions
+                  );
+                }
+              }
+
               return (
                 <AppHU
                   heightToSubtract={frameSelectorHeight + toolbarHeight}
@@ -382,8 +424,7 @@ class Edit extends Component {
                     containerDimensions={containerDimensions}
                     imageDimensions={imageDimensions}
                     handleLoadingStatus={this.loadingStatus}
-                    // eslint-disable-next-line
-                    loadingStatus={this.state.loading}
+                    loadingStatus={loading}
                     artboardDimensions={artboardDimensions}
                     artboardPadding={artboardPadding}
                     crop={crop}
