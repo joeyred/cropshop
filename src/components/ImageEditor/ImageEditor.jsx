@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'; // eslint-disable-line
 import ReactCrop from 'react-image-crop';
 import Spinner from 'react-spinkit';
 
-import { calcCropFullCentered } from '../../utils/crop';
+// import { calcCropFullCentered } from '../../utils/crop';
 import styles from './ImageEditor.module.scss';
 
 class ImageEditor extends Component {
@@ -27,13 +27,13 @@ class ImageEditor extends Component {
 
   onImageLoaded = () => {
     const {
-      aspectRatioArray,
+      // aspectRatioArray,
       // storeImageDimensions,
-      updateArtboardDimensions,
-      artboardDimensions,
-      artboardPadding,
-      imageDimensions,
-      updateCrop,
+      // updateArtboardDimensions,
+      // artboardDimensions,
+      // artboardPadding,
+      // imageDimensions,
+      // updateCrop,
       handleLoadingStatus
     } = this.props;
     // const propsToStore = {

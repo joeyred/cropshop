@@ -96,39 +96,6 @@ class Edit extends Component {
     loaded: false
   };
 
-  componentDidMount() {
-    // const {
-    //   frames,
-    //   selectedFrameId,
-    //   // images,
-    //   // imageId,
-    //   imageSize,
-    //   dispatch
-    // } = this.props;
-    // // const image = images.byId[imageId];
-    // let frame = frames.byId[selectedFrameId];
-    // if (!frame) {
-    //   frame = {
-    //     dimensions: [8, 8]
-    //   };
-    // }
-    //
-    // const crop = calcCropFullCentered(
-    //   frame.dimensions[0],
-    //   frame.dimensions[1],
-    //   imageSize.width,
-    //   imageSize.height
-    // );
-    // // console.log(crop);
-    //
-    // dispatch(
-    //   updateCropActionCreator({
-    //     ...crop,
-    //     aspect: frame.dimensions[0] / frame.dimensions[1]
-    //   })
-    // );
-  }
-
   getResponsiveProp = (component, prop) => {
     const { breakpoint } = this.props;
 
@@ -174,7 +141,8 @@ class Edit extends Component {
       rotate
       // dispatch
     } = this.props;
-    this.loadingStatus(true);
+    // this.loadingStatus(true);
+    this.setState({ loading: true, loaded: false });
     if (direction === 'left') {
       // dispatch(updateRotation(rotate - 90));
       return rotate - 90;
@@ -404,8 +372,8 @@ class Edit extends Component {
                   imageDimensions.width !== imageSize.width ||
                   imageDimensions.height !== imageSize.height
                 ) {
-                  console.log(size.width, imageSize.width);
-                  console.log(size.height, imageSize.height);
+                  // console.log(size.width, imageSize.width);
+                  // console.log(size.height, imageSize.height);
                   updateArtboardDimensions(
                     artboardDimensions,
                     artboardPadding,

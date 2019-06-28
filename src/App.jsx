@@ -1,56 +1,56 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import View from './components/View';
-import { setBreakpoint, setOrientation } from './redux/size';
+import { setBreakpoint } from './redux/size';
 import { activeBreakpoint } from './utils/breakpoints';
 
 import { Breakpoints } from './globals';
 
-import Icon from './components/Icon';
+// import Icon from './components/Icon';
 import ErrorBoundary from './components/ErrorBoundary';
 
 import './styles/_modal.scss';
 import './styles/foundation/main.scss';
 import styles from './App.module.scss';
 
-// const mapStateToProps = state => ({
-//   currentView: state.nav.currentView,
-//   images: state.image.images,
-//   selectedCollectionId: state.frame.selectedCollectionId,
-//   currentBreakpoint: state.size.breakpoint,
-//   appHeight: state.size.app.height,
-//   appWidth: state.size.app.width,
-//   isPortrait: state.size.app.isPortrait
-// });
+const mapStateToProps = state => ({
+  currentView: state.nav.currentView,
+  images: state.image.images,
+  selectedCollectionId: state.frame.selectedCollectionId,
+  currentBreakpoint: state.size.breakpoint,
+  appHeight: state.size.app.height
+  // appWidth: state.size.app.width,
+  // isPortrait: state.size.app.isPortrait
+});
 
-const mapStateToProps = state => {
-  console.log(state);
-  console.log(state.nav.currentView, state.editor.crop);
-  return {
-    currentView: state.nav.currentView,
-    images: state.image.images,
-    selectedCollectionId: state.frame.selectedCollectionId,
-    currentBreakpoint: state.size.breakpoint,
-    appHeight: state.size.app.height,
-    appWidth: state.size.app.width,
-    isPortrait: state.size.app.isPortrait
-  };
-};
+// const mapStateToProps = state => {
+//   console.log(state);
+//   console.log(state.nav.currentView, state.editor.crop);
+//   return {
+//     currentView: state.nav.currentView,
+//     images: state.image.images,
+//     selectedCollectionId: state.frame.selectedCollectionId,
+//     currentBreakpoint: state.size.breakpoint,
+//     appHeight: state.size.app.height,
+//     appWidth: state.size.app.width,
+//     isPortrait: state.size.app.isPortrait
+//   };
+// };
 
 class App extends Component {
   // state = {
   //   showWarning: false
   // };
 
-  onSize = ({ height, width }) => {
+  onSize = () => {
     const {
       currentBreakpoint,
-      dispatch,
-      appHeight
+      dispatch
+      // appHeight
       // appWidth,
       // isPortrait
     } = this.props;
-    console.log(appHeight, height);
+    // console.log(appHeight, height);
     // Handle setting current breakpoint
     const breakpoint = activeBreakpoint(Breakpoints);
     if (breakpoint !== currentBreakpoint) {

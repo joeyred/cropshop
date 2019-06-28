@@ -13,9 +13,9 @@ import PropTypes from 'prop-types'; // eslint-disable-line
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // import { compact, map, sortBy } from 'lodash';
-import compact from 'lodash/compact';
+// import compact from 'lodash/compact';
 import map from 'lodash/map';
-import sortBy from 'lodash/sortBy';
+// import sortBy from 'lodash/sortBy';
 // 3rd Party Components
 // import {
 //   Grid,
@@ -55,7 +55,7 @@ const FrameSelector = props => {
   const handleClick = id => {
     const aspect = frames.byId[id].dimensions;
     dispatch(updateSelectedFrame(id));
-    console.log(aspect, imageSize);
+    // console.log(aspect, imageSize);
     dispatch(updateCropFullCenter(aspect, imageSize));
   };
 

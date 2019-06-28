@@ -7,25 +7,21 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Filelink } from 'filestack-js';
 import { Grid, Cell, Button, Colors } from 'react-foundation';
 import { SizeMe } from 'react-sizeme';
-
-// import ContainerHeightUnits from '../components/ContainerHeightUnits';
+import Spinner from 'react-spinkit';
 
 import Image from '../components/Image';
 
 import * as NavActionCreators from '../redux/actions/nav';
 import { saveEdit } from '../redux/actions/image';
 import { Views } from '../globals';
-// import EditPreview from '../components/EditPreview';
 import { scaleCrop, generateTransform } from '../utils/transformations';
-// import { responsiveProp } from '../utils/breakpoints';
-// import { aspectRatioFill } from '../utils/crop';
 
 import styles from './Preview.module.scss';
 
@@ -50,8 +46,6 @@ const mapStateToProps = state => ({
 
 const save = ({
   imageId,
-  // productId,
-  // productVariantId,
   frameId,
   collectionId,
   previewUrl,
@@ -65,27 +59,13 @@ const save = ({
   dispatch(NavActionCreators.updateView(Views.GALLERY));
 };
 
-const Preview = props => {
-  const {
-    apiKey,
-    // imageProps,
-    zoom,
-    rotate,
-    flip,
-    flop,
-    crop,
-    imageSize,
-    dispatch,
-    images,
-    selectedFrameId,
-    selectedCollectionId,
-    currentIdBeingEdited
-  } = props;
-  const image = images.byId[currentIdBeingEdited];
-  const linkedImage = new Filelink(image.handle, apiKey);
-  const updateView = bindActionCreators(NavActionCreators.updateView, dispatch);
+class Preview extends Component {
+  state = {
+    loading: true
+  };
 
-  const handleDimensions = itemSize => {
+  handleDimensions = itemSize => {
+    const { rotate } = this.props;
     if (rotate === 90 || rotate === 270) {
       // console.log('rotation applied');
       return {
@@ -98,103 +78,120 @@ const Preview = props => {
       height: itemSize.height
     };
   };
-  // const { productId, productVariantId } = frames.byId[selectedFrameId];
-  // const { previewUrl } = images.byId[currentIdBeingEdited];
-  // const imageSrc = images.byId[currentIdBeingEdited].url;
-  // const handledImageSize = handleDimensions(imageSize);
-  const handledNaturalImageSize = handleDimensions(image);
-  const imageProps = {
-    naturalWidth: handledNaturalImageSize.width,
-    naturalHeight: handledNaturalImageSize.height,
-    width: imageSize.width,
-    height: imageSize.height
+
+  handleLoading = () => {
+    this.setState({ loading: false });
   };
-  // const imageProps = {
-  //   naturalWidth: image.width,
-  //   naturalHeight: image.height,
-  //   width: imageSize.width,
-  //   height: imageSize.height
-  // };
-  // console.log(imageProps);
-  // console.log(crop);
-  const newCrop = scaleCrop({ imageProps, crop, zoom });
-  const edit = { flip, flop, rotate, crop: newCrop };
-  const preview = generateTransform(linkedImage, edit);
 
-  return (
-    <Grid vertical className={styles.container}>
-      {/* Title */}
-      <Cell>
-        <h1>Like what you see?</h1>
-      </Cell>
+  render() {
+    const {
+      apiKey,
+      // imageProps,
+      zoom,
+      rotate,
+      flip,
+      flop,
+      crop,
+      imageSize,
+      dispatch,
+      images,
+      selectedFrameId,
+      selectedCollectionId,
+      currentIdBeingEdited
+    } = this.props;
+    const { loading } = this.state;
+    const image = images.byId[currentIdBeingEdited];
+    const linkedImage = new Filelink(image.handle, apiKey);
+    const updateView = bindActionCreators(
+      NavActionCreators.updateView,
+      dispatch
+    );
 
-      {/* Preview */}
-      <SizeMe monitorHeight>
-        {({ size }) => {
-          // const { width, height } = handleDimensions(newCrop);
-          // const { width, height } = newCrop;
-          // const renderedSize = aspectRatioFill(
-          //   width,
-          //   height,
-          //   size.width,
-          //   size.height
-          // );
-          const imgStyle = {};
+    const handledNaturalImageSize = this.handleDimensions(image);
+    const imageProps = {
+      naturalWidth: handledNaturalImageSize.width,
+      naturalHeight: handledNaturalImageSize.height,
+      width: imageSize.width,
+      height: imageSize.height
+    };
+    const newCrop = scaleCrop({ imageProps, crop, zoom });
+    const edit = { flip, flop, rotate, crop: newCrop };
+    const preview = generateTransform(linkedImage, edit);
 
-          imgStyle.maxHeight = `${size.height}px`;
-          // if (height > width) {
-          //   imgStyle.height = `${size.height}px`;
-          //   imgStyle.width = 'auto';
-          // } else {
-          //   imgStyle.width = `${size.width}px`;
-          //   imgStyle.height = 'auto';
-          // }
-          // console.log('RENDER THAT SIZE');
-          // console.log(renderedSize);
-          return (
-            <Cell className={styles.preview}>
-              <Image
-                style={imgStyle}
-                src={preview.url}
-                alt='Preview of your Edit'
-              />
+    return (
+      <Grid vertical className={styles.container}>
+        {/* Title */}
+        <Cell>
+          <h1>Like what you see?</h1>
+        </Cell>
+
+        {/* Preview */}
+        <SizeMe monitorHeight>
+          {({ size }) => {
+            const imgStyle = {};
+
+            imgStyle.maxHeight = `${size.height}px`;
+            return (
+              <Cell className={styles.preview}>
+                <Image
+                  style={imgStyle}
+                  src={preview.url}
+                  alt='Preview of your Edit'
+                  onLoad={this.handleLoading}
+                />
+                {loading && (
+                  <div
+                    className={styles.overlay}
+                    // style={{
+                    //   height: `${imageDimensions.height}px`,
+                    //   width: `${imageDimensions.width}px`
+                    // }}
+                  >
+                    <Spinner
+                      fadeIn='none'
+                      name='three-bounce'
+                      color='#f76e87'
+                    />
+                  </div>
+                )}
+              </Cell>
+            );
+          }}
+        </SizeMe>
+
+        {/* Buttons */}
+        <Cell>
+          <Grid className='align-center-middle text-center'>
+            <Cell className='auto'>
+              <Button
+                color={Colors.SECONDARY}
+                onClick={() => updateView(Views.EDIT)}
+              >
+                Back
+              </Button>
             </Cell>
-          );
-        }}
-      </SizeMe>
-
-      {/* Buttons */}
-      <Cell>
-        <Grid className='align-center-middle text-center'>
-          <Cell className='auto'>
-            <Button
-              color={Colors.SECONDARY}
-              onClick={() => updateView(Views.EDIT)}
-            >
-              Back
-            </Button>
-          </Cell>
-          <Cell className='auto'>
-            <Button
-              color={Colors.PRIMARY}
-              onClick={() =>
-                save({
-                  imageId: currentIdBeingEdited,
-                  frameId: selectedFrameId,
-                  collectionId: selectedCollectionId,
-                  previewUrl: preview.url,
-                  transformations: edit,
-                  dispatch
-                })
-              }
-            >
-              Save
-            </Button>
-          </Cell>
-        </Grid>
-      </Cell>
-    </Grid>
-  );
-};
+            <Cell className='auto'>
+              <Button
+                color={Colors.PRIMARY}
+                onClick={() =>
+                  save({
+                    imageId: currentIdBeingEdited,
+                    frameId: selectedFrameId,
+                    collectionId: selectedCollectionId,
+                    previewUrl: preview.url,
+                    transformations: edit,
+                    dispatch
+                  })
+                }
+              >
+                Save
+              </Button>
+            </Cell>
+          </Grid>
+        </Cell>
+      </Grid>
+    );
+  }
+}
 
 export default connect(mapStateToProps)(Preview);

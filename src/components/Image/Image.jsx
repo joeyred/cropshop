@@ -20,11 +20,22 @@ class Image extends Component {
   static propTypes = {
     src: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
-    style: PropTypes.shape({})
+    style: PropTypes.shape({}),
+    onLoad: PropTypes.oneOfType([PropTypes.bool, PropTypes.func])
   };
 
   static defaultProps = {
-    style: {}
+    style: {},
+    onLoad: false
+  };
+
+  onImageLoad = () => {
+    const { onLoad } = this.props;
+    this.setState({ loading: false });
+
+    if (onLoad) {
+      onLoad();
+    }
   };
 
   render() {
@@ -44,12 +55,7 @@ class Image extends Component {
 
     return (
       <div className={styles.container}>
-        <img
-          src={src}
-          alt={alt}
-          onLoad={() => this.setState({ loading: false })}
-          {...atts}
-        />
+        <img src={src} alt={alt} onLoad={this.onImageLoad} {...atts} />
         {loadingOverlay}
       </div>
     );
