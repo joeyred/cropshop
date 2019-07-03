@@ -148,7 +148,7 @@ export const animationSeries = ({ element, baseClassName, hooks, steps }) => {
   // ======== //
   // HOOK: Before
   // ======== //
-  if (hooks && hooks.before) hooks.before(element, progress);
+  if (hooks && hooks.before) hooks.before(element);
 
   window.requestAnimationFrame(animationStep);
 };

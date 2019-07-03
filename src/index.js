@@ -73,7 +73,7 @@ map(siteData.products, product => {
 });
 
 AppHeight.init();
-smoothscroll.polyfill();
+// smoothscroll.polyfill();
 
 ReactDOM.render(
   // eslint-disable-next-line react/jsx-filename-extension

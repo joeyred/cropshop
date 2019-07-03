@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+// import Icon from '../Icon';
+
 import { animationSeries } from '../../utils/animation';
 
 import styles from './Scrollable.module.scss';
@@ -37,11 +39,18 @@ class Scrollable extends Component {
       vertical ? styles.scrollY : styles.scrollX,
       styles.atEnd
     );
-    const durations = {
-      scrollToEnd: 600
-    };
+    // console.log(
+    //   scrollPosition,
+    //   scrollLength - clientLength,
+    //   scrollLength,
+    //   clientLength
+    // );
+    // const durations = {
+    //   scrollToEnd: 600
+    // };
     const keys = {
-      scrollDirection: vertical ? 'scrollTop' : 'scrollLeft'
+      scrollDirection: vertical ? 'scrollTop' : 'scrollLeft',
+      scrollDimension: vertical ? 'scrollHeight' : 'scrollWidth'
     };
     const maxScrollPosition = scrollLength - clientLength;
     // const distancePerFrame = maxScrollPosition / durations.scrollToEnd;
@@ -51,53 +60,60 @@ class Scrollable extends Component {
     //   scrollPosition = this.container.current.scrollHeight;
     // }
     let currentPosition = 0;
-    if (hint) {
-      element[keys.scrollDirection] = 1;
-      setTimeout(
-        () =>
-          animationSeries({
-            element,
-            baseClassName: 'scrolling',
-            steps: [
-              {
-                name: 'scrollToEnd',
-                duration: 300,
-                hooks: {
-                  beforeEachFrame: (el, progress) => {
-                    console.log(element[keys.scrollDirection]);
+    if (hint && maxScrollPosition !== 0) {
+      // NOTE Check for CSS support of scroll-behavior
+      if (CSS.supports('scroll-behavior', 'smooth')) {
+        element[keys.scrollDirection] = element[keys.scrollDimension];
+        setTimeout(() => {
+          element[keys.scrollDirection] = 0;
+        }, 500);
+        // NOTE This is literally just for Safari and iOS Safari
+      } else {
+        setTimeout(
+          () =>
+            animationSeries({
+              element,
+              baseClassName: 'scrolling',
+              steps: [
+                {
+                  name: 'scrollToEnd',
+                  duration: 360,
+                  hooks: {
+                    beforeEachFrame: (el, progress) => {
+                      // console.log(element[keys.scrollDirection]);
 
-                    // console.log(distancePerFrame);
-                    currentPosition = parseFloat(
-                      (maxScrollPosition * progress).toFixed(0)
-                    );
-                    console.log(currentPosition);
-                    el[keys.scrollDirection] = currentPosition;
-                    // element.scroll({ left: currentPosition });
-                    console.log('to end', el[keys.scrollDirection]);
+                      // console.log(distancePerFrame);
+                      currentPosition = parseFloat(
+                        (maxScrollPosition * progress).toFixed(0)
+                      );
+                      // console.log(currentPosition);
+                      element[keys.scrollDirection] = currentPosition;
+                      // element.scroll({ left: currentPosition });
+                      // console.log('to end', el[keys.scrollDirection]);
+                    }
+                  }
+                },
+                {
+                  name: 'scrollToBeginning',
+                  duration: 240,
+                  hooks: {
+                    beforeEachFrame: (el, progress) => {
+                      // console.log(element[keys.scrollDirection]);
+                      currentPosition =
+                        maxScrollPosition -
+                        (maxScrollPosition * progress).toFixed(0);
+                      // console.log(currentPosition);
+                      element[keys.scrollDirection] = currentPosition;
+                      // console.log(element[keys.scrollDirection]);
+                    }
                   }
                 }
-              },
-              {
-                name: 'scrollToBeginning',
-                duration: 200,
-                hooks: {
-                  beforeEachFrame: (el, progress) => {
-                    console.log(element[keys.scrollDirection]);
-                    currentPosition =
-                      maxScrollPosition -
-                      (maxScrollPosition * progress).toFixed(0);
-                    console.log(currentPosition);
-                    el[keys.scrollDirection] = currentPosition;
-                    console.log(element[keys.scrollDirection]);
-                  }
-                }
-              }
-            ]
-          }),
-        500
-      );
+              ]
+            }),
+          500
+        );
+      }
 
-      // element.scrollLeft = element.scrollWidth;
       // scrollPosition = element.scrollWidth;
     }
     this.setState({ scrollStyles: initStyles });
@@ -113,12 +129,12 @@ class Scrollable extends Component {
     const scrollLength = vertical ? element.scrollHeight : element.scrollWidth;
     const clientLength = vertical ? element.clientHeight : element.clientWidth;
 
-    console.log(
-      scrollPosition,
-      scrollLength - clientLength,
-      scrollLength,
-      clientLength
-    );
+    // console.log(
+    //   scrollPosition,
+    //   scrollLength - clientLength,
+    //   scrollLength,
+    //   clientLength
+    // );
 
     const scrolledToBeginning =
       scrollPosition === 0 || Math.sign(scrollPosition) === -1;
@@ -170,6 +186,7 @@ class Scrollable extends Component {
       <div className={css} onScroll={this.handleScroll}>
         <div className={styles.overlayAtBeginning} />
         <div className={styles.overlayAtEnd} />
+        <div className={styles.overlayHint} />
         <div data-cropshop-scroll='' className={styles.content} {...rest}>
           {children}
         </div>
