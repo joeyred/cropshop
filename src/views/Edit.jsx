@@ -304,148 +304,154 @@ class Edit extends Component {
             <TopBarTitle />
           </TopBarLeft>
         </TopBar>
-        <Grid vertical className={`${styles.container}`}>
+        <Grid
+          vertical={this.getResponsiveProp('grid', 'direction')}
+          className={`${styles.container}`}
+        >
           {/* Frame Select */}
           <SizeAwareCell
+            large={3}
             onSize={({ height }) =>
               dispatch(updateComponentHeight('frameSelector', height))
             }
           >
             <h1 className=''>Select A Size</h1>
-            <FrameSelector />
+            <FrameSelector
+              vertical={this.getResponsiveProp('frameSelector', 'direction')}
+            />
           </SizeAwareCell>
           {/* Image Editor */}
+          <Cell large={9}>
+            <SizeMe monitorHeight>
+              {({ size }) => {
+                const handledImageSize = this.handleDimensions(image);
+                const artboardPadding = 16;
+                const sanitizedSize = {};
 
-          <SizeMe monitorHeight>
-            {({ size }) => {
-              const handledImageSize = this.handleDimensions(image);
-              const artboardPadding = 16;
-              const sanitizedSize = {};
-
-              // Fixes any isses on initial load returning `undefined`;
-              if (size.width) {
-                sanitizedSize.width = size.width;
-              } else {
-                sanitizedSize.width = 0;
-              }
-              if (size.height) {
-                sanitizedSize.height = size.height;
-              } else {
-                sanitizedSize.height = 0;
-              }
-
-              const artboardDimensions = aspectRatioFill(
-                handledImageSize.width,
-                handledImageSize.height,
-                sanitizedSize.width,
-                sanitizedSize.height
-              );
-
-              const containerDimensions = {
-                width: artboardDimensions.width - artboardPadding * 2,
-                height: artboardDimensions.height - artboardPadding * 2
-              };
-
-              const imageDimensions = {
-                width: artboardDimensions.width - artboardPadding * 2,
-                height: artboardDimensions.height - artboardPadding * 2
-              };
-              if (size.height && size.width) {
-                if (!loading && !loaded) {
-                  updateArtboardDimensions(
-                    artboardDimensions,
-                    artboardPadding,
-                    imageDimensions
-                  );
-                  const initCrop = calcCropFullCentered(
-                    frame.dimensions[0],
-                    frame.dimensions[1],
-                    imageDimensions.width,
-                    imageDimensions.height
-                  );
-                  // console.log(crop);
-
-                  dispatch(
-                    updateCropActionCreator({
-                      ...initCrop,
-                      aspect: frame.dimensions[0] / frame.dimensions[1]
-                    })
-                  );
-
-                  this.setState({ loaded: true });
+                // Fixes any isses on initial load returning `undefined`;
+                if (size.width) {
+                  sanitizedSize.width = size.width;
+                } else {
+                  sanitizedSize.width = 0;
                 }
-                if (
-                  imageDimensions.width !== imageSize.width ||
-                  imageDimensions.height !== imageSize.height
-                ) {
-                  // console.log(size.width, imageSize.width);
-                  // console.log(size.height, imageSize.height);
-                  updateArtboardDimensions(
-                    artboardDimensions,
-                    artboardPadding,
-                    imageDimensions
-                  );
+                if (size.height) {
+                  sanitizedSize.height = size.height;
+                } else {
+                  sanitizedSize.height = 0;
                 }
+
+                const artboardDimensions = aspectRatioFill(
+                  handledImageSize.width,
+                  handledImageSize.height,
+                  sanitizedSize.width,
+                  sanitizedSize.height
+                );
+
+                const containerDimensions = {
+                  width: artboardDimensions.width - artboardPadding * 2,
+                  height: artboardDimensions.height - artboardPadding * 2
+                };
+
+                const imageDimensions = {
+                  width: artboardDimensions.width - artboardPadding * 2,
+                  height: artboardDimensions.height - artboardPadding * 2
+                };
+                if (size.height && size.width) {
+                  if (!loading && !loaded) {
+                    updateArtboardDimensions(
+                      artboardDimensions,
+                      artboardPadding,
+                      imageDimensions
+                    );
+                    const initCrop = calcCropFullCentered(
+                      frame.dimensions[0],
+                      frame.dimensions[1],
+                      imageDimensions.width,
+                      imageDimensions.height
+                    );
+                    // console.log(crop);
+
+                    dispatch(
+                      updateCropActionCreator({
+                        ...initCrop,
+                        aspect: frame.dimensions[0] / frame.dimensions[1]
+                      })
+                    );
+
+                    this.setState({ loaded: true });
+                  }
+                  if (
+                    imageDimensions.width !== imageSize.width ||
+                    imageDimensions.height !== imageSize.height
+                  ) {
+                    // console.log(size.width, imageSize.width);
+                    // console.log(size.height, imageSize.height);
+                    updateArtboardDimensions(
+                      artboardDimensions,
+                      artboardPadding,
+                      imageDimensions
+                    );
+                  }
+                }
+
+                return (
+                  <AppHU
+                    heightToSubtract={frameSelectorHeight + toolbarHeight}
+                    asContainer={Cell}
+                  >
+                    <ImageEditor
+                      imageSrc={this.handleImageEditViaApi(linkedImage)}
+                      containerDimensions={containerDimensions}
+                      imageDimensions={imageDimensions}
+                      handleLoadingStatus={this.loadingStatus}
+                      loadingStatus={loading}
+                      artboardDimensions={artboardDimensions}
+                      artboardPadding={artboardPadding}
+                      crop={crop}
+                      height={sanitizedSize.height}
+                      width={sanitizedSize.width}
+                      updateCrop={updateCrop}
+                      updateArtboardDimensions={updateArtboardDimensions}
+                      storeImageDimensions={storeImageDimensions}
+                      aspectRatioArray={frame.dimensions}
+                    />
+                  </AppHU>
+                );
+              }}
+            </SizeMe>
+
+            {/* Tool Bar */}
+            <SizeAwareCell
+              onSize={({ height }) =>
+                dispatch(updateComponentHeight('toolbar', height))
               }
-
-              return (
-                <AppHU
-                  heightToSubtract={frameSelectorHeight + toolbarHeight}
-                  asContainer={Cell}
-                >
-                  <ImageEditor
-                    imageSrc={this.handleImageEditViaApi(linkedImage)}
-                    containerDimensions={containerDimensions}
-                    imageDimensions={imageDimensions}
-                    handleLoadingStatus={this.loadingStatus}
-                    loadingStatus={loading}
-                    artboardDimensions={artboardDimensions}
-                    artboardPadding={artboardPadding}
-                    crop={crop}
-                    height={sanitizedSize.height}
-                    width={sanitizedSize.width}
-                    updateCrop={updateCrop}
-                    updateArtboardDimensions={updateArtboardDimensions}
-                    storeImageDimensions={storeImageDimensions}
-                    aspectRatioArray={frame.dimensions}
-                  />
-                </AppHU>
-              );
-            }}
-          </SizeMe>
-
-          {/* Tool Bar */}
-          <SizeAwareCell
-            onSize={({ height }) =>
-              dispatch(updateComponentHeight('toolbar', height))
-            }
-          >
-            <Grid vertical={false} alignY='middle'>
-              <Cell auto='all'>
-                <Toolbar style={{ padding: '0 0.625rem' }}>
-                  {/* <Toolbar.Group label='Zoom'>
+            >
+              <Grid vertical={false} alignY='middle'>
+                <Cell auto='all'>
+                  <Toolbar style={{ padding: '0 0.625rem' }}>
+                    {/* <Toolbar.Group label='Zoom'>
                           <Toolbar.Button icon='ZoomIn' label='In' />
                           <Toolbar.Button icon='ZoomOut' label='Out' />
                         </Toolbar.Group> */}
-                  <Toolbar.Group label='Rotate'>
-                    <Toolbar.Button
-                      icon='RotateLeft'
-                      label='Left'
-                      // handleClick={() => this.handleRotate('left')}
-                      handleClick={() =>
-                        dispatch(updateRotation(this.handleRotate('left')))
-                      }
-                    />
-                    <Toolbar.Button
-                      icon='RotateRight'
-                      label='Right'
-                      // handleClick={() => this.handleRotate('right')}
-                      handleClick={() =>
-                        dispatch(updateRotation(this.handleRotate('right')))
-                      }
-                    />
-                  </Toolbar.Group>
-                  {/* <Toolbar.Group label='Flip'>
+                    <Toolbar.Group label='Rotate'>
+                      <Toolbar.Button
+                        icon='RotateLeft'
+                        label='Left'
+                        // handleClick={() => this.handleRotate('left')}
+                        handleClick={() =>
+                          dispatch(updateRotation(this.handleRotate('left')))
+                        }
+                      />
+                      <Toolbar.Button
+                        icon='RotateRight'
+                        label='Right'
+                        // handleClick={() => this.handleRotate('right')}
+                        handleClick={() =>
+                          dispatch(updateRotation(this.handleRotate('right')))
+                        }
+                      />
+                    </Toolbar.Group>
+                    {/* <Toolbar.Group label='Flip'>
                           <Toolbar.Button
                             icon='Flip'
                             label='Horizontal'
@@ -458,18 +464,19 @@ class Edit extends Component {
                             handleClick={() => dispatch(toggleOption('flip'))}
                           />
                         </Toolbar.Group> */}
-                </Toolbar>
-              </Cell>
-              <Cell auto='all' className='align-center-middle text-center'>
-                <Button
-                  color={Colors.SECONDARY}
-                  onClick={() => dispatch(updateView(Views.PREVIEW))}
-                >
-                  Apply Edit
-                </Button>
-              </Cell>
-            </Grid>
-          </SizeAwareCell>
+                  </Toolbar>
+                </Cell>
+                <Cell auto='all' className='align-center-middle text-center'>
+                  <Button
+                    color={Colors.SECONDARY}
+                    onClick={() => dispatch(updateView(Views.PREVIEW))}
+                  >
+                    Apply Edit
+                  </Button>
+                </Cell>
+              </Grid>
+            </SizeAwareCell>
+          </Cell>
         </Grid>
       </div>
     );
