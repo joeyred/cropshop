@@ -91,7 +91,10 @@ class Upload extends Component {
       accept: 'image/*',
       maxFiles: 20,
       disableTransformer: true,
-      uploadInBackground: false
+      uploadInBackground: false,
+      customText: {
+        Upload: 'Start Creating'
+      }
       // viewType: 'grid',
       // modalSize: [300, 500]
     };
