@@ -12,6 +12,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // Redux
 import { Provider } from 'react-redux';
+import smoothscroll from 'smoothscroll-polyfill';
 import uniqid from 'uniqid';
 import map from 'lodash/map';
 
@@ -72,6 +73,7 @@ map(siteData.products, product => {
 });
 
 AppHeight.init();
+smoothscroll.polyfill();
 
 ReactDOM.render(
   // eslint-disable-next-line react/jsx-filename-extension
