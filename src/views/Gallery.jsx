@@ -123,9 +123,9 @@ const Gallery = props => {
             _filestack_handle: image.handle,
             _filestack_img_url: image.edit[selectedCollectionId].previewSrc,
             _collection_name: selectedCollectionId,
-            _edit: JSON.stringify(
-              image.edit[selectedCollectionId].transformations
-            ),
+            // _edit: JSON.stringify(
+            //   image.edit[selectedCollectionId].transformations
+            // ),
             filename: image.filename
           }
         };
