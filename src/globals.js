@@ -39,7 +39,7 @@ export const Views = {
 export const Breakpoints = {
   sm: 0,
   md: 640,
-  lg: 1024,
+  lg: 740,
   xl: 1200,
   xxl: 1440
 };

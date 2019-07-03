@@ -262,12 +262,13 @@ const Gallery = props => {
             heightToSubtract={buttonRowHeight + headingRowHeight}
             asContainer={Cell}
             scrollable
+            padding
           >
             <ImageList
               images={images}
               frames={frames}
               selectedCollectionId={selectedCollectionId}
-              temsPerRow={responsiveItemsPerRow}
+              itemsPerRow={responsiveItemsPerRow}
               isEditing={isEditing}
               handleClick={imageToEditor}
               handleCountUpdate={updateQuantity}

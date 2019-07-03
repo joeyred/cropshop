@@ -95,6 +95,7 @@ class ImageEditor extends Component {
             {/* TODO Insert loading overlay */}
             <ReactCrop
               src={imageSrc}
+              className={loadingStatus ? styles.hideCrop : null}
               style={{
                 height: `${imageDimensions.height}px`,
                 width: `${imageDimensions.width}px`

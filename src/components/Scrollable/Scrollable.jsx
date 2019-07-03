@@ -20,12 +20,14 @@ class Scrollable extends Component {
   static defaultProps = {
     vertical: true,
     hint: false,
+    padding: false,
     asContainer: false
   };
 
   static propTypes = {
     vertical: PropTypes.bool,
     hint: PropTypes.bool,
+    padding: PropTypes.bool,
     asContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool])
   };
 
@@ -163,10 +165,18 @@ class Scrollable extends Component {
   };
 
   render() {
-    const { vertical, asContainer, hint, children, ...rest } = this.props;
+    const {
+      vertical,
+      asContainer,
+      hint,
+      children,
+      padding,
+      ...rest
+    } = this.props;
     const { scrollStyles } = this.state;
     const css = classnames(
       vertical ? styles.scrollY : styles.scrollX,
+      padding ? styles.padding : null,
       scrollStyles
     );
     const ElementToRender = asContainer;

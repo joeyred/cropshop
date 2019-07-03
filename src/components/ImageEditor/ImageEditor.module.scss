@@ -93,6 +93,11 @@
       //   background-color: rgba(247, 110, 135, 0.2);
       // }
     }
+    .hideCrop {
+      :global(.ReactCrop__crop-selection) {
+        opacity: 0;
+      }
+    }
 
     :global(.ReactCrop__image) {
       // position: absolute;

@@ -44,7 +44,7 @@ $animation: '#{$full-class}__animate';
   @include breakpoint(large) {
     height: auto;
     width: 100%;
-    max-width: 50rem;
+    max-width: 80rem;
     max-height: 100vh;
     // padding: 1.875rem;
     margin: 1.875rem;

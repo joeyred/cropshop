@@ -20,6 +20,7 @@
 :global(#{$global_namespace}) {
   .container {
     padding: 5px;
+    height: 100%;
   }
 
   .active {
@@ -35,6 +36,24 @@
     flex-flow: row nowrap;
     margin: -1rem 0;
     // justify-content: space-around;
+
+    .frame {
+      flex: 1 0 20%;
+      max-width: 20%;
+      min-width: 3.9rem;
+    }
+  }
+
+  .column {
+    display: flex;
+    flex-flow: column nowrap;
+    margin: -1rem 0;
+    height: 100%;
+
+    .frame {
+      padding: 0 2rem;
+      margin-bottom: 1rem;
+    }
   }
 
   .frame {
@@ -42,9 +61,6 @@
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    flex: 1 0 20%;
-    max-width: 20%;
-    min-width: 3.9rem;
   }
 
   .button {
