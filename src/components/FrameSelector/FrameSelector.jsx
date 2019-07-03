@@ -65,6 +65,7 @@ const FrameSelector = props => {
       <Scrollable
         vertical={vertical}
         style={{ height: '100%', padding: '2rem 0' }}
+        hint
       >
         <div className={vertical ? styles.column : styles.row}>
           {map(frameList, frame => {
