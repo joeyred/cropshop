@@ -12,7 +12,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // Redux
 import { Provider } from 'react-redux';
-import smoothscroll from 'smoothscroll-polyfill';
+// import smoothscroll from 'smoothscroll-polyfill';
 import uniqid from 'uniqid';
 import map from 'lodash/map';
 
