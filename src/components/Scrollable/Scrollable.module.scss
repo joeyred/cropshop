@@ -37,7 +37,7 @@ $scrollable-shadow: #ffffff;
   .content {
     padding: 1rem 0;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: scroll;
+    -webkit-overflow-scrolling: touch;
   }
 
   .overlayAtBeginning,
@@ -52,6 +52,7 @@ $scrollable-shadow: #ffffff;
     position: relative;
     .content {
       overflow-x: scroll;
+      // -webkit-overflow-scrolling: touch;
     }
 
     .overlayAtBeginning,
@@ -112,8 +113,10 @@ $scrollable-shadow: #ffffff;
 
   .scrollY {
     position: relative;
+    height: 100%;
     .content {
       overflow-y: scroll;
+      // -webkit-overflow-scrolling: touch;
     }
 
     .overlayAtBeginning,
@@ -123,24 +126,32 @@ $scrollable-shadow: #ffffff;
       width: 100%;
     }
     .overlayAtBeginning {
-      top: 0.625rem;
-      @include breakpoint(medium) {
-        top: 0.9375rem;
-      }
+      top: 0;
     }
     .overlayAtEnd {
-      bottom: #{0.625 * 2}rem;
-      @include breakpoint(medium) {
-        bottom: #{0.9375 * 2}rem;
-      }
+      bottom: 0;
     }
+    &.padding {
+      .overlayAtBeginning {
+        top: 0.625rem;
+        @include breakpoint(medium) {
+          top: 0.9375rem;
+        }
+      }
+      .overlayAtEnd {
+        bottom: #{0.625 * 2}rem;
+        @include breakpoint(medium) {
+          bottom: #{0.9375 * 2}rem;
+        }
+      }
 
-    &.atBeginning .overlayAtBeginning {
-      background: linear-gradient(
-        to bottom,
-        $shadow-color 0%,
-        rgba($shadow-color, 0) 100%
-      );
+      &.atBeginning .overlayAtBeginning {
+        background: linear-gradient(
+          to bottom,
+          $shadow-color 0%,
+          rgba($shadow-color, 0) 100%
+        );
+      }
     }
 
     &.inBetween {

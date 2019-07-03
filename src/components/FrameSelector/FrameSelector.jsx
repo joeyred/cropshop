@@ -46,7 +46,7 @@ const FrameSelector = props => {
     selectedFrameId,
     // selectedCollectionId,
     frameList,
-    // direction,
+    direction,
     imageSize,
 
     dispatch
@@ -58,41 +58,15 @@ const FrameSelector = props => {
     // console.log(aspect, imageSize);
     dispatch(updateCropFullCenter(aspect, imageSize));
   };
-
-  // // This fixes loading issues on first render
-  // let tempFrame = selectedFrameId;
-  // console.log('I just sorted stuff again');
-  // // Get the IDs for the frames to display
-  // const filteredFrames = compact(
-  //   map(frames.allIds, id => {
-  //     let isInCollection = false;
-  //     const frame = frames.byId[id];
-  //     map(frame.collections, collection => {
-  //       // console.log(collection.handle);
-  //       if (collection.handle === selectedCollectionId) {
-  //         isInCollection = true;
-  //       }
-  //     });
-  //
-  //     if (isInCollection) {
-  //       return frame;
-  //     }
-  //     return null;
-  //   })
-  // );
-  // const sortedFrames = sortBy(filteredFrames, [
-  //   object => {
-  //     return object.width < object.height
-  //       ? object.height / object.width
-  //       : object.width / object.height;
-  //   },
-  //   'height'
-  // ]);
+  const vertical = direction === 'vertical';
 
   return (
     <div className={styles.container}>
-      <Scrollable vertical={false}>
-        <div className={styles.row}>
+      <Scrollable
+        vertical={vertical}
+        style={{ height: '100%', padding: '2rem 0' }}
+      >
+        <div className={vertical ? styles.column : styles.row}>
           {map(frameList, frame => {
             // if (tempFrame === null) {
             //   tempFrame = frame.id;
@@ -127,8 +101,8 @@ const FrameSelector = props => {
 };
 
 FrameSelector.defaultProps = {
-  frames: {}
-  // direction: 'horizontal'
+  frames: {},
+  direction: 'horizontal'
   // clickHandler: (index) => console.log(`FrameSelector - Index Selected: ${index}`)
 };
 
@@ -136,9 +110,9 @@ FrameSelector.propTypes = {
   frames: PropTypes.shape({
     byId: PropTypes.object,
     allIds: PropTypes.array
-  })
+  }),
   // selectedFrameId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
-  // direction: PropTypes.oneOf(['vertical', 'horizontal'])
+  direction: PropTypes.oneOf(['vertical', 'horizontal'])
   // clickHandler:     PropTypes.func,
 };
 
