@@ -42,6 +42,7 @@ const sanitizeCrop = crop => {
 };
 
 export const scaleCrop = ({ imageProps, zoom = false, crop }) => {
+  console.log(crop);
   const { naturalWidth, naturalHeight, width, height } = imageProps;
   // console.log(imageProps);
 
@@ -52,8 +53,10 @@ export const scaleCrop = ({ imageProps, zoom = false, crop }) => {
   if (crop) {
     newCrop.x = crop.x * scaleX;
     newCrop.y = crop.y * scaleY;
-    newCrop.width = crop.width * scaleX;
+    // newCrop.width = crop.width * scaleX;
+    // newCrop.height = crop.width * scaleX * crop.aspect;
     newCrop.height = crop.height * scaleY;
+    newCrop.width = crop.height * scaleY * crop.aspect;
   }
 
   // console.log(newCrop);
