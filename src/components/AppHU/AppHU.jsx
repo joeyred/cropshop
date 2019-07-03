@@ -14,11 +14,13 @@ const AppHU = props => {
   const {
     topbarHeight,
     scrollable,
+    padding,
     appHeight,
     heightToSubtract,
     keepTopBarHeight,
     heightUnit,
     asContainer,
+    disable,
     style,
     dispatch,
     // className,
@@ -43,11 +45,18 @@ const AppHU = props => {
     (appHeight - heightToSubtract - topbarHeight) * percentage;
   // Get the height to assign the container/element/component
   const height = keepTopBarHeight ? heightKeepTopBar : heightSubtractTopBar;
-  styleAtt.height = `${height}px`;
+  if (!disable) {
+    styleAtt.height = `${height}px`;
+  }
 
   if (scrollable) {
     return (
-      <Scrollable style={styleAtt} asContainer={asContainer} {...rest}>
+      <Scrollable
+        padding={padding}
+        style={styleAtt}
+        asContainer={asContainer}
+        {...rest}
+      >
         {children}
       </Scrollable>
     );
@@ -75,21 +84,25 @@ AppHU.defaultProps = {
    */
   asContainer: false,
   scrollable: false,
+  padding: false,
   heightUnit: 100,
   topbarHeight: 0,
   appHeight: 0,
   heightToSubtract: 0,
-  keepTopBarHeight: false
+  keepTopBarHeight: false,
+  disable: false
 };
 
 AppHU.propTypes = {
   asContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   scrollable: PropTypes.bool,
+  padding: PropTypes.bool,
   heightUnit: PropTypes.number,
   topbarHeight: PropTypes.number,
   appHeight: PropTypes.number,
   heightToSubtract: PropTypes.number,
-  keepTopBarHeight: PropTypes.bool
+  keepTopBarHeight: PropTypes.bool,
+  disable: PropTypes.bool
 };
 
 export default connect(mapStateToProps)(AppHU);
