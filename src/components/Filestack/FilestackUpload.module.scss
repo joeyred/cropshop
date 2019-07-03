@@ -225,5 +225,34 @@
         }
       }
     }
+    :global(.fsp-cloud__container) {
+      height: 100%;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+    :global(.fsp-grid) {
+      padding: 0.625rem;
+    }
+    :global(.fps-grid__type-grid) {
+      padding: 0.625rem;
+    }
+    :global(.fps-grid__type-grid .fsp-grid__cell) {
+      padding: 0.625rem;
+      flex: 0 1 50%;
+      width: 50%;
+    }
+    :global(.fps-grid__type-list .fsp-grid__cell) {
+      padding: 0 0.625rem;
+      margin: 0.3rem 0;
+    }
+    :global(.fsp-cloud__files-container) {
+      height: 100%;
+    }
+    :global(.fsp-cloud__breadcrumbs) {
+      padding: 1rem;
+    }
+    :global(.fsp-cloud__folder-view) {
+      height: 100%;
+    }
   }
 }
