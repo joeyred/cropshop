@@ -42,6 +42,12 @@
       max-width: 20%;
       min-width: 3.9rem;
     }
+
+    .scrollableFrame {
+      flex: 1 0 18%;
+      max-width: 18%;
+      min-width: 3.9rem;
+    }
   }
 
   .column {
@@ -50,8 +56,11 @@
     margin: -1rem 0;
     height: 100%;
 
-    .frame {
+    .frame,
+    .scrollableFrame {
       padding: 0 2rem;
+      // flex: 1 0 18%;
+      // max-height: 18%;
       margin-bottom: 1rem;
     }
   }
