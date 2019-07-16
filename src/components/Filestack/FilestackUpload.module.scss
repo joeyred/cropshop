@@ -16,22 +16,26 @@
 @import '../../styles/_namespace';
 @import '../../styles/foundation/_settings';
 @import '../../../node_modules/foundation-sites/scss/foundation';
+
 :global(#{$global_namespace}) {
-  :gloabl(.fsp-summary) {
+  :global(.fsp-summary) {
     height: 100%;
     overflow-y: hidden;
   }
+
   .overrides {
     // Main Container Injected by Filstack
     :global(.fsp-picker--inline) {
       min-height: 1px;
       min-width: 1px;
+
       :global(.fsp-picker) {
         z-index: 10;
         position: relative;
         background: $white;
         color: $body-font-color;
       }
+
       :global(.fsp-modal) {
         position: relative;
         display: flex;
@@ -41,6 +45,8 @@
     }
 
     :global(.fsp-content) {
+      // display: flex;
+      // flex-flow: column;
       width: 100%;
       height: 100%;
       padding-top: 1rem;
@@ -56,6 +62,7 @@
       line-height: $header-lineheight;
       color: #ed4040;
     }
+
     // For Other Sources (Cloud & Social Media)
     :global(.fsp-source-auth__wrapper) {
       position: relative;
@@ -63,6 +70,7 @@
       left: 0;
       transform: none;
     }
+
     // Sub-Header
     :global(.fsp-text__subheader) {
       color: $body-font-color;
@@ -70,10 +78,18 @@
 
     :global(.fsp-button) {
       @include button;
+
+      position: relative;
       margin-bottom: 16px;
       letter-spacing: 1px;
-      // background-color: $primary-color;
-      // border-radius: 0;
+
+      :global(.fsp-badge) {
+        position: absolute;
+        top: -0.425rem;
+        right: -0.425rem;
+        background: $secondary-color;
+        color: $white;
+      }
     }
 
     :global(.fsp-modal__sidebar) {
@@ -90,6 +106,7 @@
       //   width: 240px;
       // }
     }
+
     :global(.fsp-modal__body) {
       position: relative;
       box-sizing: border-box;
@@ -108,8 +125,10 @@
     }
 
     :global(.fsp-summary) {
+      display: flex;
+      flex-flow: column;
       height: 100%;
-      // overflow-y: hidden;
+      overflow-y: hidden;
     }
 
     :global(.fsp-summary__header) {
@@ -121,21 +140,45 @@
     }
 
     :global(.fsp-summary__body) {
-      padding: 0.625rem;
+      display: flex;
+      flex-flow: column;
+      padding: 0.625rem 0;
       height: 100%;
-      overflow-y: visible;
+      padding-bottom: 8rem;
+      overflow-y: scroll;
+      overflow-x: visible;
       // -webkit-overflow-scrolling: touch;
-      > div:first-child {
-        height: 100%;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
+
+      > div:not(:global(.fsp-footer)) {
+        width: 100%;
+        // flex: 1 1 auto;
+        padding: 0 0.625rem;
+        // height: 100%;
+        margin-bottom: 1rem;
+
         :global(.fsp-summary__item) {
           &:last-child {
-            margin-bottom: 15rem;
+            // margin-bottom: 15rem;
           }
         }
-        // padding-bottom: 15rem;
       }
+    }
+
+    :global(.fsp-footer) {
+      // order: -1;
+      position: fixed;
+      box-sizing: border-box;
+      // top: 28rem;
+      // right: 0;
+      // left: 0;
+      bottom: 0;
+      border: none;
+      // overflow: visible;
+      height: auto;
+      background: $white;
+      z-index: 999999;
+      padding: 0.625rem;
+      // transform: translate3d(0, 0, 0);
     }
 
     :global(.fsp-summary__item) {
@@ -157,6 +200,7 @@
     :global(.fsp-drop-area-container) {
       padding: 1.875rem 1.875rem 4rem;
     }
+
     :global(.fsp-drop-area__title) {
       margin-top: 75px;
     }
@@ -164,10 +208,12 @@
     :global(.fsp-header) {
       display: none;
     }
+
     :global(.fsp-mobile-menu) {
       // No need to display the mobile menu icon
       display: none;
     }
+
     :global(.fsp-source-list) {
       position: relative;
       flex-direction: column;
@@ -177,42 +223,32 @@
       width: 240px;
       height: 100%;
     }
+
     :global(.fsp-source-list__item) {
       width: 240px;
       height: 50px;
     }
+
     :global(.fsp-source-list__icon) {
       width: 38px;
       height: 38px;
       margin: 0 16px 0 11px;
     }
-    :global(.fsp-footer) {
-      position: fixed;
-      bottom: 0px;
-      box-sizing: border-box;
-      // right: 0;
-      // left: 0;
-      border: none;
-      // overflow: visible;
-      height: auto;
-      background: $white;
-      z-index: 999999;
-      padding: 0.625rem;
-      // width: calc(100% + 60px);
-      // margin-left: -60px;
-      // transform: translate3d(0, 0, 0);
-    }
+
     :global(.fsp-footer__nav) {
       display: flex;
       flex-flow: row wrap;
       justify-content: space-between;
+
       span {
         flex: 0 1 auto;
       }
     }
+
     :global(.fsp-footer--appeared) {
       z-index: 10090;
     }
+
     :global(.fsp-footer__nav--right) {
       // width: 100%;
 
@@ -220,37 +256,46 @@
         display: flex;
         flex-flow: row wrap;
         justify-content: space-between;
+
         :global(.fsp-button):last-child {
           margin-left: 0.625rem;
         }
       }
     }
+
     :global(.fsp-cloud__container) {
       height: 100%;
       overflow-y: scroll;
       -webkit-overflow-scrolling: touch;
     }
+
     :global(.fsp-grid) {
       padding: 0.625rem;
     }
+
     :global(.fps-grid__type-grid) {
       padding: 0.625rem;
     }
+
     :global(.fps-grid__type-grid .fsp-grid__cell) {
       padding: 0.625rem;
       flex: 0 1 50%;
       width: 50%;
     }
+
     :global(.fps-grid__type-list .fsp-grid__cell) {
       padding: 0 0.625rem;
       margin: 0.3rem 0;
     }
+
     :global(.fsp-cloud__files-container) {
       height: 100%;
     }
+
     :global(.fsp-cloud__breadcrumbs) {
       padding: 1rem;
     }
+
     :global(.fsp-cloud__folder-view) {
       height: 100%;
     }
