@@ -51,22 +51,6 @@ class Upload extends Component {
     dispatch(NavActionCreators.updateView(Views.GALLERY));
   };
 
-  // addImage = image => {
-  //   const { handle } = image;
-  //   const { dispatch } = this.props;
-  //
-  //   axios
-  //     .get(`https://cdn.filestackcontent.com/imagesize/${handle}`)
-  //     .then(response => {
-  //       // console.log(response);
-  //       const { height, width } = response.data;
-  //       const payload = { ...image, height, width };
-  //       console.log(payload);
-  //       dispatch(ImageActionCreators.addImage(payload));
-  //     })
-  //     .catch(error => console.log(error));
-  // };
-
   render() {
     const { apiKey, images, availableHeight, dispatch } = this.props;
     // console.log(apiKey);
@@ -88,12 +72,21 @@ class Upload extends Component {
         'facebook',
         'googledrive'
       ],
-      accept: 'image/*',
+      accept: [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/heic',
+        'image/heif'
+      ],
       maxFiles: 20,
       disableTransformer: true,
       uploadInBackground: false,
       customText: {
-        Upload: 'Start Creating'
+        Upload: 'Start Creating',
+        'Deselect All': 'Remove All',
+        'Upload more': 'Add More',
+        'View/Edit Selected': 'View Selected'
       }
       // viewType: 'grid',
       // modalSize: [300, 500]

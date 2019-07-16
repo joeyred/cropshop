@@ -36,7 +36,7 @@ const filteredFrames = (collectionName, frames) => {
       const frame = frames.byId[id];
       map(frame.collections, collection => {
         // console.log(collection.handle);
-        if (collection.handle === collectionName) {
+        if (collection.title === collectionName) {
           isInCollection = true;
         }
       });

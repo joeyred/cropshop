@@ -27,7 +27,6 @@
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "smoothscroll-polyfill": "^0.4.4",
     "source-map-explorer": "^2.0.1",
     "uniqid": "^5.0.3"
   },
@@ -70,6 +69,10 @@
     "prettier-eslint": "^8.8.2",
     "renamer": "^1.1.2",
     "replace-in-file": "^4.1.0",
-    "require-dot-file": "^0.4.0"
+    "require-dot-file": "^0.4.0",
+    "stylelint": "^10.1.0",
+    "stylelint-config-css-modules": "^1.4.0",
+    "stylelint-config-standard": "^18.3.0",
+    "stylelint-scss": "^3.9.1"
   }
 }

@@ -59,7 +59,8 @@ const FrameSelector = props => {
     dispatch(updateCropFullCenter(aspect, imageSize));
   };
   const vertical = direction === 'vertical';
-
+  const frameStyles =
+    frameList.length > 5 ? styles.scrollableFrame : styles.frame;
   return (
     <div className={styles.container}>
       <Scrollable
@@ -76,7 +77,7 @@ const FrameSelector = props => {
             // }
             const active = frame.id === selectedFrameId;
             return (
-              <div key={frame.id} className={styles.frame}>
+              <div key={frame.id} className={frameStyles}>
                 <button
                   type='button'
                   className={`${active ? styles.active : null} ${
@@ -104,7 +105,6 @@ const FrameSelector = props => {
 FrameSelector.defaultProps = {
   frames: {},
   direction: 'horizontal'
-  // clickHandler: (index) => console.log(`FrameSelector - Index Selected: ${index}`)
 };
 
 FrameSelector.propTypes = {
@@ -112,7 +112,10 @@ FrameSelector.propTypes = {
     byId: PropTypes.object,
     allIds: PropTypes.array
   }),
-  // selectedFrameId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+  // selectedFrameId: PropTypes.oneOfType([
+  //   PropTypes.string,
+  //   PropTypes.bool
+  // ]).isRequired,
   direction: PropTypes.oneOf(['vertical', 'horizontal'])
   // clickHandler:     PropTypes.func,
 };

@@ -31,11 +31,12 @@ const Thumbnail = props => {
     xxl: 1000
   };
 
-  const squareThumbnail = new Filelink(handle, apiKey);
-  const pureSrc = squareThumbnail.toString();
+  const linkedImage = new Filelink(handle, apiKey);
+  linkedImage.rotate({ deg: 'exif' });
+  const pureSrc = linkedImage.toString();
   // console.log(pureSrc);
   const src = square
-    ? squareThumbnail
+    ? linkedImage
         .resize({
           fit: 'crop',
           height: size[breakpoint],
