@@ -15,13 +15,13 @@ import { Provider } from 'react-redux';
 // import smoothscroll from 'smoothscroll-polyfill';
 import uniqid from 'uniqid';
 import map from 'lodash/map';
-
+import SimpleCrypto from 'simple-crypto-js';
 import store from './redux/store';
 
 // This will do fun stuff outside the scope of React
 import CropShopButton from './utils/CropShopButton';
 import AppHeight from './utils/onResize';
-import { fetchApiKey } from './redux/actions/filestack';
+// import { fetchApiKey } from './redux/actions/filestack';
 import { externalsToState } from './redux/externalsToState';
 import { addFrame } from './redux/actions/frame';
 import { AppAtts } from './globals';
@@ -32,6 +32,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 // Styles
 // import "./index.css";
+const key = JSON.stringify(process.env.REACT_APP_SFS_KEY);
+const crypto = new SimpleCrypto(key);
 
 const initExternalStuff = () => {
   const buttonNodes = document.querySelectorAll('[data-cropshop-open]');
@@ -61,11 +63,14 @@ store.dispatch(
   externalsToState({
     shop: siteData.shop.domain,
     products: siteData.products,
-    cartUrl: siteData.cartUrl
+    cartUrl: siteData.cartUrl,
+    filestackApiKey: crypto.decrypt(siteData.shop.filestackApiKey),
+    // eslint-disable-next-line no-unneeded-ternary
+    debug: siteData.shop.debug === 'true' ? true : false
   })
 );
 // console.log(siteData.cartUrl);
-store.dispatch(fetchApiKey(siteData.shop.domain));
+// store.dispatch(fetchApiKey(siteData.shop.domain));
 // store.dispatch(fetchStorefrontToken(storeDomain));
 
 map(siteData.products, product => {

@@ -59,7 +59,7 @@ const SizeAwareCell = sizeMe({ monitorHeight: true, monitorWidth: false })(
 );
 
 const mapStateToProps = state => ({
-  apiKey: state.filestack.key,
+  apiKey: state.external.filestackApiKey,
   frames: state.frame.frames,
   selectedFrameId: state.frame.selectedFrameId,
   images: state.image.images,

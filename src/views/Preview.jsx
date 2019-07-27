@@ -26,7 +26,7 @@ import { scaleCrop, generateTransform } from '../utils/transformations';
 import styles from './Preview.module.scss';
 
 const mapStateToProps = state => ({
-  apiKey: state.filestack.key,
+  apiKey: state.external.filestackApiKey,
   imageProps: state.editor.imageProps,
   rotate: state.editor.rotate,
   zoom: state.editor.zoom,

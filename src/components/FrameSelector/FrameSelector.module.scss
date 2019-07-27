@@ -11,7 +11,8 @@
 @import '../../styles/foundation/_settings';
 
 @mixin text-outline($_stroke, $_color) {
-  text-shadow: -#{$_stroke}px -#{$_stroke}px 1px $_color,
+  text-shadow:
+    -#{$_stroke}px -#{$_stroke}px 1px $_color,
     #{$_stroke}px -#{$_stroke}px 1px $_color,
     -#{$_stroke}px #{$_stroke}px 1px $_color,
     #{$_stroke}px #{$_stroke}px 1px $_color;
@@ -24,8 +25,10 @@
   }
 
   .active {
-    color: $white;
     @include text-outline(1, $primary-color);
+
+    color: $white;
+
     svg {
       fill: $primary-color;
     }
@@ -40,13 +43,13 @@
     .frame {
       flex: 1 0 20%;
       max-width: 20%;
-      min-width: 3.9rem;
+      min-width: 67px;
     }
 
     .scrollableFrame {
       flex: 1 0 18%;
       max-width: 18%;
-      min-width: 3.9rem;
+      min-width: 67px;
     }
   }
 
@@ -87,6 +90,7 @@
     align-content: center;
     justify-content: center;
     width: 100%;
+
     .currency-symbol {
       font-size: 0.675em;
       margin-left: 0.5em;
