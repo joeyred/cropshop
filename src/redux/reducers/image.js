@@ -27,14 +27,17 @@ const cookieName = 'cropshop_images';
 // import imgMock from '../../imgs/IMG_0408.jpg';
 const cookie = Cookies.getJSON(cookieName);
 // console.log(cookie);
-const images = cookie || {
+let images = {
   byId: {},
   allIds: []
 };
-// const images = {
-//   byId: {},
-//   allIds: []
-// };
+if (process.env.NODE_ENV === 'development') {
+  images = cookie || {
+    byId: {},
+    allIds: []
+  };
+}
+
 const initialState = {
   images
 };
