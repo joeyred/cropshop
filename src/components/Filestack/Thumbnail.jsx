@@ -17,7 +17,7 @@ import Image from '../Image';
 import SquareContainer from '../SquareContainer';
 
 const mapStateToProps = state => ({
-  apiKey: state.filestack.apiKey,
+  apiKey: state.external.filestackApiKey,
   breakpoint: state.size.breakpoint
 });
 

@@ -23,12 +23,10 @@ export const externalsToState = data => ({
 export function ExternalsReducer(state = initialState, action) {
   switch (action.type) {
     case EXTERNALS_TO_STATE: {
-      // console.log(action.data.cartUrl);
+      const { data } = action;
       return {
         ...state,
-        shop: action.data.shop,
-        products: action.data.products,
-        cartUrl: action.data.cartUrl
+        ...data
       };
     }
     default: {

@@ -34,7 +34,7 @@ import * as ImageActionCreators from '../redux/actions/image';
 import * as NavActionCreators from '../redux/actions/nav';
 
 const mapStateToProps = state => ({
-  apiKey: state.filestack.key,
+  apiKey: state.external.filestackApiKey,
   images: state.image.images,
   appSize: state.size.app,
   availableHeight: state.size.availableHeight
