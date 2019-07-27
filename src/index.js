@@ -10,6 +10,8 @@
 // React
 import React from 'react';
 import ReactDOM from 'react-dom';
+// Remote Logging
+import * as Sentry from '@sentry/browser';
 // Redux
 import { Provider } from 'react-redux';
 // import smoothscroll from 'smoothscroll-polyfill';
@@ -30,10 +32,15 @@ import { AppAtts } from './globals';
 import App from './App';
 // Util
 import * as serviceWorker from './serviceWorker';
-// Styles
-// import "./index.css";
+
 const key = JSON.stringify(process.env.REACT_APP_SFS_KEY);
 const crypto = new SimpleCrypto(key);
+
+// NOTE This is gotten from a globally defined variable.
+//      Yes I know this sucks...
+//      It's Shopify...
+// eslint-disable-next-line no-undef
+const siteData = CropshopData;
 
 const initExternalStuff = () => {
   const buttonNodes = document.querySelectorAll('[data-cropshop-open]');
@@ -53,11 +60,11 @@ const initExternalStuff = () => {
   }
 };
 
-// NOTE This is gotten from a globally defined variable.
-//      Yes I know this sucks...
-//      It's Shopify...
-// eslint-disable-next-line no-undef
-const siteData = CropshopData;
+Sentry.init({
+  dsn: 'https://65b9b75ec92e4c0e80342465b9e45c14@sentry.io/1514878',
+  release: 'cropshop@1.0.0'
+});
+
 // store.dispatch(setStorefrontDomain(storeDomain));
 store.dispatch(
   externalsToState({
