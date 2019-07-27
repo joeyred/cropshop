@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as Sentry from '@sentry/browser';
 import { Button, Colors } from 'react-foundation';
 import { updateView } from '../../redux/actions/nav';
 import { AppAtts } from '../../globals';
@@ -45,6 +46,10 @@ class ErrorBoundary extends Component {
     // You can also log the error to an error reporting service
     // eslint-disable-next-line no-console
     console.log(error, info);
+    Sentry.withScope(scope => {
+      scope.setExtras(info);
+      Sentry.captureException(error);
+    });
   }
 
   render() {

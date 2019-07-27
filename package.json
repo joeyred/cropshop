@@ -1,11 +1,12 @@
 {
   "name": "cropshop",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "author": "Brian Hayes <bjoeyhayes@gmail.com>",
   "liscense": "MIT",
   "repository": "https://github.com/joeyred/cropshop",
   "dependencies": {
+    "@sentry/browser": "^5.5.0",
     "axios": "^0.19.0",
     "classnames": "^2.2.6",
     "filestack-js": "^2.0.7",
@@ -34,7 +35,8 @@
   "scripts": {
     "start": "PORT=8000 react-scripts start",
     "analyze": "react-scripts build && source-map-explorer 'build/static/js/*.js'",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build && npm run build-rename",
+    "build": "react-scripts build && npm run build-rename",
+    "build-nomaps": "GENERATE_SOURCEMAP=false react-scripts build && npm run build-rename",
     "build-rename": "npm run build-rename-main-js && npm run build-rename-vendor-js && npm run build-rename-main-css && npm run build-rename-vendor-css",
     "build-rename-main-js": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"cropshop_main_scripts.\" build/static/js/*",
     "build-rename-vendor-js": "renamer --find \"/2\\.[^\\.]+\\./i\" --replace \"cropshop_vendor_scripts.\" build/static/js/*",
