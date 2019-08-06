@@ -27,10 +27,6 @@ import sizeMe, { SizeMe } from 'react-sizeme';
 import AppHU from '../components/AppHU';
 
 import {
-  // scaleCrop,
-  generateTransform
-} from '../utils/transformations';
-import {
   // toggleOption,
   updateRotation,
   // updateZoom,
@@ -51,6 +47,10 @@ import TopBarTitle from '../components/TopBarTitle';
 
 import { responsiveProp } from '../utils/breakpoints';
 import { aspectRatioFill, calcCropFullCentered } from '../utils/crop';
+import {
+  // scaleCrop,
+  generateTransform
+} from '../utils/transformations';
 
 import styles from './Edit.module.scss';
 

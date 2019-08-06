@@ -8,8 +8,10 @@
  */
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import * as Sentry from '@sentry/browser';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import createSentryMiddleware from 'redux-sentry-middleware';
 import NavReducer from './reducers/nav';
 import GalleryReducer from './reducers/gallery';
 import EditorReducer from './reducers/editor';
@@ -32,9 +34,15 @@ const rootReducer = combineReducers({
   size: SizeReducer
 });
 
-let store = createStore(rootReducer, applyMiddleware(thunk));
+let store = createStore(
+  rootReducer,
+  applyMiddleware(thunk, createSentryMiddleware(Sentry))
+);
 if (process.env.NODE_ENV !== 'production') {
-  store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+  store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(thunk, createSentryMiddleware(Sentry)))
+  );
 }
 
 const output = store;
