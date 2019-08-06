@@ -80,14 +80,18 @@ export const addItemToCart = items => {
       .then(() => {
         // console.log(response.data);
         dispatch(success());
+        index += 1;
+        dispatch(next(items, addItemToCart, dispatch));
       })
       .catch(error => {
         dispatch(failure(error));
-      })
-      .finally(() => {
         index += 1;
         dispatch(next(items, addItemToCart, dispatch));
       });
+    // .finally(() => {
+    //   index += 1;
+    //   dispatch(next(items, addItemToCart, dispatch));
+    // });
   };
 };
 
