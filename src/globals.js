@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-let appApiUrl = 'https://cropshop-for-shopify.herokuapp.com';
+let appApiUrl = 'https://48c91d68.ngrok.io';
 let cartUrl = `${appApiUrl}/api/test/cart`;
 if (process.env.NODE_ENV === 'production') {
   // TODO Update this with the URL of the heroku app
