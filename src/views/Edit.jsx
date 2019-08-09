@@ -27,10 +27,6 @@ import sizeMe, { SizeMe } from 'react-sizeme';
 import AppHU from '../components/AppHU';
 
 import {
-  // scaleCrop,
-  generateTransform
-} from '../utils/transformations';
-import {
   // toggleOption,
   updateRotation,
   // updateZoom,
@@ -51,6 +47,11 @@ import TopBarTitle from '../components/TopBarTitle';
 
 import { responsiveProp } from '../utils/breakpoints';
 import { aspectRatioFill, calcCropFullCentered } from '../utils/crop';
+import {
+  // scaleCrop,
+  generateTransform
+} from '../utils/transformations';
+import Debug from '../utils/debug';
 
 import styles from './Edit.module.scss';
 
@@ -60,6 +61,7 @@ const SizeAwareCell = sizeMe({ monitorHeight: true, monitorWidth: false })(
 
 const mapStateToProps = state => ({
   apiKey: state.external.filestackApiKey,
+  debugIsEnabled: state.external.debug,
   frames: state.frame.frames,
   selectedFrameId: state.frame.selectedFrameId,
   images: state.image.images,
@@ -207,7 +209,8 @@ class Edit extends Component {
 
   // TODO Replace this with a more flexible and performant solution
   handleImageEditViaApi = linkedImage => {
-    const { breakpoint, rotate, flip, flop } = this.props;
+    const { breakpoint, rotate, flip, flop, debugIsEnabled } = this.props;
+    const debug = Debug('handleImageEditViaApi', debugIsEnabled);
     // linkedImage.output({ format: 'jpg' });
     const responsiveResize = {
       sm: 640,
@@ -220,6 +223,7 @@ class Edit extends Component {
     // return linkedImage.toString();
     const preview = generateTransform(linkedImage, { rotate, flip, flop });
     // console.log(preview.url);
+    debug('log', preview.url);
     return preview.url;
   };
 
@@ -239,6 +243,7 @@ class Edit extends Component {
     // console.log(this.props);
     const {
       apiKey,
+      debugIsEnabled,
       frames,
       selectedFrameId,
       images,
@@ -251,6 +256,7 @@ class Edit extends Component {
       crop
     } = this.props;
     const { loading, loaded } = this.state;
+    const debug = Debug('render', debugIsEnabled);
 
     const frame = frames.byId[selectedFrameId];
 
@@ -400,6 +406,7 @@ class Edit extends Component {
                         imageDimensions.height
                       );
                       // console.log(crop);
+                      debug('log', crop);
 
                       dispatch(
                         updateCropActionCreator({

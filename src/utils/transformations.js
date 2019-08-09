@@ -42,7 +42,7 @@ const sanitizeCrop = crop => {
 };
 
 export const scaleCrop = ({ imageProps, zoom = false, crop }) => {
-  console.log(crop);
+  // console.log(crop);
   const { naturalWidth, naturalHeight, width, height } = imageProps;
   // console.log(imageProps);
 
