@@ -16,11 +16,13 @@ const addSuffixToNumber = number => {
   if (lastDigit === 1 && lastTwoDigits !== 11) {
     return `${number}st`;
   }
-  // If lastDigit is 2 but second to last digit is not 1, return with added "nd".
+  // If lastDigit is 2 but second to last digit is not 1,
+  // return with added "nd".
   if (lastDigit === 2 && lastTwoDigits !== 12) {
     return `${number}nd`;
   }
-  // If lastDigit is 2 but second to last digit is not 1, return with added "rd".
+  // If lastDigit is 2 but second to last digit is not 1,
+  // return with added "rd".
   if (lastDigit === 3 && lastTwoDigits !== 13) {
     return `${number}rd`;
   }
@@ -53,10 +55,84 @@ const outputValues = values => {
   }
 };
 
-class DebugMaybe {
-  constructor(moduleName, isEnabled) {
-    this.moduleName = moduleName;
+const loop = (functionName, { key, values }) => {
+  // eslint-disable-next-line no-console
+  console.log(`%c Within ${functionName}:`, 'color: pink');
+  if (typeof key === 'number') {
+    const currentIteration = addSuffixToNumber(key + 1);
+    // eslint-disable-next-line no-console
+    console.log(`${currentIteration} iteration of for loop:`);
+    outputValues(values);
+  } else {
+    // eslint-disable-next-line no-console
+    console.log(`current key in forin: ${key}`);
+    outputValues(values);
+  }
+};
+
+/**
+ * Output values within a function to console.
+ *
+ * @example
+ * // Will log to console:
+ * //   Within foobar:
+ * //   foo is: 5 (Number)
+ * //   bar is: 22 (Number)
+ * function foobar() {
+ *   var foo = 5;
+ *   var bar = 22;
+ *   Debug.value('foobar',
+ *     {foo: foo, bar: bar}
+ *   );
+ * }
+ *
+ * @method value
+ *
+ * @param  {String} functionName - Name of function the value reside in.
+ * @param  {Object} object       - Object with keys matching variable names to
+ *                                 be output to console.
+ */
+const values = (functionName, object) => {
+  // eslint-disable-next-line no-console
+  console.log(`%c Within ${functionName}:`, 'color: pink');
+  // Loop through values within the function.
+  outputValues(object);
+};
+
+const message = (functionName, string) => {
+  // eslint-disable-next-line no-console
+  console.log(`%c Within ${functionName}:`, 'color: pink');
+  // eslint-disable-next-line no-console
+  console.log(`%c ${string}`, 'color: blue');
+};
+
+const log = (functionName, args) => {
+  // eslint-disable-next-line no-console
+  console.log(`%c Within ${functionName}:`, 'color: pink');
+  // eslint-disable-next-line no-console
+  console.log(args);
+};
+
+const DebugMethods = {
+  loop,
+  values,
+  message,
+  log
+};
+
+class DebugMethod {
+  constructor(name, isEnabled) {
+    this.name = name;
     this.isEnabled = isEnabled;
+  }
+
+  init() {
+    return (method, args) => {
+      if (this.isEnabled) {
+        return DebugMethods[method](this.name, args);
+      }
+      return false;
+    };
   }
 
   /**
@@ -68,78 +144,10 @@ class DebugMaybe {
     // eslint-disable-next-line no-console
     console.log(`%c ${this.moduleName}`, 'color: green');
   }
-
-  /**
-   * Check if function has been called and what it returned.
-   *
-   * @method functionReturn
-   *
-   * @param  {string}         functionName - Name of the function called.
-   *
-   * @param  {Boolean|String} output       - The return of the function, or false.
-   */
-  functionReturn(functionName, output) {
-    this.outputObjectParent();
-    // If the function has no return, then just say the function was called,
-    if (output === 'undefined') {
-      // eslint-disable-next-line no-console
-      console.log(`${functionName} has been called. Function has no return`);
-      // Else, log out the function being called along with its return.
-    } else {
-      // eslint-disable-next-line no-console
-      console.log(`${functionName} has been called. Returned: ${output}`);
-    }
-  }
-
-  /**
-   * Output values within a function to console.
-   *
-   * @example
-   * // Will log to console:
-   * //   Within foobar:
-   * //   foo is: 5 (Number)
-   * //   bar is: 22 (Number)
-   * function foobar() {
-   *   var foo = 5;
-   *   var bar = 22;
-   *   Debug.value('foobar',
-   *     {foo: foo, bar: bar}
-   *   );
-   * }
-   *
-   * @method value
-   *
-   * @param  {String} functionName - Name of function the value reside in.
-   * @param  {Object} values       - Object with keys matching variable names to be output
-   *                                 to console.
-   */
-  values(functionName, values) {
-    this.outputObjectParent();
-    // eslint-disable-next-line no-console
-    console.log(`%c Within ${functionName}:`, 'color: purple');
-    // Loop through values within the function.
-    outputValues(values);
-  }
-
-  loop(functionName, i, values) {
-    // eslint-disable-next-line no-console
-    console.log(`%c Within ${functionName}:`, 'color: purple');
-    if (typeof i === 'number') {
-      const currentIteration = addSuffixToNumber(i + 1);
-      // eslint-disable-next-line no-console
-      console.log(`${currentIteration} iteration of for loop:`);
-      outputValues(values);
-    } else {
-      // eslint-disable-next-line no-console
-      console.log(`current key in forin: ${i}`);
-      outputValues(values);
-    }
-  }
-
-  message(message) {
-    // eslint-disable-next-line no-console
-    console.log(`%c ${message}`, 'color: blue');
-  }
 }
 
-const Debug = () => {};
+const Debug = (name, isEnabled) => {
+  return new DebugMethod(name, isEnabled).init();
+};
+
+export default Debug;
