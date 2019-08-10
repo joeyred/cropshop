@@ -31,6 +31,7 @@ let images = {
   byId: {},
   allIds: []
 };
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
   images = cookie || {
     byId: {},
@@ -62,12 +63,16 @@ export default function Image(state = initialState, action) {
             frameId: null,
             currentSavedEditId: null,
             edit: null,
-            quantity: 1
+            quantity: 1,
+            width: 0,
+            height: 0
           }
         },
         allIds: [...state.images.allIds, id]
       };
-      Cookies.set(cookieName, newImagesState);
+      if (process.env.NODE_ENV === 'development') {
+        Cookies.set(cookieName, newImagesState);
+      }
       // console.log(newImagesState);
       return {
         ...state,
@@ -89,7 +94,9 @@ export default function Image(state = initialState, action) {
         },
         allIds: [...state.images.allIds]
       };
-      Cookies.set(cookieName, newImagesState);
+      if (process.env.NODE_ENV === 'development') {
+        Cookies.set(cookieName, newImagesState);
+      }
       // console.log(newImagesState);
       return {
         ...state,
