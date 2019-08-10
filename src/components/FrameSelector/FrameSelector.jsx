@@ -85,9 +85,7 @@ const FrameSelector = props => {
                   }`}
                   onClick={() => handleClick(frame.id)}
                 >
-                  <PictureFrame
-                    dimensions={{ width: frame.width, height: frame.height }}
-                  />
+                  <PictureFrame dimensions={{ ...frame.display }} />
                 </button>
                 <div className={styles.price}>
                   <span className={styles['currency-symbol']}>$</span>
