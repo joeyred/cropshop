@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
 import { connect } from 'react-redux';
 import {
@@ -19,6 +19,9 @@ import {
   // TopBarLeft,
   Colors
 } from 'react-foundation';
+
+import { resetItems } from '../redux/actions/cart';
+
 import Progress from '../components/Cart/Progress';
 
 // import MicroModal from 'micromodal';
@@ -36,63 +39,69 @@ const mapStateToProps = state => ({
   cartUrl: state.external.cartUrl
 });
 
-const AddingToCart = props => {
-  const {
-    itemsToAdd,
-    itemsAdded,
-    // itemsErrored,
-    cartUrl,
-    addingItems
-  } = props;
-  // console.log(cartUrl);
-  // const loading = (
-  //   <div>
-  //     <h1>Adding Items to Cart!</h1>
-  //     <span>
-  //       {itemsAdded} / {itemsToAdd}
-  //     </span>
-  //   </div>
-  // );
+class AddingToCart extends Component {
+  componentWillUnmount() {
+    const { dispatch } = this.props;
 
-  const buttons = (
-    <Grid>
-      <Cell small={6} alignX='center'>
-        <div style={{ textAlign: 'center' }}>
-          <Button
-            color={Colors.SECONDARY}
-            onClick={() => closeModal(AppAtts.MODAL_ID)}
-          >
-            Continue Shopping
-          </Button>
+    dispatch(resetItems());
+  }
+
+  render() {
+    const {
+      itemsToAdd,
+      itemsAdded,
+      // itemsErrored,
+      cartUrl,
+      addingItems
+    } = this.props;
+    // console.log(cartUrl);
+    // const loading = (
+    //   <div>
+    //     <h1>Adding Items to Cart!</h1>
+    //     <span>
+    //       {itemsAdded} / {itemsToAdd}
+    //     </span>
+    //   </div>
+    // );
+
+    const buttons = (
+      <Grid>
+        <Cell small={6} alignX='center'>
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              color={Colors.SECONDARY}
+              onClick={() => closeModal(AppAtts.MODAL_ID)}
+            >
+              Continue Shopping
+            </Button>
+          </div>
+        </Cell>
+        <Cell small={6} alignX='center'>
+          <div style={{ textAlign: 'center' }}>
+            <a href={cartUrl} className={`button ${Colors.PRIMARY}`}>
+              Go To My Cart
+            </a>
+          </div>
+        </Cell>
+      </Grid>
+    );
+
+    const titleText = addingItems ? 'Adding Items to Cart' : 'Items Added!';
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <h1>{titleText}</h1>
+          <Progress
+            totalItems={itemsToAdd}
+            itemsAdded={itemsAdded}
+            finished={!addingItems}
+          />
+
+          {addingItems ? null : buttons}
         </div>
-      </Cell>
-      <Cell small={6} alignX='center'>
-        <div style={{ textAlign: 'center' }}>
-          <a href={cartUrl} className={`button ${Colors.PRIMARY}`}>
-            Go To My Cart
-          </a>
-        </div>
-      </Cell>
-    </Grid>
-  );
-
-  const titleText = addingItems ? 'Adding Items to Cart' : 'Items Added!';
-  return (
-    <div className={styles.wrapper}>
-      <div className={styles.container}>
-        <h1>{titleText}</h1>
-        <Progress
-          totalItems={itemsToAdd}
-          itemsAdded={itemsAdded}
-          finished={!addingItems}
-        />
-
-        {addingItems ? null : buttons}
       </div>
-    </div>
-  );
-};
-
-AddingToCart.propTypes = {};
+    );
+  }
+}
 
 export default connect(mapStateToProps)(AddingToCart);

@@ -39,9 +39,14 @@ let store = createStore(
   applyMiddleware(thunk, createSentryMiddleware(Sentry))
 );
 if (process.env.NODE_ENV !== 'production') {
+  const composeEnhancers = composeWithDevTools({
+    trace: true,
+    traceLimit: 30
+  });
+
   store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(thunk, createSentryMiddleware(Sentry)))
+    composeEnhancers(applyMiddleware(thunk, createSentryMiddleware(Sentry)))
   );
 }
 

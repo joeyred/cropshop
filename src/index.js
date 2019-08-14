@@ -62,9 +62,8 @@ const initExternalStuff = () => {
 
 Sentry.init({
   dsn: 'https://65b9b75ec92e4c0e80342465b9e45c14@sentry.io/1514878',
-  release: 'cropshop@1.0.0'
+  release: `cropshop@${process.env.REACT_APP_VERSION}`
 });
-
 // store.dispatch(setStorefrontDomain(storeDomain));
 store.dispatch(
   externalsToState({

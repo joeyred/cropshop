@@ -64,8 +64,12 @@ export const addFrame = frame => {
   const { id, price, collections, variants, customFields } = frame;
   const formatedPrice = price / 100;
   const fields = JSON.parse(customFields);
-  const width = parseInt(fields.display.width, 10);
-  const height = parseInt(fields.display.height, 10);
+  const width = fields.print.width * 1;
+  const height = fields.print.height * 1;
+  const display = {
+    width: fields.display.width * 1,
+    height: fields.display.height * 1
+  };
   return {
     type: ADD_FRAME,
     payload: {
@@ -74,7 +78,9 @@ export const addFrame = frame => {
       variantId: variants[0].id,
       price: formatedPrice.toFixed(2),
       collections,
+      // TODO convert this to object with explicit keys
       dimensions: [width, height],
+      display,
       aspectRatio: width / height,
       width,
       height

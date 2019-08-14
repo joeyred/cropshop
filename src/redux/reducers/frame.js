@@ -88,6 +88,7 @@ export default function Frame(state = initialState, action) {
         collections,
         price,
         dimensions,
+        display,
         aspectRatio,
         width,
         height
@@ -104,6 +105,7 @@ export default function Frame(state = initialState, action) {
               collections,
               price,
               dimensions,
+              display,
               aspectRatio,
               width,
               height
