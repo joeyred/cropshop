@@ -115,7 +115,11 @@ const Gallery = props => {
   const addToCart = () => {
     const items = map(images.allIds, id => {
       const image = images.byId[id];
-      if (image.edited && image.quantity > 0) {
+      if (
+        image.edited[selectedCollectionId] &&
+        image.edit[selectedCollectionId] &&
+        image.quantity > 0
+      ) {
         return {
           quantity: image.quantity,
           id: frames.byId[image.edit[selectedCollectionId].frameId].variantId,
