@@ -33,7 +33,7 @@ const mapStateToProps = state => ({
   flip: state.editor.flip,
   flop: state.editor.flop,
   crop: state.editor.crop,
-  imageSize: state.editor.imageSize,
+  imageSizeRendered: state.editor.imageSizeRendered,
   images: state.image.images,
   frames: state.frame.frames,
   selectedFrameId: state.frame.selectedFrameId,
@@ -92,7 +92,7 @@ class Preview extends Component {
       flip,
       flop,
       crop,
-      imageSize,
+      imageSizeRendered,
       dispatch,
       images,
       selectedFrameId,
@@ -111,8 +111,8 @@ class Preview extends Component {
     const imageProps = {
       naturalWidth: handledNaturalImageSize.width,
       naturalHeight: handledNaturalImageSize.height,
-      width: imageSize.width,
-      height: imageSize.height
+      width: imageSizeRendered.width,
+      height: imageSizeRendered.height
     };
     const newCrop = scaleCrop({ imageProps, crop, zoom });
     const edit = { flip, flop, rotate, crop: newCrop };

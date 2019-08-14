@@ -7,6 +7,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export function fixedDecimalPlaces(number, places) {
+  return (number * 1).toFixed(places);
+}
+
+export function getAspectRatio({ width, height }) {
+  return fixedDecimalPlaces(width / height, 4);
+}
+
 /**
  * Preserve aspect ratio of the original region. Useful when shrinking/enlarging
  * images to fit into a certain area.

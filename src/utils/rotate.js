@@ -41,10 +41,10 @@ export function keepRotationValid(degrees) {
 
 export function rotate(currentRotation, degrees, direction) {
   if (direction === 'left') {
-    return decrementRotation(currentRotation, degrees);
+    return keepRotationValid(decrementRotation(currentRotation, degrees));
   }
   if (direction === 'right') {
-    return incrementRotation(currentRotation, degrees);
+    return keepRotationValid(incrementRotation(currentRotation, degrees));
   }
   return new Error(
     'No valid direction was passed. "right" or "left" must be passed.'

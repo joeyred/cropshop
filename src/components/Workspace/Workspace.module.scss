@@ -1,0 +1,89 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@keyframes placeholderAnimate {
+  0% {
+    background-position: -650px 0;
+  }
+
+  100% {
+    background-position: 650px 0;
+  }
+}
+
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
+
+:global(#{$global_namespace}) {
+  .container {
+    width: 100%;
+  }
+
+  :global {
+    @import '../../styles/reactcrop/ReactCrop';
+  }
+
+  .artboard {
+    display: block;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .overlay {
+    position: absolute;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-name: placeholderAnimate;
+    background: $light-gray; // Fallback
+    background: linear-gradient(
+      to right,
+      $light-gray 2%,
+      $medium-gray 22%,
+      $white 33%
+    );
+    background-size: 1300px; // Animation Area
+  }
+
+  .image {
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .deadspace {
+    width: 100%;
+    text-align: center;
+    background: $medium-gray;
+    overflow: hidden;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+
+    .hideCrop {
+      :global(.ReactCrop__crop-selection) {
+        opacity: 0;
+      }
+    }
+  }
+}

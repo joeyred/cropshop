@@ -37,7 +37,7 @@ const mapStateToProps = state => ({
   selectedFrameId: state.frame.selectedFrameId,
   frameList: state.frame.frameList,
   // selectedCollectionId: state.frame.selectedCollectionId,
-  imageSize: state.editor.imageSize
+  imageSizeRendered: state.editor.imageSizeRendered
 });
 
 const FrameSelector = props => {
@@ -47,7 +47,7 @@ const FrameSelector = props => {
     // selectedCollectionId,
     frameList,
     direction,
-    imageSize,
+    imageSizeRendered,
 
     dispatch
   } = props;
@@ -56,7 +56,12 @@ const FrameSelector = props => {
     const aspect = frames.byId[id].dimensions;
     dispatch(updateSelectedFrame(id));
     // console.log(aspect, imageSize);
-    dispatch(updateCropFullCenter(aspect, imageSize));
+    dispatch(
+      updateCropFullCenter(
+        { width: aspect[0], height: aspect[1] },
+        imageSizeRendered
+      )
+    );
   };
   const vertical = direction === 'vertical';
   const frameStyles =

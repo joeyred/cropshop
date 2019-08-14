@@ -8,31 +8,25 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'; // eslint-disable-line
-import { bindActionCreators } from 'redux';
+// eslint-disable-next-line import/no-extraneous-dependencies
+// import PropTypes from 'prop-types';
+// import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Filelink } from 'filestack-js';
-import {
-  Grid,
-  Cell,
-  Button,
-  // ButtonGroup,
-  // TopBar,
-  TopBarLeft,
-  Colors
-} from 'react-foundation';
-import sizeMe, { SizeMe } from 'react-sizeme';
+import { Grid, Cell, Button, TopBarLeft, Colors } from 'react-foundation';
+import sizeMe from 'react-sizeme';
 
-// import ContainerHeightUnits from '../components/ContainerHeightUnits';
 import AppHU from '../components/AppHU';
 
 import {
   // toggleOption,
-  updateRotation,
+  resetEditor,
+  updateRotation
+  // updateCropFullCenter,
   // updateZoom,
-  updateCrop as updateCropActionCreator,
-  storeImageDimensions as storeImageDimensionsActionCreator,
-  updateArtboardDimensions as updateArtboardDimensionsActionCreator
+  // updateCrop as updateCropActionCreator,
+  // storeImageDimensions as storeImageDimensionsActionCreator,
+  // updateArtboardDimensions as updateArtboardDimensionsActionCreator
 } from '../redux/actions/editor';
 import { updateComponentHeight } from '../redux/size';
 import { updateView } from '../redux/actions/nav';
@@ -42,11 +36,12 @@ import Icon from '../components/Icon';
 import TopBar from '../components/TopBar';
 import FrameSelector from '../components/FrameSelector';
 import Toolbar from '../components/Toolbar';
-import ImageEditor from '../components/ImageEditor';
+// import ImageEditor from '../components/ImageEditor';
 import TopBarTitle from '../components/TopBarTitle';
+import Workspace from '../components/Workspace';
 
 import { responsiveProp } from '../utils/breakpoints';
-import { aspectRatioFill, calcCropFullCentered } from '../utils/crop';
+// import { aspectRatioFill, calcCropFullCentered } from '../utils/crop';
 import {
   // scaleCrop,
   generateTransform
@@ -93,15 +88,16 @@ class Edit extends Component {
     // file: PropTypes.object.isRequired,
   };
 
-  state = {
-    loading: true,
-    loaded: false
-  };
+  // componentWillUnmount() {
+  //
+  //
+  // }
 
-  componentDidMount() {
+  toGallery = () => {
     const { dispatch } = this.props;
-    dispatch(updateRotation(0));
-  }
+    dispatch(updateView(Views.GALLERY));
+    dispatch(resetEditor());
+  };
 
   getResponsiveProp = (component, prop) => {
     const { breakpoint } = this.props;
@@ -150,7 +146,6 @@ class Edit extends Component {
       // dispatch
     } = this.props;
     // this.loadingStatus(true);
-    this.setState({ loading: true, loaded: false });
     if (direction === 'left') {
       // dispatch(updateRotation(rotate - 90));
       return rotate - 90;
@@ -162,50 +157,34 @@ class Edit extends Component {
     return rotate + 90;
   };
 
-  handleDimensions = imageSize => {
-    const { rotate } = this.props;
-
-    if (rotate === 90 || rotate === 270) {
-      // console.log('rotation applied');
-      return {
-        width: imageSize.height,
-        height: imageSize.width
-      };
-    }
-    return {
-      width: imageSize.width,
-      height: imageSize.height
-    };
-  };
-
-  generateTransformStyles = () => {
-    const {
-      rotate,
-      flip,
-      flop
-      // zoom
-    } = this.props;
-    const rotateTransform = {};
-    // Normal Rotation
-    // rotateTransform.x = rotate > 0 && rotate < 360 ? rotate : 0;
-    rotateTransform.z = rotate;
-    // Flip Horizontally
-    rotateTransform.y = flop ? 180 : 0;
-    // Flip Vertically
-    rotateTransform.x = flip ? 180 : 0;
-
-    // const zoomTransform = zoom > 1 ? zoom : 1;
-
-    return `rotateX(${rotateTransform.x}deg) rotateY(${
-      rotateTransform.y
-    }deg) rotateZ(${rotateTransform.z}deg)`;
-
-    // return `rotateY()`
-
-    // return `rotate3d(${rotateTransform.x}, ${rotateTransform.y}, ${
-    //   rotateTransform.z
-    // })`;
-  };
+  // generateTransformStyles = () => {
+  //   const {
+  //     rotate,
+  //     flip,
+  //     flop
+  //     // zoom
+  //   } = this.props;
+  //   const rotateTransform = {};
+  //   // Normal Rotation
+  //   // rotateTransform.x = rotate > 0 && rotate < 360 ? rotate : 0;
+  //   rotateTransform.z = rotate;
+  //   // Flip Horizontally
+  //   rotateTransform.y = flop ? 180 : 0;
+  //   // Flip Vertically
+  //   rotateTransform.x = flip ? 180 : 0;
+  //
+  //   // const zoomTransform = zoom > 1 ? zoom : 1;
+  //
+  //   return `rotateX(${rotateTransform.x}deg) rotateY(${
+  //     rotateTransform.y
+  //   }deg) rotateZ(${rotateTransform.z}deg)`;
+  //
+  //   // return `rotateY()`
+  //
+  //   // return `rotate3d(${rotateTransform.x}, ${rotateTransform.y}, ${
+  //   //   rotateTransform.z
+  //   // })`;
+  // };
 
   // TODO Replace this with a more flexible and performant solution
   handleImageEditViaApi = linkedImage => {
@@ -219,6 +198,7 @@ class Edit extends Component {
       xl: 1366,
       xxl: 1920
     };
+    // FIXME This should be checked for aspect ratio issues
     linkedImage.resize({ width: responsiveResize[breakpoint] });
     // return linkedImage.toString();
     const preview = generateTransform(linkedImage, { rotate, flip, flop });
@@ -235,9 +215,9 @@ class Edit extends Component {
   //   }
   // `;
 
-  loadingStatus = status => {
-    this.setState({ loading: status });
-  };
+  // loadingStatus = status => {
+  //   this.setState({ loading: status });
+  // };
 
   render() {
     // console.log(this.props);
@@ -249,14 +229,15 @@ class Edit extends Component {
       images,
       imageId,
       rowHeights,
-      imageSize,
+      // imageSize,
       breakpoint,
+      rotate,
       // availableHeight,
-      dispatch,
-      crop
+      dispatch
+      // crop
     } = this.props;
-    const { loading, loaded } = this.state;
-    const debug = Debug('render', debugIsEnabled);
+    // const { loading, loaded } = this.state;
+    const debug = Debug('Edit:render', debugIsEnabled);
 
     const frame = frames.byId[selectedFrameId];
 
@@ -276,31 +257,15 @@ class Edit extends Component {
 
     // Get the image data
     const image = images.byId[imageId];
+    // debug('log', image);
 
     // Construct a new instance to link to Filestack image.
     const linkedImage = new Filelink(image.handle, apiKey);
 
-    // // Handle any undefined type weirdness on first render
-    // let frame = frames.byId[selectedFrameId];
-    // // console.log(frame);
-    // if (!frame) {
-    //   frame = {
-    //     dimensions: [8, 8]
-    //   };
-    // }
-
-    const updateCrop = bindActionCreators(updateCropActionCreator, dispatch);
-
-    const storeImageDimensions = bindActionCreators(
-      storeImageDimensionsActionCreator,
-      dispatch
-    );
-    const updateArtboardDimensions = bindActionCreators(
-      updateArtboardDimensionsActionCreator,
-      dispatch
-    );
-    // const dimensions = this.handleDimensions();
-
+    const heightToSubtract =
+      breakpoint === 'sm' || breakpoint === 'md'
+        ? frameSelectorHeight + toolbarHeight
+        : toolbarHeight;
     return (
       <div>
         <TopBar>
@@ -308,7 +273,7 @@ class Edit extends Component {
             <Button
               color={Colors.SECONDARY}
               size='small'
-              onClick={() => dispatch(updateView(Views.GALLERY))}
+              onClick={() => this.toGallery()}
             >
               <Icon name='Apps' /> Back To Gallery
             </Button>
@@ -358,107 +323,18 @@ class Edit extends Component {
           {/* Image Editor */}
           <Cell large={9} className='xlarge-10'>
             <Grid vertical>
-              <SizeMe monitorHeight>
-                {({ size }) => {
-                  const handledImageSize = this.handleDimensions(image);
-                  const artboardPadding = 16;
-                  const sanitizedSize = {};
-
-                  // Fixes any isses on initial load returning `undefined`;
-                  if (size.width) {
-                    sanitizedSize.width = size.width;
-                  } else {
-                    sanitizedSize.width = 0;
-                  }
-                  if (size.height) {
-                    sanitizedSize.height = size.height;
-                  } else {
-                    sanitizedSize.height = 0;
-                  }
-
-                  const artboardDimensions = aspectRatioFill(
-                    handledImageSize.width,
-                    handledImageSize.height,
-                    sanitizedSize.width,
-                    sanitizedSize.height
-                  );
-
-                  const containerDimensions = {
-                    width: artboardDimensions.width - artboardPadding * 2,
-                    height: artboardDimensions.height - artboardPadding * 2
-                  };
-
-                  const imageDimensions = {
-                    width: artboardDimensions.width - artboardPadding * 2,
-                    height: artboardDimensions.height - artboardPadding * 2
-                  };
-                  if (size.height && size.width) {
-                    if (!loading && !loaded) {
-                      updateArtboardDimensions(
-                        artboardDimensions,
-                        artboardPadding,
-                        imageDimensions
-                      );
-                      const initCrop = calcCropFullCentered(
-                        frame.dimensions[0],
-                        frame.dimensions[1],
-                        imageDimensions.width,
-                        imageDimensions.height
-                      );
-                      // console.log(crop);
-                      debug('log', crop);
-
-                      dispatch(
-                        updateCropActionCreator({
-                          ...initCrop,
-                          aspect: frame.dimensions[0] / frame.dimensions[1]
-                        })
-                      );
-
-                      this.setState({ loaded: true });
-                    }
-                    if (
-                      imageDimensions.width !== imageSize.width ||
-                      imageDimensions.height !== imageSize.height
-                    ) {
-                      // console.log(size.width, imageSize.width);
-                      // console.log(size.height, imageSize.height);
-                      updateArtboardDimensions(
-                        artboardDimensions,
-                        artboardPadding,
-                        imageDimensions
-                      );
-                    }
-                  }
-                  const heightToSubtract =
-                    breakpoint === 'sm' || breakpoint === 'md'
-                      ? frameSelectorHeight + toolbarHeight
-                      : toolbarHeight;
-                  return (
-                    <AppHU
-                      heightToSubtract={heightToSubtract}
-                      asContainer={Cell}
-                    >
-                      <ImageEditor
-                        imageSrc={this.handleImageEditViaApi(linkedImage)}
-                        containerDimensions={containerDimensions}
-                        imageDimensions={imageDimensions}
-                        handleLoadingStatus={this.loadingStatus}
-                        loadingStatus={loading}
-                        artboardDimensions={artboardDimensions}
-                        artboardPadding={artboardPadding}
-                        crop={crop}
-                        height={sanitizedSize.height}
-                        width={sanitizedSize.width}
-                        updateCrop={updateCrop}
-                        updateArtboardDimensions={updateArtboardDimensions}
-                        storeImageDimensions={storeImageDimensions}
-                        aspectRatioArray={frame.dimensions}
-                      />
-                    </AppHU>
-                  );
+              <Workspace
+                heightToSubtract={heightToSubtract}
+                frameSize={{
+                  width: frame.dimensions[0],
+                  height: frame.dimensions[1]
                 }}
-              </SizeMe>
+                imageSrc={this.handleImageEditViaApi(linkedImage)}
+                imageSize={{
+                  width: image.width,
+                  height: image.height
+                }}
+              />
 
               {/* Tool Bar */}
               <SizeAwareCell
@@ -479,7 +355,7 @@ class Edit extends Component {
                           label='Left'
                           // handleClick={() => this.handleRotate('left')}
                           handleClick={() =>
-                            dispatch(updateRotation(this.handleRotate('left')))
+                            dispatch(updateRotation(rotate, 90, 'left'))
                           }
                         />
                         <Toolbar.Button
@@ -487,7 +363,7 @@ class Edit extends Component {
                           label='Right'
                           // handleClick={() => this.handleRotate('right')}
                           handleClick={() =>
-                            dispatch(updateRotation(this.handleRotate('right')))
+                            dispatch(updateRotation(rotate, 90, 'right'))
                           }
                         />
                       </Toolbar.Group>

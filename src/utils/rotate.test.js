@@ -11,8 +11,8 @@ import {
   applyRotationToDimensions,
   // incrementRotation,
   // decrementRotation,
-  keepRotationValid,
-  rotate
+  keepRotationValid
+  // rotate
 } from './rotate';
 
 describe('applyRotationToDimensions', () => {

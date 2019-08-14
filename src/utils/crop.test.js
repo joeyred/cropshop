@@ -7,7 +7,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { aspectRatioFill, getPosition, calcCropFullCentered } from './crop';
+import {
+  getAspectRatio,
+  aspectRatioFill,
+  getPosition,
+  calcCropFullCentered
+} from './crop';
 
 describe('aspectRatioFill', () => {
   it('Should maintain original aspect ratio of source', () => {
@@ -20,8 +25,8 @@ describe('aspectRatioFill', () => {
       height: 801.7
     };
 
-    const sourceAspectRatio = source.width / source.height;
-    const maxAspectRatio = max.width / max.height;
+    const sourceAspectRatio = getAspectRatio(source);
+    // const maxAspectRatio = max.width / max.height;
 
     const fill = aspectRatioFill(
       source.width,
@@ -30,6 +35,6 @@ describe('aspectRatioFill', () => {
       max.height
     );
 
-    expect(fill.width / fill.height).toBe(sourceAspectRatio);
+    expect(getAspectRatio(fill)).toBe(sourceAspectRatio);
   });
 });
