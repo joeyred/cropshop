@@ -1,6 +1,6 @@
 {
   "name": "cropshop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "author": "Brian Hayes <bjoeyhayes@gmail.com>",
   "liscense": "MIT",
@@ -53,7 +53,7 @@
     "build-fix-sourcemap-css": "npm run build-fix-sourcemap-main-css && npm run build-fix-sourcemap-vendor-css",
     "build-fix-sourcemap-main-css": "replace-in-file \"/sourceMappingURL=main\\.[^\\.]+\\.css\\.map/i\" \"sourceMappingURL=cropshop_main_styles.css.map\" build/static/css/cropshop_main_styles.css --isRegex",
     "build-fix-sourcemap-vendor-css": "replace-in-file \"/sourceMappingURL=2\\.[^\\.]+\\.css\\.map/i\" \"sourceMappingURL=cropshop_vendor_styles.css.map\" build/static/css/cropshop_vendor_styles.css --isRegex",
-    "upload-sourcemaps": "sentry-cli releases --org brian-hayes --project cropshop files cropshop@%npm_package_version% upload-sourcemaps ./build/static/js",
+    "upload-sourcemaps": "sentry-cli releases --no-rewrite --org brian-hayes --project cropshop files cropshop@!npm_package_version upload-sourcemaps ./build/static/js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",

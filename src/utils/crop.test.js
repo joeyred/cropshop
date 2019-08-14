@@ -9,9 +9,9 @@
 
 import {
   getAspectRatio,
-  aspectRatioFill,
-  getPosition,
-  calcCropFullCentered
+  aspectRatioFill
+  // getPosition,
+  // calcCropFullCentered
 } from './crop';
 
 describe('aspectRatioFill', () => {

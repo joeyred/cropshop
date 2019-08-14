@@ -19,7 +19,7 @@
 import { calcCropFullCentered, getAspectRatio } from '../../utils/crop';
 import { rotate } from '../../utils/rotate';
 import generateSizesToRender from '../../utils/editor';
-import Debug from '../../utils/debug';
+// import Debug from '../../utils/debug';
 
 export const TOGGLE_OPTION = 'editor/TOGGLE_OPTION';
 export const UPDATE_ROTATION = 'editor/UPDATE_ROTATION';
@@ -68,7 +68,7 @@ export const updateZoom = scale => ({
 });
 
 export const updateCrop = crop => {
-  console.log(crop);
+  // console.log(crop);
   return {
     type: UPDATE_CROP,
     crop

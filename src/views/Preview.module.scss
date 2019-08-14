@@ -11,6 +11,7 @@
   0% {
     background-position: -650px 0;
   }
+
   100% {
     background-position: 650px 0;
   }
@@ -28,6 +29,7 @@
     display: flex;
     flex-flow: column;
     justify-content: center;
+
     h1 {
       margin-bottom: 2rem;
     }
@@ -38,6 +40,7 @@
     text-align: center;
     height: 55vh;
     padding: 0;
+
     img {
       box-shadow: $global_box-shadow;
       object-fit: contain;
@@ -48,6 +51,7 @@
       height: auto;
     }
   }
+
   .overlay {
     position: absolute;
     display: flex;
