@@ -28,7 +28,7 @@ export default function generateSizesToRender(
   rotation = 0
 ) {
   const handledImageSize = applyRotationToDimensions(imageSize, rotation);
-  console.log(handledImageSize);
+  // console.log(handledImageSize);
   // This gets us an artboard to work with
   const artboardSize = aspectRatioFill(
     handledImageSize.width,

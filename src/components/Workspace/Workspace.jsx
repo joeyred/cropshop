@@ -11,7 +11,7 @@ import { Cell } from 'react-foundation';
 import {
   updateWorkspaceSize,
   updateLoadingStatus,
-  updateCropFullCenter,
+  // updateCropFullCenter,
   updateCrop as updateCropActionCreator
 } from '../../redux/actions/editor';
 
@@ -80,9 +80,9 @@ class Workspace extends Component {
   };
 
   onImageLoaded = () => {
-    const { frameSize, imageSizeRendered, dispatch } = this.props;
+    const { dispatch } = this.props;
     dispatch(updateLoadingStatus(false));
-    console.log(frameSize, imageSizeRendered);
+    // console.log(frameSize, imageSizeRendered);
     // dispatch(updateCropFullCenter(frameSize, imageSizeRendered));
     // dispatch(updateCropFullCenter(frameSize, imageSizeRendered));
   };
