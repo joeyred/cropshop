@@ -9,16 +9,16 @@
 
 import axios from 'axios';
 import { AppAtts } from '../../globals';
-import {
-  ADD_ITEMS_START,
-  ADD_ITEMS_FINISH,
-  ADD_ITEM_START,
-  ADD_ITEM_SUCCESS,
-  ADD_ITEM_FAILURE,
-  ADD_ITEM_FINALLY,
-  UPDATE_PROGRESS,
-  DONE_EDITING
-} from '../actiontypes/cart';
+
+export const ADD_ITEM_START = 'cart/ADD_ITEM_START';
+export const ADD_ITEM_SUCCESS = 'cart/ADD_ITEM_SUCCESS';
+export const ADD_ITEM_FAILURE = 'cart/ADD_ITEM_FAILURE';
+export const ADD_ITEM_FINALLY = 'cart/ADD_ITEM_FINALLY';
+export const ADD_ITEMS_START = 'cart/ADD_ITEMS_START';
+export const ADD_ITEMS_FINISH = 'cart/ADD_ITEMS_FINISH';
+export const UPDATE_PROGRESS = 'cart/UPDATE_PROGRESS';
+export const DONE_EDITING = 'cart/DONE_EDITING';
+export const RESET_ITEMS = 'cart/RESET_ITEMS';
 
 // Let's break some rules
 let index = 0;
@@ -55,6 +55,10 @@ const next = (items, addItemToCart, dispatch) => {
     currentItemIndex: index
   };
 };
+
+export const resetItems = () => ({
+  type: RESET_ITEMS
+});
 
 export const addItemToCart = items => {
   return dispatch => {

@@ -15,8 +15,9 @@ import {
   ADD_ITEM_FAILURE,
   ADD_ITEM_FINALLY,
   // UPDATE_PROGRESS,
-  DONE_EDITING
-} from '../actiontypes/cart';
+  DONE_EDITING,
+  RESET_ITEMS
+} from '../actions/cart';
 
 const initialState = {
   itemsToAdd: 0,
@@ -80,6 +81,11 @@ export default function Cart(state = initialState, action) {
         errors: null,
         itemsAdded: 0,
         itemsErrored: 0
+      };
+    }
+    case RESET_ITEMS: {
+      return {
+        ...initialState
       };
     }
     default: {
