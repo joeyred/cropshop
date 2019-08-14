@@ -12,6 +12,7 @@ import MicroModal from 'micromodal';
 import store from '../redux/store';
 import { updateSelectedCollection } from '../redux/actions/frame';
 import { updateAppVisibility } from '../redux/actions/nav';
+import { updateEditMode } from '../redux/actions/gallery';
 
 const dev = process.env.NODE_ENV !== 'production';
 
@@ -82,4 +83,5 @@ export const closeModal = modalId => {
   Object.assign(body.style, { overflow: '', height: '', position: '' });
   window.scrollTo(0, scrollPosition);
   store.dispatch(updateAppVisibility(false, imageHasBeenUploaded));
+  store.dispatch(updateEditMode(true));
 };
