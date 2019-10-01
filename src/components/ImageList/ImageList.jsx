@@ -67,7 +67,7 @@ const ImageList = props => {
     if (image.edited[selectedCollectionId]) {
       const { width, height } = frames.byId[
         image.edit[selectedCollectionId].frameId
-      ];
+      ].display;
       // console.log(image.quantity);
       return (
         <Cell
