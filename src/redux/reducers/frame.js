@@ -15,6 +15,11 @@ import {
   UPDATE_SELECTED_COLLECTION,
   ADD_FRAME
 } from '../actiontypes/frame';
+import {
+  FETCH_FRAMES_START,
+  FETCH_FRAMES_SUCCESS,
+  FETCH_FRAMES_FAILURE
+} from '../actions/frame';
 
 const initialState = {
   frames: {
@@ -113,6 +118,36 @@ export default function Frame(state = initialState, action) {
           },
           allIds: [...state.frames.allIds, id]
         }
+      };
+    }
+    case FETCH_FRAMES_START: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+    case FETCH_FRAMES_SUCCESS: {
+      const { payload } = action;
+      const { byId, allIds } = payload;
+      return {
+        ...state,
+        frames: {
+          byId: {
+            ...byId
+          },
+          allIds: [...allIds]
+        },
+        loaded: true,
+        loading: false
+      };
+    }
+    case FETCH_FRAMES_FAILURE: {
+      const { error } = action;
+      return {
+        ...state,
+        loaded: false,
+        loading: false,
+        error
       };
     }
     default: {
