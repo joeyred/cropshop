@@ -14,9 +14,7 @@ import ReactDOM from 'react-dom';
 import * as Sentry from '@sentry/browser';
 // Redux
 import { Provider } from 'react-redux';
-// import smoothscroll from 'smoothscroll-polyfill';
 import uniqid from 'uniqid';
-import map from 'lodash/map';
 import SimpleCrypto from 'simple-crypto-js';
 import store from './redux/store';
 
@@ -25,7 +23,7 @@ import CropShopButton from './utils/CropShopButton';
 import AppHeight from './utils/onResize';
 // import { fetchApiKey } from './redux/actions/filestack';
 import { externalsToState } from './redux/externalsToState';
-import { addFrame } from './redux/actions/frame';
+import { fetchFrames } from './redux/actions/frame';
 import { AppAtts } from './globals';
 
 // Components
@@ -68,7 +66,7 @@ Sentry.init({
 store.dispatch(
   externalsToState({
     shop: siteData.shop.domain,
-    products: siteData.products,
+    // products: siteData.products,
     cartUrl: siteData.cartUrl,
     filestackApiKey: crypto.decrypt(siteData.shop.filestackApiKey),
     // eslint-disable-next-line no-unneeded-ternary
@@ -79,9 +77,11 @@ store.dispatch(
 // store.dispatch(fetchApiKey(siteData.shop.domain));
 // store.dispatch(fetchStorefrontToken(storeDomain));
 
-map(siteData.products, product => {
-  store.dispatch(addFrame(product));
-});
+// map(siteData.products, product => {
+//   store.dispatch(addFrame(product));
+// });
+
+store.dispatch(fetchFrames(siteData.shop.domain));
 
 AppHeight.init();
 // smoothscroll.polyfill();
