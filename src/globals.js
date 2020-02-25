@@ -15,10 +15,11 @@ const crypto = new SimpleCrypto(key);
 //      It's Shopify...
 // eslint-disable-next-line no-undef
 const siteData = CropshopData;
-const appApiUrl = crypto.decrypt(siteData.shop.tunnelUrl);
+let appApiUrl = process.env.REACT_APP_SERVER_URI;
 let cartUrl = `${appApiUrl}/api/test/cart`;
 if (process.env.NODE_ENV === 'production') {
   cartUrl = '/cart/add.js';
+  appApiUrl = crypto.decrypt(siteData.shop.tunnelUrl);
 }
 
 export const AppAtts = {
