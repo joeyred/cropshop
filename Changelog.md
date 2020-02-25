@@ -1,9 +1,13 @@
 # Change Log
 
+## v1.0.5
+
+- Bugfix - New way to init app in so it can be inactive on cart page.
+- Better error reporting for JSON parsing errors when parsing product data.
+
 ## v1.0.4
 
 - Majorfix - Product data is now fetched via API, and not Shopify liquid templating.
-- API URL is now fetched via server env variable and installed as a metafield for the store.
 
 ## v1.0.3
 
