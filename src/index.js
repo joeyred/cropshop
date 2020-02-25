@@ -60,41 +60,41 @@ const initExternalStuff = () => {
 
 Sentry.init({
   dsn: 'https://65b9b75ec92e4c0e80342465b9e45c14@sentry.io/1514878',
-  release: `cropshop@${process.env.npm_package_version}`
+  release: `cropshop@${process.env.REACT_APP_VERSION}`
 });
-store.dispatch(
-  externalsToState({
-    shop: siteData.shop.domain,
-    // products: siteData.products,
-    cartUrl: siteData.cartUrl,
-    filestackApiKey: crypto.decrypt(siteData.shop.filestackApiKey),
-    tunnelUrl: crypto.decrypt(siteData.shop.tunnelUrl),
-    // eslint-disable-next-line no-unneeded-ternary
-    debug: siteData.shop.debug === 'true' ? true : false
-  })
-);
-// console.log(siteData.cartUrl);
-// store.dispatch(fetchApiKey(siteData.shop.domain));
-// store.dispatch(fetchStorefrontToken(storeDomain));
 
-// map(siteData.products, product => {
-//   store.dispatch(addFrame(product));
-// });
+const initApp = () => {
+  store.dispatch(
+    externalsToState({
+      shop: siteData.shop.domain,
+      // products: siteData.products,
+      cartUrl: siteData.cartUrl,
+      filestackApiKey: crypto.decrypt(siteData.shop.filestackApiKey),
+      tunnelUrl: crypto.decrypt(siteData.shop.tunnelUrl),
+      // eslint-disable-next-line no-unneeded-ternary
+      debug: siteData.shop.debug === 'true' ? true : false
+    })
+  );
 
-store.dispatch(fetchFrames(siteData.shop.domain));
+  store.dispatch(fetchFrames(siteData.shop.domain));
 
-AppHeight.init();
-// smoothscroll.polyfill();
+  AppHeight.init();
 
-ReactDOM.render(
-  // eslint-disable-next-line react/jsx-filename-extension
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById(AppAtts.ID)
-);
+  ReactDOM.render(
+    // eslint-disable-next-line react/jsx-filename-extension
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById(AppAtts.ID)
+  );
 
-initExternalStuff();
+  initExternalStuff();
+};
+
+if (siteData) {
+  initApp();
+}
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
