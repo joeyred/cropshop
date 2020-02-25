@@ -8,6 +8,7 @@
  */
 import axios from 'axios';
 import uniqid from 'uniqid';
+import * as Sentry from '@sentry/browser';
 
 import {
   UPDATE_SELECTED_FRAME,
@@ -59,18 +60,23 @@ export const addFrame = frame => {
     }
   };
 };
+
 const parseJSON = json => {
   try {
     return JSON.parse(json);
   } catch (error) {
-    console.log(`JSON FAILED TO PARSE: ${error}`);
+    // console.log(`JSON FAILED TO PARSE: ${error}`);
+    Sentry.captureException(error);
     return false;
   }
 };
+
 const productToFrame = (id, product) => {
+  // console.log(product);
   const { collections, variants, customFields } = product;
   const fields = parseJSON(customFields);
   if (!fields) {
+    Sentry.captureMessage(`[${product.title}] failed to parse JSON: ${customFields}`);
     return false;
   }
   const width = fields.print.width * 1;

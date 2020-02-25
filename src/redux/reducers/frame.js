@@ -142,12 +142,12 @@ export default function Frame(state = initialState, action) {
       };
     }
     case FETCH_FRAMES_FAILURE: {
-      const { error } = action;
+      const { payload } = action;
       return {
         ...state,
         loaded: false,
         loading: false,
-        error
+        error: payload.error
       };
     }
     default: {
