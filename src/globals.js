@@ -6,12 +6,18 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import SimpleCrypto from 'simple-crypto-js';
 
-let appApiUrl = process.env.REACT_APP_SERVER_URI;
+const key = JSON.stringify(process.env.REACT_APP_SFS_KEY);
+const crypto = new SimpleCrypto(key);
+// NOTE This is gotten from a globally defined variable.
+//      Yes I know this sucks...
+//      It's Shopify...
+// eslint-disable-next-line no-undef
+const siteData = CropshopData;
+const appApiUrl = crypto.decrypt(siteData.shop.tunnelUrl);
 let cartUrl = `${appApiUrl}/api/test/cart`;
 if (process.env.NODE_ENV === 'production') {
-  // TODO Update this with the URL of the heroku app
-  appApiUrl = 'https://cropshop-for-shopify.herokuapp.com';
   cartUrl = '/cart/add.js';
 }
 

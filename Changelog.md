@@ -3,6 +3,7 @@
 ## v1.0.4
 
 - Majorfix - Product data is now fetched via API, and not Shopify liquid templating.
+- API URL is now fetched via server env variable and installed as a metafield for the store.
 
 ## v1.0.3
 
