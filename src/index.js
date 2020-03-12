@@ -11,7 +11,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // Remote Logging
-import * as Sentry from '@sentry/browser';
+// import * as Sentry from '@sentry/browser';
 // Redux
 import { Provider } from 'react-redux';
 import uniqid from 'uniqid';
@@ -21,10 +21,12 @@ import store from './redux/store';
 // This will do fun stuff outside the scope of React
 import CropShopButton from './utils/CropShopButton';
 import AppHeight from './utils/onResize';
+import { initReporter } from './utils/reporter';
 // import { fetchApiKey } from './redux/actions/filestack';
 import { externalsToState } from './redux/externalsToState';
 import { fetchFrames } from './redux/actions/frame';
-import { AppAtts } from './globals';
+
+import { AppAtts, production } from './globals';
 
 // Components
 import App from './App';
@@ -58,10 +60,15 @@ const initExternalStuff = () => {
   }
 };
 
-Sentry.init({
+initReporter(production, {
   dsn: 'https://65b9b75ec92e4c0e80342465b9e45c14@sentry.io/1514878',
   release: `cropshop@${process.env.REACT_APP_VERSION}`
 });
+
+// Sentry.init({
+//   dsn: 'https://65b9b75ec92e4c0e80342465b9e45c14@sentry.io/1514878',
+//   release: `cropshop@${process.env.REACT_APP_VERSION}`
+// });
 
 const initApp = () => {
   store.dispatch(
