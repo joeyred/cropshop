@@ -15,9 +15,11 @@ import {
   UPDATE_SELECTED_COLLECTION,
   ADD_FRAME
 } from '../actiontypes/frame';
-import { AppAtts, production } from '../../globals';
+import { AppAtts, production, DEBUG } from '../../globals';
 import { reportMessage, reportError } from '../../utils/reporter';
-// import Debug from '../../utils/debug';
+import { ModuleDebug } from '../../utils/debug';
+
+const debugMethod = ModuleDebug(true, DEBUG);
 
 export const FETCH_FRAMES_START = 'frame/FETCH_FRAMES_START';
 export const FETCH_FRAMES_SUCCESS = 'frame/FETCH_FRAMES_SUCCESS';
@@ -112,6 +114,7 @@ const productToFrame = (id, product) => {
 };
 
 const productsToFrames = products => {
+  const debug = debugMethod('productsToFrames');
   const byId = {};
   const allIds = [];
   let id;
@@ -125,6 +128,10 @@ const productsToFrames = products => {
       byId[id] = frame;
       allIds.push(id);
     }
+    debug('loop', {key: i, values: {
+      id,
+      frame
+    }});
   }
   return {
     byId,

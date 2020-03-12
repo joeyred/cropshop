@@ -20,6 +20,11 @@ import {
   FETCH_FRAMES_SUCCESS,
   FETCH_FRAMES_FAILURE
 } from '../actions/frame';
+import { DEBUG } from '../../globals';
+import { reportMessage, reportError } from '../../utils/reporter';
+import { ModuleDebug } from '../../utils/debug';
+
+const debugMethod = ModuleDebug(true, DEBUG);
 
 const initialState = {
   frames: {
@@ -35,6 +40,9 @@ const initialState = {
 };
 
 const filteredFrames = (collectionName, frames) => {
+  if (!collectionName) {
+    return [];
+  }
   return compact(
     map(frames.allIds, id => {
       let isInCollection = false;
@@ -74,15 +82,29 @@ export default function Frame(state = initialState, action) {
       };
     }
     case UPDATE_SELECTED_COLLECTION: {
+      const debug = debugMethod('Frame:UPDATE_SELECTED_COLLECTION');
       const { collectionName } = action;
       const frameList = sortedFrames(
         filteredFrames(collectionName, state.frames)
       );
+      let selectedFrameId = false;
+
+      if (frameList.length === 0) {
+        if (!collectionName) {
+          debug('message', 'No Collection Found');
+          reportMessage('No Collection was passed');
+        } else {
+          debug('message', `No Frames found for collection: ${collectionName}`);
+          reportMessage(`No Frames found for collection: ${collectionName}`)
+        }
+      } else {
+        selectedFrameId = frameList[0].id;
+      }
       return {
         ...state,
         selectedCollectionId: collectionName,
         frameList,
-        selectedFrameId: frameList[0].id
+        selectedFrameId
       };
     }
     case ADD_FRAME: {
