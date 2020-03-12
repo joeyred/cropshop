@@ -1,5 +1,12 @@
 # Change Log
 
+## v1.1.0
+
+- New API implementation using AJAX and Shopify. No more API calls to the Shopify App server.
+- New Debugging structure and methods.
+- New Reporter module to wrap Sentry methods.
+- Frame actions and reducer prepared for better handling of no available frames to consume upon collection selection.
+
 ## v1.0.5
 
 - Bugfix - New way to init app in so it can be inactive on cart page.
