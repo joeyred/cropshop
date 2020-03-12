@@ -18,7 +18,7 @@ const crypto = new SimpleCrypto(key);
 // eslint-disable-next-line no-undef
 const siteData = CropshopData;
 
-let appApiUrl = process.env.REACT_APP_SERVER_URI;
+let appApiUrl = 'https://ded1e8ec.ngrok.io';
 let cartUrl = `${appApiUrl}/api/test/cart`;
 let storeUrl = '';
 // let ajaxEndpoint = '/pages/cropshop-api';
@@ -32,6 +32,9 @@ if (production && siteData) {
 // if (!production) {
 //   ajaxEndpoint = `https://${storeUrl}${ajaxEndpoint}`;
 // }
+
+// eslint-disable-next-line no-unneeded-ternary
+export const DEBUG = siteData.shop.debug === 'true' ? true : false;
 
 export const AppAtts = {
   ID: 'cropshop_app',
