@@ -8,14 +8,15 @@
  */
 import axios from 'axios';
 import uniqid from 'uniqid';
-import * as Sentry from '@sentry/browser';
+// import * as Sentry from '@sentry/browser';
 
 import {
   UPDATE_SELECTED_FRAME,
   UPDATE_SELECTED_COLLECTION,
   ADD_FRAME
 } from '../actiontypes/frame';
-import { AppAtts } from '../../globals';
+import { AppAtts, production } from '../../globals';
+import { reportMessage, reportError } from '../../utils/reporter';
 // import Debug from '../../utils/debug';
 
 export const FETCH_FRAMES_START = 'frame/FETCH_FRAMES_START';
@@ -63,20 +64,28 @@ export const addFrame = frame => {
 
 const parseJSON = json => {
   try {
+    // console.log('success');
     return JSON.parse(json);
   } catch (error) {
-    // console.log(`JSON FAILED TO PARSE: ${error}`);
-    Sentry.captureException(error);
+    reportError(error);
+    // if (process.env.NODE_ENV === 'production') {
+    //   Sentry.captureException(error);
+    // } else {
+    //   console.log(`JSON FAILED TO PARSE: ${error}`);
+    // }
     return false;
   }
 };
 
 const productToFrame = (id, product) => {
   // console.log(product);
-  const { collections, variants, customFields } = product;
-  const fields = parseJSON(customFields);
+  const { collections, variants, custom_fields: customFields } = product;
+  const fields = customFields;
   if (!fields) {
-    Sentry.captureMessage(`[${product.title}] failed to parse JSON: ${customFields}`);
+    reportMessage(`[${product.title}] Has no measurement data.`);
+    // Sentry.captureMessage(
+    //   `[${product.title}] Has no measurement data.`
+    // );
     return false;
   }
   const width = fields.print.width * 1;
@@ -132,24 +141,30 @@ const success = response => ({
   payload: response
 });
 
-const failure = error => ({
-  type: FETCH_FRAMES_FAILURE,
-  payload: {
-    error
-  }
-});
+const failure = error => {
+  reportError(error);
+
+  return {
+    type: FETCH_FRAMES_FAILURE,
+    payload: {
+      error
+    }
+  };
+};
 
 export const fetchFrames = store => {
+  let ajaxUrl = AppAtts.AJAX_ENDPOINT;
+  if (!production) {
+    ajaxUrl = `https://${store}${AppAtts.AJAX_ENDPOINT}`;
+  }
   return dispatch => {
     dispatch(start());
     axios
-      .get(`${AppAtts.APP_API_URL}/api/${store}/products`)
+      .get(ajaxUrl)
       .then(response => {
-        // console.log(response);
-        const products = response.data;
-        // console.log(products.data);
-        const frames = productsToFrames(products.data);
-        // console.log(frames);
+        const products = response && response.data;
+        const validJSON = parseJSON(JSON.stringify(products));
+        const frames = productsToFrames(validJSON.products);
         dispatch(success(frames));
       })
       .catch(error => {
