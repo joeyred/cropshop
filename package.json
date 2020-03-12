@@ -53,7 +53,7 @@
     "build-fix-sourcemap-css": "npm run build-fix-sourcemap-main-css && npm run build-fix-sourcemap-vendor-css",
     "build-fix-sourcemap-main-css": "replace-in-file \"/sourceMappingURL=main\\.[^\\.]+\\.chunk.css\\.map/i\" \"sourceMappingURL=cropshop_main_styles.chunk.css.map\" build/static/css/cropshop_main_styles.chunk.css --isRegex",
     "build-fix-sourcemap-vendor-css": "replace-in-file \"/sourceMappingURL=2\\.[^\\.]+\\.chunk.css\\.map/i\" \"sourceMappingURL=cropshop_vendor_styles.chunk.css.map\" build/static/css/cropshop_vendor_styles.chunk.css --isRegex",
-    "upload-sourcemaps": "sentry-cli releases --org brian-hayes --project cropshop files cropshop@$npm_package_version upload-sourcemaps ./build/static/js",
+    "upload-sourcemaps": "sentry-cli releases --org brian-hayes --project cropshop files cropshop@$npm_package_version upload-sourcemaps ./build/static/js --rewrite --validate",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
