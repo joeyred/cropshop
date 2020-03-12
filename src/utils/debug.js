@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 /**
  * Adds suffix to number passed.
  *
@@ -49,22 +51,17 @@ const outputValues = values => {
   for (const key in values) {
     if (Object.hasOwnProperty.call(values, key)) {
       // Log key and it's value in a readable fashion.
-      // eslint-disable-next-line no-console
       console.log(`${key} is: ${values[key]} (${valueType(values[key])})`);
     }
   }
 };
 
-const loop = (functionName, { key, values }) => {
-  // eslint-disable-next-line no-console
-  console.log(`%c Within ${functionName}:`, 'color: pink');
+const loop = ({ key, values }) => {
   if (typeof key === 'number') {
     const currentIteration = addSuffixToNumber(key + 1);
-    // eslint-disable-next-line no-console
     console.log(`${currentIteration} iteration of for loop:`);
     outputValues(values);
   } else {
-    // eslint-disable-next-line no-console
     console.log(`current key in forin: ${key}`);
     outputValues(values);
   }
@@ -88,29 +85,20 @@ const loop = (functionName, { key, values }) => {
  *
  * @method value
  *
- * @param  {String} functionName - Name of function the value reside in.
  * @param  {Object} object       - Object with keys matching variable names to
  *                                 be output to console.
  */
-const values = (functionName, object) => {
-  // eslint-disable-next-line no-console
-  console.log(`%c Within ${functionName}:`, 'color: pink');
+const values = (object) => {
   // Loop through values within the function.
   outputValues(object);
 };
 
-const message = (functionName, string) => {
-  // eslint-disable-next-line no-console
-  console.log(`%c Within ${functionName}:`, 'color: pink');
-  // eslint-disable-next-line no-console
-  console.log(`%c ${string}`, 'color: blue');
+const message = (string) => {
+  console.log(`%c ${string}`, 'color: cyan');
 };
 
-const log = (functionName, args) => {
-  // eslint-disable-next-line no-console
-  console.log(`%c Within ${functionName}:`, 'color: pink');
-  // eslint-disable-next-line no-console
-  console.log(args);
+const log = (...args) => {
+  console.log(...args);
 };
 
 const DebugMethods = {
@@ -127,11 +115,17 @@ class DebugMethod {
   }
 
   init() {
-    return (method, args) => {
+    /**
+     * The constructed Method
+     * @method return
+     * @param  {'loop' | 'values' | 'message' | 'log'} method - The method to use.
+     * @param  {REST}                                  args - The arguments to pass.
+     */
+    return (method, ...args) => {
       if (this.isEnabled) {
-        return DebugMethods[method](this.name, args);
+        console.log(`%c Within ${this.name}:`, 'color: pink');
+        DebugMethods[method](...args);
       }
-      return false;
     };
   }
 
@@ -140,14 +134,19 @@ class DebugMethod {
    *
    * @method outputObjectParent
    */
-  outputObjectParent() {
-    // eslint-disable-next-line no-console
-    console.log(`%c ${this.moduleName}`, 'color: green');
-  }
+  // outputObjectParent() {
+  //   // eslint-disable-next-line no-console
+  //   console.log(`%c ${this.moduleName}`, 'color: green');
+  // }
 }
 
-const Debug = (name, isEnabled) => {
-  return new DebugMethod(name, isEnabled).init();
+const Debug = (isEnabled) => {
+  return (name) => new DebugMethod(name, isEnabled).init();
 };
+
+export const ModuleDebug = (moduleIsEnabled, globalIsEnabled) => {
+  const isEnabled = moduleIsEnabled && globalIsEnabled;
+  return (name) => new DebugMethod(name, isEnabled).init();
+}
 
 export default Debug;
