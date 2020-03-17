@@ -11,7 +11,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // Remote Logging
-import * as Sentry from '@sentry/browser';
+// import * as Sentry from '@sentry/browser';
 // Redux
 import { Provider } from 'react-redux';
 import uniqid from 'uniqid';
@@ -21,10 +21,12 @@ import store from './redux/store';
 // This will do fun stuff outside the scope of React
 import CropShopButton from './utils/CropShopButton';
 import AppHeight from './utils/onResize';
+import { initReporter } from './utils/reporter';
 // import { fetchApiKey } from './redux/actions/filestack';
 import { externalsToState } from './redux/externalsToState';
 import { fetchFrames } from './redux/actions/frame';
-import { AppAtts } from './globals';
+
+import { AppAtts, production } from './globals';
 
 // Components
 import App from './App';
@@ -58,43 +60,48 @@ const initExternalStuff = () => {
   }
 };
 
-Sentry.init({
+initReporter(production, {
   dsn: 'https://65b9b75ec92e4c0e80342465b9e45c14@sentry.io/1514878',
   release: `cropshop@${process.env.REACT_APP_VERSION}`
 });
-// store.dispatch(setStorefrontDomain(storeDomain));
-store.dispatch(
-  externalsToState({
-    shop: siteData.shop.domain,
-    // products: siteData.products,
-    cartUrl: siteData.cartUrl,
-    filestackApiKey: crypto.decrypt(siteData.shop.filestackApiKey),
-    // eslint-disable-next-line no-unneeded-ternary
-    debug: siteData.shop.debug === 'true' ? true : false
-  })
-);
-// console.log(siteData.cartUrl);
-// store.dispatch(fetchApiKey(siteData.shop.domain));
-// store.dispatch(fetchStorefrontToken(storeDomain));
 
-// map(siteData.products, product => {
-//   store.dispatch(addFrame(product));
+// Sentry.init({
+//   dsn: 'https://65b9b75ec92e4c0e80342465b9e45c14@sentry.io/1514878',
+//   release: `cropshop@${process.env.REACT_APP_VERSION}`
 // });
 
-store.dispatch(fetchFrames(siteData.shop.domain));
+const initApp = () => {
+  store.dispatch(
+    externalsToState({
+      shop: siteData.shop.domain,
+      // products: siteData.products,
+      cartUrl: siteData.cartUrl,
+      filestackApiKey: crypto.decrypt(siteData.shop.filestackApiKey),
+      tunnelUrl: crypto.decrypt(siteData.shop.tunnelUrl),
+      // eslint-disable-next-line no-unneeded-ternary
+      debug: siteData.shop.debug === 'true' ? true : false
+    })
+  );
 
-AppHeight.init();
-// smoothscroll.polyfill();
+  store.dispatch(fetchFrames(siteData.shop.domain));
 
-ReactDOM.render(
-  // eslint-disable-next-line react/jsx-filename-extension
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById(AppAtts.ID)
-);
+  AppHeight.init();
 
-initExternalStuff();
+  ReactDOM.render(
+    // eslint-disable-next-line react/jsx-filename-extension
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById(AppAtts.ID)
+  );
+
+  initExternalStuff();
+};
+
+if (siteData) {
+  initApp();
+}
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
