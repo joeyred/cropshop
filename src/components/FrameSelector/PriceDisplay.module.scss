@@ -1,0 +1,29 @@
+/**
+ * Copyright (c) 2019-present, Brian J. Hayes.
+ *
+ * https://github.com/joeyred
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@import '../../styles/_namespace';
+@import '../../styles/foundation/_settings';
+
+:global(#{$global_namespace}) {
+  .price {
+    color: $primary-color;
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+
+    .currency-symbol {
+      font-size: 0.675em;
+      margin-left: 0.5em;
+      color: $secondary-color;
+    }
+  }
+}
