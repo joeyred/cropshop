@@ -12,7 +12,8 @@ export function fixedDecimalPlaces(number, places) {
 }
 
 export function getAspectRatio({ width, height }) {
-  return fixedDecimalPlaces(width / height, 4);
+  // multiply by 1 to keep the value a number
+  return fixedDecimalPlaces(width / height, 4) * 1;
 }
 
 /**

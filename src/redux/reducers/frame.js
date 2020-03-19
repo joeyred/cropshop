@@ -21,7 +21,7 @@ import {
   FETCH_FRAMES_FAILURE
 } from '../actions/frame';
 import { DEBUG } from '../../globals';
-import { reportMessage, reportError } from '../../utils/reporter';
+import { reportMessage } from '../../utils/reporter';
 import { ModuleDebug } from '../../utils/debug';
 
 const debugMethod = ModuleDebug(true, DEBUG);

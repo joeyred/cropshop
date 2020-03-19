@@ -101,7 +101,7 @@ const productToFrame = (id, product) => {
     id,
     productId: product.id,
     variantId: variants[0].id,
-    price: variants[0].price,
+    price: variants[0].price / 100,
     collections,
     dimensions: [width, height],
     display,

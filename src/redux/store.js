@@ -20,6 +20,7 @@ import FrameReducer from './reducers/frame';
 import FilestackReducer from './reducers/filestack';
 import CartReducer from './reducers/cart';
 import { ExternalsReducer } from './externalsToState';
+import { ConfigReducer } from './config';
 import { SizeReducer } from './size';
 
 const rootReducer = combineReducers({
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   frame: FrameReducer,
   filestack: FilestackReducer,
   external: ExternalsReducer,
+  config: ConfigReducer,
   cart: CartReducer,
   size: SizeReducer
 });
