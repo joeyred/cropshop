@@ -29,6 +29,8 @@ import { updateCropFullCenter } from '../../redux/actions/editor';
 // Project Components
 import Scrollable from '../Scrollable';
 import PictureFrame from './PictureFrame';
+import PriceDisplay from './PriceDisplay';
+
 // Styles
 import styles from './FrameSelector.module.scss';
 
@@ -37,7 +39,8 @@ const mapStateToProps = state => ({
   selectedFrameId: state.frame.selectedFrameId,
   frameList: state.frame.frameList,
   // selectedCollectionId: state.frame.selectedCollectionId,
-  imageSizeRendered: state.editor.imageSizeRendered
+  imageSizeRendered: state.editor.imageSizeRendered,
+  showPrices: state.config.display.showPrices
 });
 
 const FrameSelector = props => {
@@ -48,7 +51,7 @@ const FrameSelector = props => {
     frameList,
     direction,
     imageSizeRendered,
-
+    showPrices,
     dispatch
   } = props;
 
@@ -92,10 +95,7 @@ const FrameSelector = props => {
                 >
                   <PictureFrame dimensions={{ ...frame.display }} />
                 </button>
-                <div className={styles.price}>
-                  <span className={styles['currency-symbol']}>$</span>
-                  <span>{frame.price}</span>
-                </div>
+                {showPrices ? <PriceDisplay price={frame.price} /> : null}
               </div>
             );
           })}
