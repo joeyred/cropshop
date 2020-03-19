@@ -1,5 +1,11 @@
 # Change Log
 
+## v1.2.0
+
+- Prices can now be hidden or shown conditionally based on config object
+- Prepare app for widespread use of config object
+- Bugfix - `fixedDecimalPlaces` now returns a number, as oppose to allowing strings to be returned.
+
 ## v1.1.0
 
 - New API implementation using AJAX and Shopify. No more API calls to the Shopify App server.
