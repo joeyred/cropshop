@@ -24,6 +24,7 @@ import AppHeight from './utils/onResize';
 import { initReporter } from './utils/reporter';
 // import { fetchApiKey } from './redux/actions/filestack';
 import { externalsToState } from './redux/externalsToState';
+import { getConfig } from './redux/config';
 import { fetchFrames } from './redux/actions/frame';
 
 import { AppAtts, production } from './globals';
@@ -71,6 +72,7 @@ initReporter(production, {
 // });
 
 const initApp = () => {
+  const config = siteData.config || {};
   store.dispatch(
     externalsToState({
       shop: siteData.shop.domain,
@@ -82,6 +84,8 @@ const initApp = () => {
       debug: siteData.shop.debug === 'true' ? true : false
     })
   );
+
+  store.dispatch(getConfig(config));
 
   store.dispatch(fetchFrames(siteData.shop.domain));
 
