@@ -186,7 +186,33 @@
         config: {
           debug: true,
           display: {
-            showPrices: false,
+            showPrices: true,
+          },
+          upload: {
+            displayMode: 'inline',
+            container: 'uploadContainer',
+            fromSources: [
+              'local_file_system',
+              'instagram',
+              'facebook',
+              'googledrive'
+            ],
+            accept: [
+              'image/jpeg',
+              'image/jpg',
+              'image/png',
+              'image/heic',
+              'image/heif'
+            ],
+            maxFiles: 20,
+            disableTransformer: true,
+            uploadInBackground: false,
+            customText: {
+              Upload: 'Start Creating',
+              'Deselect All': 'Remove All',
+              'Upload more': 'Add More',
+              'View/Edit Selected': 'View Selected'
+            }
           }
         }
       };
